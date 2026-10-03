@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Restaurant detail — explore the menu, gallery, location, and make a reservation on BiteMap." />
+  <title>Restaurant Name — BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="login.html">Sign In</a></li>
+        <li><a href="register.html" class="btn btn-primary">Join Free</a></li>
+      </ul>
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- 1 & 2 & 3: RESTAURANT HERO & IDENTITY & ACTIONS -->
+    <section class="restaurant-hero" aria-labelledby="restaurant-name">
+      <div class="restaurant-hero-image" aria-label="Ramenku exterior view" role="img" data-detail="hero-image">
+        <!-- Placeholder for hero image -->
+      </div>
+      <div class="container">
+        
+        <header class="restaurant-header">
+          <div class="restaurant-info">
+            <h1 id="restaurant-name" data-detail="name">Ramenku</h1>
+            <p class="text-lead text-muted" style="margin-bottom: var(--space-2);" data-detail="category">Asian Food &middot; Japanese</p>
+            <p class="text-meta text-muted" data-detail="meta"><span class="rating-icon" aria-hidden="true">&#9733;</span> 4.8 &bull; 1.2 km</p>
+          </div>
+          <div class="restaurant-actions">
+            <a href="reservation.html?id=ramenku" class="btn btn-primary" data-detail="reserve-btn">Reserve a Table</a>
+            <button type="button" class="btn btn-outline" aria-label="Save Ramenku to favorites" data-detail="save-btn">
+              Save
+            </button>
+          </div>
+        </header>
+
+        <!-- 4: SECTION NAVIGATION -->
+        <nav class="restaurant-tabs" aria-label="Restaurant sections">
+          <ul role="list">
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#location">Location</a></li>
+            <li><a href="#hours">Hours</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <!-- 5: ABOUT -->
+    <section id="about" class="about" aria-labelledby="about-heading" style="padding-top: var(--space-8);">
+      <div class="container">
+        <h2 id="about-heading" style="margin-bottom: var(--space-4);">About</h2>
+        <div style="max-width: 680px;" data-detail="about-content">
+          <p class="text-lead" data-detail="description">Ramenku serves comforting Japanese ramen, handmade sides, and simple drinks in a warm casual setting.</p>
+          <p class="text-muted" style="margin-top: var(--space-4);" data-detail="description-long">Ramenku is a casual Japanese-inspired spot focused on comforting bowls of ramen, handmade sides, and simple drinks. A relaxed place for a quick meal or a casual dinner.</p>
+        </div>
+        <div class="empty-state" data-detail="about-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc">Description unavailable.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6: GALLERY -->
+    <section id="gallery" class="gallery" aria-labelledby="gallery-heading">
+      <div class="container">
+        <h2 id="gallery-heading" style="margin-bottom: var(--space-6);">Gallery</h2>
+        <ul class="gallery-grid" aria-label="Restaurant photo gallery" role="list" data-detail="gallery-grid">
+          <!-- Gallery figures injected by js/main.js renderRestaurantGallery() -->
+        </ul>
+        <div class="empty-state" data-detail="gallery-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc">Photos aren&#39;t available at the moment.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7: MENU -->
+    <section id="menu" class="menu" aria-labelledby="menu-heading">
+      <div class="container">
+        <h2 id="menu-heading" style="margin-bottom: var(--space-6);">Menu</h2>
+        <div class="empty-state" data-detail="menu-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc">Menu isn&#39;t available at the moment.</p>
+        </div>
+        
+        <div style="max-width: 800px;" data-detail="menu-container">
+          <!-- Menu sections injected by js/main.js renderRestaurantMenu() -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8: LOCATION & 9: HOURS -->
+    <div class="location-hours-wrapper">
+      <div class="container">
+        
+        <div class="location-hours-grid">
+          
+          <!-- Location -->
+          <section id="location" class="location" aria-labelledby="location-heading" style="padding-block: 0;">
+            <h2 id="location-heading" style="margin-bottom: var(--space-6);">Location</h2>
+            <div class="location-map" aria-label="Map showing location of Ramenku" data-detail="location-map">
+              <span class="text-muted">Map Placeholder</span>
+            </div>
+            <address class="location-address" data-detail="location-address">
+              <p class="text-lead" data-detail="address-text">Jl. Contoh Kuliner No. 12, Malang</p>
+            </address>
+            <div class="empty-state" data-detail="location-empty" style="display: none;" aria-hidden="true">
+              <p class="empty-state-desc">Location unavailable.</p>
+            </div>
+          </section>
+
+          <!-- Hours -->
+          <section id="hours" class="hours" aria-labelledby="hours-heading" style="padding-block: 0;">
+            <h2 id="hours-heading" style="margin-bottom: var(--space-6);">Opening Hours</h2>
+            <dl class="hours-list" data-detail="hours-list">
+              <!-- Hours rows injected by js/main.js renderRestaurantHours() -->
+            </dl>
+            <div class="empty-state" data-detail="hours-empty" style="display: none;" aria-hidden="true">
+              <p class="empty-state-desc">Hours not available.</p>
+            </div>
+          </section>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- 10: RESERVATION CTA -->
+    <section class="section-cta" aria-labelledby="cta-heading" style="padding-block: var(--section-space-xl); text-align: center; border-top: 1px solid var(--color-border-light, rgba(36,33,29,0.08));">
+      <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4);">
+        <h2 id="cta-heading">Ready to visit?</h2>
+        <p class="text-lead text-muted" style="max-width: 500px;" data-detail="reservation-cta-text">Reserve your table before you arrive.</p>
+        <a href="reservation.html?id=ramenku" class="btn btn-primary" style="margin-top: var(--space-2);" data-detail="cta-reserve-btn">Reserve a Table</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- GALLERY LIGHTBOX -->
+  <dialog id="gallery-lightbox" class="gallery-lightbox" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-content">
+      <button type="button" class="btn btn-outline lightbox-close" aria-label="Close image viewer">Close</button>
+      <div id="lightbox-image-container" aria-live="polite"></div>
+    </div>
+  </dialog>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

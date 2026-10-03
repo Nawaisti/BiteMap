@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sign in to your BiteMap account to manage reservations and favorites." />
+  <title>Login &mdash; BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="dashboard.html">My Account</a></li>
+      </ul>
+
+      <!-- Mobile menu toggle -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+    <div class="container customer-auth-layout">
+      
+      <section class="customer-auth-card" aria-labelledby="login-heading">
+        
+        <header class="customer-auth-header">
+          <h1 id="login-heading">LOGIN TO BITEMAP</h1>
+          <p class="text-muted">Sign in to manage your reservations and discover more places.</p>
+        </header>
+
+        <form class="auth-form" method="post" action="#" novalidate aria-label="Customer login form">
+          
+          <div class="form-group" style="margin-bottom: var(--space-4);">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <div class="form-group" style="margin-bottom: var(--space-4);">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              autocomplete="current-password"
+              placeholder="Your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-4);">Log In</button>
+        </form>
+
+        <footer class="customer-auth-footer">
+          <p>Don't have an account? <a href="register.html">Register</a></p>
+        </footer>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

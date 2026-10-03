@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your BiteMap reservation is confirmed. Show this ticket at the restaurant." />
+  <title>Reservation Confirmed — BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body class="page-ticket">
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="dashboard.html">My Account</a></li>
+        <li><a href="login.html" class="btn btn-primary">Sign In</a></li>
+      </ul>
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <section class="reservation-ticket-section" aria-labelledby="ticket-heading">
+      <div class="container ticket-layout">
+
+        <!-- 2. Confirmation Header -->
+        <div class="ticket-confirmation-message">
+          <h1 id="ticket-heading" style="color: var(--color-success); margin-bottom: var(--space-2);">Reservation Confirmed</h1>
+          <p class="text-lead text-muted">Your table is reserved. Show this ticket when you arrive.</p>
+        </div>
+
+        <!-- 3 & 4. Digital Ticket -->
+        <article class="reservation-ticket" aria-label="Reservation ticket">
+          
+          <header class="ticket-header">
+            <span class="logo-text">BITEMAP</span>
+            <span class="status-confirmed" data-detail="ticket-status">Confirmed</span>
+          </header>
+
+          <div class="ticket-restaurant" style="margin-bottom: 0;">
+            <div class="ticket-restaurant-info">
+              <h2 class="text-lead" style="margin-bottom: var(--space-1);" data-detail="ticket-restaurant-name">Ramenku</h2>
+              <p class="text-small text-muted" data-detail="ticket-restaurant-category">Asian Food &middot; Japanese</p>
+            </div>
+          </div>
+
+          <div class="ticket-divider" aria-hidden="true"></div>
+
+          <dl class="ticket-details">
+            <div class="ticket-detail-item">
+              <dt class="text-small text-muted">Date</dt>
+              <dd class="text-lead" style="font-weight: var(--font-weight-medium);" data-detail="ticket-date">Saturday, October 3, 2026</dd>
+            </div>
+            <div class="ticket-detail-item">
+              <dt class="text-small text-muted">Time</dt>
+              <dd class="text-lead" style="font-weight: var(--font-weight-medium);" data-detail="ticket-time">19:00</dd>
+            </div>
+            <div class="ticket-detail-item">
+              <dt class="text-small text-muted">Guests</dt>
+              <dd class="text-lead" style="font-weight: var(--font-weight-medium);" data-detail="ticket-guests">2 Guests</dd>
+            </div>
+            <div class="ticket-detail-item" data-detail="ticket-guest-item" style="display: none;">
+              <dt class="text-small text-muted">Guest</dt>
+              <dd class="text-lead" style="font-weight: var(--font-weight-medium);" data-detail="ticket-guest-name">—</dd>
+            </div>
+          </dl>
+
+          <div class="ticket-divider" aria-hidden="true"></div>
+
+          <!-- 5. QR Code Placeholder -->
+          <figure class="ticket-qr" aria-label="Reservation check-in QR code">
+            <div class="qr-placeholder" aria-hidden="true">
+              QR CODE
+            </div>
+          </figure>
+
+          <!-- 6. Arrival Instructions -->
+          <div class="arrival-instructions">
+            <h3 class="text-small" style="text-transform: uppercase; margin-bottom: var(--space-1); letter-spacing: 1px;">Arrival</h3>
+            <p class="text-small text-muted">Show your reservation QR code to the restaurant staff when you arrive.</p>
+          </div>
+
+          <footer class="ticket-footer">
+            <p>BiteMap &mdash; Find your next favorite place.</p>
+          </footer>
+        </article>
+
+        <!-- 7. Secondary Actions -->
+        <div class="ticket-actions" role="group" aria-label="Ticket actions">
+          <button type="button" class="btn btn-outline btn-print-ticket" aria-label="Print reservation ticket" style="width: 100%; justify-content: center;">Print Ticket</button>
+          <a href="restaurant.html?id=ramenku" class="btn btn-primary" data-detail="ticket-view-restaurant" style="width: 100%; justify-content: center;">View Restaurant</a>
+          <a href="explore.html" class="btn btn-outline" style="width: 100%; justify-content: center;">Back to Explore</a>
+          <a href="dashboard.html" class="btn btn-ghost" style="width: 100%; justify-content: center;">View My Reservations</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="dashboard.html">My Reservations</a></li>
+            <li><a href="login.html">Sign In</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

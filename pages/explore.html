@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore restaurants on BiteMap — search, filter by category, and discover your next favorite place." />
+  <title>Explore — BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html" aria-current="page">Explore</a></li>
+        <li><a href="login.html">Sign In</a></li>
+        <li><a href="register.html" class="btn btn-primary">Join Free</a></li>
+      </ul>
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- 2: PAGE HEADER -->
+    <section class="page-header" aria-labelledby="explore-heading">
+      <div class="container" style="text-align: center;">
+        <h1 id="explore-heading">Explore restaurants</h1>
+        <p class="text-lead text-muted" style="max-width: 600px; margin: 0 auto;">Discover places based on category, cuisine, mood, or location.</p>
+      </div>
+    </section>
+
+    <!-- 3 & 4 & 5: SEARCH, CATEGORIES, & FILTERS -->
+    <section class="explore-controls" aria-label="Search and filter options" style="padding-top: 0;">
+      <div class="container">
+        
+        <!-- Search UI -->
+        <form class="search-bar" role="search" aria-label="Restaurant search" style="max-width: 800px; margin: 0 auto var(--space-8) auto;">
+          <label for="explore-search" class="visually-hidden">What are you craving?</label>
+          <input
+            type="search"
+            id="explore-search"
+            name="q"
+            class="form-control search-input"
+            placeholder="Search restaurants, cuisines, or places..."
+          />
+          <label for="explore-location" class="visually-hidden">Location</label>
+          <input
+            type="text"
+            id="explore-location"
+            name="loc"
+            class="form-control location-input"
+            placeholder="Current location"
+            value="Jakarta"
+          />
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <!-- Discovery Categories -->
+        <div class="content-rail" style="padding-bottom: var(--space-2); min-height: auto; margin-bottom: var(--space-6);">
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127854;</span> Jajanan</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127835;</span> Local Food</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127836;</span> Asian Food</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127828;</span> Fast Food</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127869;</span> Restaurant</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#9749;</span> Cafe & Coffee</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127865;</span> Drinks</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#127856;</span> Dessert & Bakery</a>
+          <a href="#" class="badge badge-neutral badge-category"><span class="category-icon" aria-hidden="true">&#129367;</span> Healthy Food</a>
+        </div>
+
+        <!-- Filter / Sort Controls -->
+        <div class="filter-bar">
+          <div class="filter-group-ui" aria-label="Filter refinements">
+            <select class="form-control" aria-label="Category filter" style="width: auto;">
+              <option>Category</option>
+              <option>Restaurant</option>
+              <option>Cafe &amp; Coffee</option>
+              <option>Asian Food</option>
+              <option>Local Food</option>
+              <option>Fast Food</option>
+            </select>
+            <select class="form-control" aria-label="Cuisine filter" style="width: auto;">
+              <option>Cuisine</option>
+              <option>Japanese</option>
+            </select>
+            <select class="form-control" aria-label="Distance filter" style="width: auto;">
+              <option>Distance</option>
+              <option>&lt; 1 km</option>
+              <option>&lt; 2 km</option>
+              <option>&lt; 5 km</option>
+              <option>&lt; 10 km</option>
+            </select>
+            <select class="form-control" aria-label="Rating filter" style="width: auto;">
+              <option>Rating</option>
+              <option>4.5+</option>
+              <option>4.0+</option>
+              <option>3.5+</option>
+            </select>
+            <button type="button" class="btn btn-outline" style="border-radius: var(--radius-md);">Open Now</button>
+            <button type="button" id="btn-clear-filters" class="btn btn-ghost" style="border-radius: var(--radius-md); display: none;">Clear filters</button>
+          </div>
+          <div class="filter-group-ui" aria-label="Sorting options">
+            <label for="sort-results" class="text-small text-muted" style="margin-right: var(--space-1);">Sort by:</label>
+            <select id="sort-results" class="form-control" style="width: auto;">
+              <option>Recommended</option>
+              <option>Rating</option>
+              <option>Distance</option>
+              <option>Name</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6 & 7: RESTAURANT RESULTS -->
+    <section class="restaurant-results" aria-labelledby="results-heading">
+      <div class="container">
+        
+        <header class="section-header">
+          <h2 id="results-heading" class="visually-hidden">Restaurant Results</h2>
+          <p id="results-count" class="text-meta text-muted" aria-live="polite">13 restaurants</p>
+        </header>
+
+                        <div class="restaurant-grid">
+          <!-- Cards injected by js/main.js renderRestaurantCards() -->
+        </div>
+
+        <!-- Pagination / Load More -->
+        <div class="load-more-container">
+          <button type="button" class="btn btn-outline">Lihat lebih banyak</button>
+        </div>
+
+        <!-- 8: EMPTY STATE (Visually hidden for demo but preserved functionally in HTML/CSS) -->
+        <div class="empty-state" style="display: none;" aria-hidden="true">
+          <h3 class="empty-state-title">No restaurants found</h3>
+          <p class="empty-state-desc">You can try another search or adjust your filters.</p>
+          <button type="button" class="btn btn-outline" id="btn-reset-filters" style="margin-top: var(--space-4);">Clear all filters</button>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

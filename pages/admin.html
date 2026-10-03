@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BiteMap Restaurant Staff Portal ?" manage your restaurant, menu, and reservations." />
+  <title>Restaurant Dashboard &mdash; BiteMap Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body class="page-admin">
+
+  <!-- ===== ADMIN SHELL ===== -->
+  <div class="admin-layout">
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar" aria-label="Staff navigation">
+      <!-- Sidebar brand / logo mark -->
+      <header class="admin-brand" aria-label="BiteMap Staff Portal">
+        <a href="../index.html" style="text-decoration: none; color: inherit; display: inline-flex; align-items: baseline; gap: var(--space-2);">
+          <span class="logo-text">BITEMAP</span>
+          <span class="admin-label" style="font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); color: var(--color-text-muted);">Staff</span>
+        </a>
+      </header>
+
+      <nav class="admin-nav" aria-label="Staff menu">
+        <ul role="list">
+          <li><a href="#overview" aria-current="page">Overview</a></li>
+          <li><a href="#restaurant">Restaurant</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#tables">Tables</a></li>
+          <li><a href="#reservations">Reservations</a></li>
+          <li><a href="#check-in">Check-in</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Admin Main Area -->
+    <div class="admin-main">
+
+      <!-- Admin Top Bar -->
+      <header class="admin-topbar" style="align-items: flex-start;">
+        <div>
+          <h1 class="admin-page-title" style="font-size: var(--font-size-xl);">Restaurant Dashboard</h1>
+          <p class="text-muted" style="margin-top: var(--space-1);">Manage your restaurant, menu, reservations, and more.</p>
+        </div>
+        <div class="admin-topbar-actions">
+          <a href="login.html" class="btn btn-outline" style="padding-block: var(--space-2);">Log Out</a>
+        </div>
+      </header>
+
+      <!-- Admin Content -->
+      <main class="admin-content" style="display: flex; flex-direction: column; gap: var(--section-space-md);">
+
+        <!-- Restaurant Overview -->
+        <section id="overview" aria-labelledby="overview-heading">
+          <h2 id="overview-heading" class="text-lead" style="margin-bottom: var(--space-4);">Restaurant Overview</h2>
+          <article class="card" style="padding: var(--space-6); display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-4);">
+            <div>
+              <h3 class="text-lead" style="margin-bottom: var(--space-1);">Ramenku</h3>
+              <p class="text-small text-muted" style="margin-bottom: var(--space-4);">Asian Food &middot; Japanese</p>
+              <p class="text-small">Jl. Contoh Kuliner No. 12, Malang</p>
+            </div>
+            <span class="status-confirmed">Active</span>
+          </article>
+        </section>
+
+        <!-- Management Actions -->
+        <section id="management" aria-labelledby="management-heading">
+          <h2 id="management-heading" class="text-lead" style="margin-bottom: var(--space-4);">Management</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-6);">
+            
+            <!-- Profile -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Restaurant Profile</h3>
+                <p class="text-small text-muted">Edit restaurant information, categories, and tags.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Edit Profile</button>
+            </article>
+
+            <!-- Photos -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Photos</h3>
+                <p class="text-small text-muted">Manage restaurant photos and gallery.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Manage Photos</button>
+            </article>
+
+            <!-- Menu -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Menu</h3>
+                <p class="text-small text-muted">Manage menu categories and items.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Manage Menu</button>
+            </article>
+
+            <!-- Opening Hours -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Opening Hours</h3>
+                <p class="text-small text-muted">Update your weekly opening hours.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Edit Hours</button>
+            </article>
+
+            <!-- Tables -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Tables</h3>
+                <p class="text-small text-muted">Manage restaurant tables and layout.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Manage Tables</button>
+            </article>
+
+            <!-- Reservations -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Reservations</h3>
+                <p class="text-small text-muted">View and manage all reservations.</p>
+              </div>
+              <button type="button" class="btn btn-outline" style="align-self: flex-start;">Manage Reservations</button>
+            </article>
+
+            <!-- Check-in -->
+            <article class="card" style="padding: var(--space-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-6);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">Check-in</h3>
+                <p class="text-small text-muted">Check in arriving customers.</p>
+              </div>
+              <button type="button" class="btn btn-primary" style="align-self: flex-start;">Check In</button>
+            </article>
+            
+          </div>
+        </section>
+
+        <!-- Today's Reservations -->
+        <section id="todays-reservations" aria-labelledby="today-heading">
+          <h2 id="today-heading" class="text-lead" style="margin-bottom: var(--space-4);">Today's Reservations</h2>
+          
+          <ul style="display: flex; flex-direction: column; gap: var(--space-4); list-style: none; padding: 0;">
+            
+            <li class="card" style="padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">19:00 &mdash; Ramenku</h3>
+                <p class="text-small text-muted">2 Guests</p>
+              </div>
+              <span class="status-confirmed">Confirmed</span>
+            </li>
+
+            <li class="card" style="padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+              <div>
+                <h3 style="margin-bottom: var(--space-1);">18:30 &mdash; Ramenku</h3>
+                <p class="text-small text-muted">4 Guests</p>
+              </div>
+              <span class="status-confirmed">Confirmed</span>
+            </li>
+            
+          </ul>
+          
+          <!-- Empty State Foundation (Hidden) -->
+          <div class="empty-state" style="display: none;" aria-hidden="true">
+            <h3 class="empty-state-title">No reservations yet.</h3>
+          </div>
+          
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

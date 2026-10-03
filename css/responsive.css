@@ -1,0 +1,298 @@
+/*
+ * ============================================================
+ *  BITEMAP — responsive.css
+ *  Phase 01 / Task 01 / Step 01 — Project Foundation
+ *  Updated:  Step 03 — Shared Navigation & Footer
+ * ============================================================
+ *
+ *  Breakpoint system (mobile-first):
+ *
+ *    xs   — default  (< 480px)    mobile portrait
+ *    sm   — 480px+               mobile landscape
+ *    md   — 768px+               tablet
+ *    lg   — 1024px+              desktop
+ *    xl   — 1280px+              wide desktop
+ *    2xl  — 1536px+              ultra-wide
+ *
+ *  Contents:
+ *    1. Breakpoint Reference
+ *    2. Navigation (mobile menu)
+ *    3. Footer Layout
+ *    4. Auth Layout
+ *    5. Form Rows
+ *    6. Typography Scale Overrides
+ *    7. Container Gutter Overrides
+ * ============================================================
+ */
+
+
+/* ============================================================
+   1. BREAKPOINT REFERENCE (CSS custom properties — read-only)
+   ============================================================ */
+
+:root {
+  --bp-sm:  480px;
+  --bp-md:  768px;
+  --bp-lg:  1024px;
+  --bp-xl:  1280px;
+  --bp-2xl: 1536px;
+}
+
+
+/* ============================================================
+   2. NAVIGATION — MOBILE MENU
+   ============================================================ */
+
+@media (max-width: 767px) {
+
+  /* Show hamburger */
+  .nav-toggle {
+    display: flex;
+  }
+
+  /* Hide desktop nav links — JS will toggle .nav-open class */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-4) var(--container-gutter);
+    z-index: var(--z-overlay);
+  }
+
+  .nav-links.nav-open {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding-block: var(--space-3);
+    font-size: var(--font-size-base);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav-links .btn {
+    margin-top: var(--space-3);
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+/* ============================================================
+   3. FOOTER LAYOUT
+   ============================================================ */
+
+/* Tablet: collapse to 2 columns (brand spans full width above the nav groups) */
+@media (max-width: 1023px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile: single column, stacked */
+@media (max-width: 767px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+}
+
+
+/* ============================================================
+   4. AUTH LAYOUT
+   ============================================================ */
+
+/* Stack vertically on tablet and below */
+@media (max-width: 767px) {
+  .auth-layout {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hide decorative visual panel on mobile */
+  .auth-visual {
+    display: none;
+  }
+
+  .auth-panel {
+    padding: var(--space-8) var(--space-6);
+  }
+}
+
+
+/* ============================================================
+   5. FORM ROWS
+   ============================================================ */
+
+/* Stack two-column form rows on mobile */
+@media (max-width: 479px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ============================================================
+   6. TYPOGRAPHY SCALE OVERRIDES
+   ============================================================ */
+
+/* Scale down large headings on small screens */
+@media (max-width: 1023px) {
+  h1, .text-display {
+    font-size: var(--font-size-3xl);
+  }
+  h2 {
+    font-size: calc(var(--font-size-2xl) * 0.9);
+  }
+}
+
+@media (max-width: 767px) {
+  h1, .text-display {
+    font-size: var(--font-size-2xl);
+  }
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media (max-width: 479px) {
+  h1, .text-display {
+    font-size: calc(var(--font-size-2xl) * 0.85); /* Slightly smaller than 2xl */
+  }
+}
+
+
+/* ============================================================
+   6. CONTAINER GUTTER OVERRIDES
+   ============================================================ */
+
+@media (max-width: 479px) {
+  :root {
+    --container-gutter: var(--space-4);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --container-gutter: var(--space-8);
+  }
+}
+
+/* ============================================================
+   8. LAYOUT & SPACING OVERRIDES (Task 02 Step 03)
+   ============================================================ */
+
+/* Tablet: Stack complex layouts */
+@media (max-width: 1023px) {
+  .dashboard-layout,
+  .reservation-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+}
+
+/* Mobile: Reduce global section spacing */
+@media (max-width: 767px) {
+  :root {
+    --section-space-sm: var(--space-6);
+    --section-space-md: var(--space-8);
+    --section-space-lg: var(--space-10);
+    --section-space-xl: var(--space-12);
+  }
+  
+  .restaurant-grid,
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+/* --- COMPONENT & PAGE OVERRIDES (Task 02 Step 05) --- */
+
+/* Tablet (=1023px) */
+@media (max-width: 1023px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+  .admin-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+/* Mobile (=767px) */
+@media (max-width: 767px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-8);
+    padding-block: var(--section-space-md);
+  }
+  
+  .hero-visual {
+    order: -1; /* Move image above text on mobile for better hierarchy */
+  }
+  
+  .search-bar {
+    justify-content: center;
+  }
+  
+  .restaurant-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .restaurant-actions {
+    width: 100%;
+  }
+  
+  .restaurant-actions .btn {
+    flex: 1; /* Make buttons share width evenly */
+    justify-content: center;
+  }
+  
+  .admin-content {
+    padding: var(--space-4) var(--container-gutter);
+  }
+}
+
+/* Small Mobile (=479px) */
+@media (max-width: 479px) {
+  .search-bar {
+    flex-direction: column;
+  }
+  .search-bar .btn {
+    width: 100%;
+  }
+  
+  .restaurant-actions {
+    flex-direction: column;
+  }
+  .restaurant-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 479px) {
+  .ticket-details {
+    grid-template-columns: 1fr; /* Stack ticket details on small mobile */
+  }
+}

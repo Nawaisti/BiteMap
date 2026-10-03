@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Your BiteMap dashboard — manage your reservations, favorites, and account." />
+  <title>My Dashboard — BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="dashboard.html" aria-current="page">My Account</a></li>
+        <li><a href="login.html" class="btn btn-primary">Sign In</a></li>
+      </ul>
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <div class="container dashboard-page-layout">
+
+      <!-- 2. Dashboard Header -->
+      <section class="dashboard-header" aria-labelledby="dashboard-heading">
+        <h1 id="dashboard-heading">My BiteMap</h1>
+        <p class="text-lead text-muted" style="margin-top: var(--space-2);">Keep track of your reservations and favorite places.</p>
+        <p class="text-lead" style="margin-top: var(--space-4); font-weight: var(--font-weight-medium);">Hi, Alex</p>
+      </section>
+
+      <!-- 3. Upcoming Reservation -->
+      <section class="dashboard-section" aria-labelledby="upcoming-heading">
+        <header class="dashboard-section-header">
+          <h2 id="upcoming-heading" class="text-lead">Upcoming Reservation</h2>
+        </header>
+        
+        <article class="card upcoming-reservation-card" aria-label="Upcoming reservation at Ramenku" data-restaurant-id="ramenku" data-detail="upcoming-card">
+          <div style="flex: 1; min-width: 280px;">
+            <h3 class="text-lead" style="margin-bottom: var(--space-1);" data-detail="upcoming-name">Ramenku</h3>
+            <p class="text-small text-muted" data-detail="upcoming-category">Asian Food &middot; Japanese</p>
+            
+            <dl class="summary-details">
+              <div>
+                <dt>Date</dt>
+                <dd>Saturday, October 3, 2026</dd>
+              </div>
+              <div>
+                <dt>Time</dt>
+                <dd>19:00</dd>
+              </div>
+              <div>
+                <dt>Guests</dt>
+                <dd>2 Guests</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd class="status-confirmed">Confirmed</dd>
+              </div>
+            </dl>
+          </div>
+          <div>
+            <a href="reservation-ticket.html" class="btn btn-primary">View Reservation</a>
+          </div>
+        </article>
+      </section>
+
+      <!-- 4. Reservation History -->
+      <section class="dashboard-section" aria-labelledby="history-heading">
+        <header class="dashboard-section-header">
+          <h2 id="history-heading" class="text-lead">Reservation History</h2>
+        </header>
+        
+        <ul class="history-list" aria-label="Past reservations" data-detail="history-list">
+          <li class="card history-item" data-restaurant-id="kopi-senja">
+            <div>
+              <h3 style="margin-bottom: var(--space-1);" data-detail="history-name">Kopi Senja</h3>
+              <p class="text-small text-muted"><span data-detail="history-category">Cafe & Coffee</span> &middot; September 20, 2026 &middot; 2 Guests</p>
+            </div>
+            <span class="badge badge-neutral">Completed</span>
+          </li>
+          <li class="card history-item" data-restaurant-id="warung-nusa">
+            <div>
+              <h3 style="margin-bottom: var(--space-1);" data-detail="history-name">Warung Nusa</h3>
+              <p class="text-small text-muted"><span data-detail="history-category">Local Food</span> &middot; September 12, 2026 &middot; 4 Guests</p>
+            </div>
+            <span class="badge badge-neutral">Completed</span>
+          </li>
+        </ul>
+        <div class="empty-state" data-detail="history-empty" style="display: none;" aria-hidden="true">
+          <h3 class="empty-state-title">No reservation history yet.</h3>
+        </div>
+      </section>
+
+      <!-- 5. Favorites -->
+      <section class="dashboard-section" aria-labelledby="favorites-heading">
+        <header class="dashboard-section-header">
+          <h2 id="favorites-heading" class="text-lead">Favorites</h2>
+        </header>
+        
+        <div class="restaurant-grid" data-detail="dashboard-favorites-grid">
+          <!-- Favorite cards rendered from canonical data by initDashboard() -->
+        </div>
+
+        <div class="empty-state" data-detail="dashboard-favorites-empty" style="display: none;" aria-hidden="true">
+          <h3 class="empty-state-title">No saved restaurants yet.</h3>
+          <p class="empty-state-desc">Save restaurants you want to visit later.</p>
+          <a href="explore.html" class="btn btn-outline" style="margin-top: var(--space-4);">Explore restaurants</a>
+        </div>
+      </section>
+
+      <!-- 6. Profile Summary -->
+      <section class="dashboard-section" aria-labelledby="profile-heading">
+        <header class="dashboard-section-header">
+          <h2 id="profile-heading" class="text-lead">Profile Summary</h2>
+        </header>
+        
+        <article class="card profile-summary-card" aria-label="Your profile information">
+          <dl class="summary-details">
+            <dt>Name</dt>
+            <dd>Alex</dd>
+            <dt>Email</dt>
+            <dd>alex@example.com</dd>
+            <dt>Phone</dt>
+            <dd>081234567890</dd>
+          </dl>
+          <div style="margin-top: var(--space-6);">
+            <button type="button" class="btn btn-outline">Edit Profile</button>
+          </div>
+        </article>
+      </section>
+
+      <!-- 7. Empty States (Hidden foundation for completeness) -->
+      <div class="empty-state" data-detail="upcoming-empty" style="display: none;" aria-hidden="true">
+        <h3 class="empty-state-title">No upcoming reservations</h3>
+        <p class="empty-state-desc">Explore restaurants and reserve your next table.</p>
+        <a href="explore.html" class="btn btn-primary" style="margin-top: var(--space-4);">Explore Restaurants</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="dashboard.html">My Reservations</a></li>
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

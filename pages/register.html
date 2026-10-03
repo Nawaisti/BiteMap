@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create a BiteMap account to manage your reservations and favorites." />
+  <title>Register &mdash; BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="dashboard.html">My Account</a></li>
+      </ul>
+
+      <!-- Mobile menu toggle -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+    <div class="container customer-auth-layout">
+      
+      <section class="customer-auth-card" aria-labelledby="register-heading">
+        
+        <header class="customer-auth-header">
+          <h1 id="register-heading">CREATE YOUR BITEMAP ACCOUNT</h1>
+          <p class="text-muted">Create an account to manage your reservations and favorites.</p>
+        </header>
+
+        <form class="auth-form" method="post" action="#" novalidate aria-label="Customer register form">
+          
+          <div class="form-group" style="margin-bottom: var(--space-4);">
+            <label for="full-name">Full Name</label>
+            <input
+              type="text"
+              id="full-name"
+              name="full_name"
+              class="form-control"
+              autocomplete="name"
+              placeholder="Your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group" style="margin-bottom: var(--space-4);">
+            <label for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-control"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <!-- Password fields -->
+          <fieldset class="form-fieldset" style="padding: 0; margin: 0; border: none;">
+            <legend class="visually-hidden">Password creation</legend>
+
+            <div class="form-group" style="margin-bottom: var(--space-4);">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-control"
+                autocomplete="new-password"
+                placeholder="Create a password"
+                required
+              />
+            </div>
+
+            <div class="form-group" style="margin-bottom: var(--space-4);">
+              <label for="password-confirm">Confirm Password</label>
+              <input
+                type="password"
+                id="password-confirm"
+                name="password_confirmation"
+                class="form-control"
+                autocomplete="new-password"
+                placeholder="Repeat your password"
+                required
+              />
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-4);">Create Account</button>
+        </form>
+
+        <footer class="customer-auth-footer">
+          <p>Already have an account? <a href="login.html">Log in</a></p>
+        </footer>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Reserve a table at your chosen restaurant on BiteMap." />
+  <title>Make a Reservation — BiteMap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="explore.html">Explore</a></li>
+        <li><a href="login.html">Sign In</a></li>
+        <li><a href="register.html" class="btn btn-primary">Join Free</a></li>
+      </ul>
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- Reservation Header -->
+    <section class="page-header" aria-labelledby="reservation-heading" style="padding-bottom: 0;">
+      <div class="container">
+        <h1 id="reservation-heading">Reserve a Table</h1>
+        <p class="text-lead text-muted">Complete your booking details below.</p>
+      </div>
+    </section>
+
+    <!-- Reservation Flow -->
+    <section class="reservation-flow" aria-label="Reservation details">
+      <div class="container reservation-layout">
+        
+        <!-- Form Panel -->
+        <div class="reservation-form-panel">
+          
+          <!-- Visual Stepper -->
+          <div class="reservation-stepper" aria-label="Reservation progress">
+            <div class="step-item active" aria-current="step">
+              <span class="step-number">1</span> DATE
+            </div>
+            <div class="step-item">
+              <span class="step-number">2</span> TIME
+            </div>
+            <div class="step-item">
+              <span class="step-number">3</span> TABLE
+            </div>
+            <div class="step-item">
+              <span class="step-number">4</span> CONFIRM
+            </div>
+          </div>
+
+          <form class="reservation-form" method="post" novalidate aria-label="Reservation form">
+            
+            <div class="form-group">
+              <label for="res-date">Date</label>
+              <input type="date" id="res-date" name="date" class="form-control" required />
+            </div>
+
+            <!-- Time and guest count are related booking details -->
+            <fieldset class="form-fieldset form-row">
+              <legend class="visually-hidden">Booking details</legend>
+              <div class="form-group">
+                <label for="res-time">Time</label>
+                <input type="time" id="res-time" name="time" class="form-control" required />
+              </div>
+              <div class="empty-state" style="display: none;" aria-hidden="true">
+                <p class="empty-state-desc">No available times.</p>
+              </div>
+              <div class="form-group">
+                <label for="res-guests">Guests</label>
+                <select id="res-guests" name="guests" class="form-control" required>
+                  <option value="">Select</option>
+                  <option value="1">1 Guest</option>
+                  <option value="2">2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                  <option value="5">5 Guests</option>
+                  <option value="6">6 Guests</option>
+                  <option value="7+">7+ Guests</option>
+                </select>
+              </div>
+              <div class="empty-state" style="display: none;" aria-hidden="true">
+                <p class="empty-state-desc">No available tables.</p>
+              </div>
+            </fieldset>
+
+            <div class="form-group">
+              <label for="res-name">Full name</label>
+              <input
+                type="text"
+                id="res-name"
+                name="name"
+                class="form-control"
+                autocomplete="name"
+                placeholder="Your full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="res-phone">Phone number</label>
+              <input
+                type="tel"
+                id="res-phone"
+                name="phone"
+                class="form-control"
+                autocomplete="tel"
+                placeholder="+62 ..."
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="res-notes">Special requests <span class="text-small text-muted">(optional)</span></label>
+              <textarea
+                id="res-notes"
+                name="notes"
+                class="form-control"
+                rows="4"
+                placeholder="Dietary requirements, seating preferences, celebrations..."
+              ></textarea>
+            </div>
+
+            <p class="text-small text-muted" style="margin-top: var(--space-4); text-align: center;">Table seating is assigned upon arrival. Confirmation generates a digital check-in ticket.</p>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-4);">Confirm Reservation</button>
+          </form>
+        </div>
+
+        <!-- Summary Panel -->
+        <aside class="reservation-summary" aria-label="Reservation summary">
+          <div class="card" style="padding: var(--space-6);">
+            <div class="summary-restaurant-image" aria-hidden="true" role="img" aria-label="Ramenku exterior" data-detail="summary-image">
+              <!-- Restaurant thumbnail placeholder -->
+            </div>
+            <h2 class="text-lead" style="margin-bottom: var(--space-1);" data-detail="summary-name">Ramenku</h2>
+            <p class="text-small text-muted" data-detail="summary-category">Asian Food &middot; Japanese &middot; <span class="rating-icon" aria-hidden="true">&#9733;</span> 4.8 &bull; 1.2 km</p>
+            
+            <dl class="summary-details">
+              <dt>Restaurant</dt>
+              <dd data-detail="summary-restaurant">Ramenku</dd>
+              <dt>Date</dt>
+              <dd data-detail="summary-date">Select a date</dd>
+              <dt>Time</dt>
+              <dd data-detail="summary-time">Select a time</dd>
+              <dt>Guests</dt>
+              <dd data-detail="summary-guests">Select guests</dd>
+              <dt data-detail="summary-name-label" style="display: none;">Guest</dt>
+              <dd data-detail="summary-guest-name" style="display: none;">—</dd>
+              <dt data-detail="summary-contact-label" style="display: none;">Contact</dt>
+              <dd data-detail="summary-guest-contact" style="display: none;">—</dd>
+            </dl>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="login.html">Sign In</a></li>
+            <li><a href="register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>

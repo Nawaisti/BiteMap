@@ -1,0 +1,1568 @@
+/*
+ * ============================================================
+ *  BITEMAP — style.css
+ *  Phase 01 / Task 01 / Step 01 — Project Foundation
+ *  Updated:  Step 03 — Shared Navigation & Footer
+ * ============================================================
+ *
+ *  Contents:
+ *    1. CSS Custom Properties (Design Tokens)
+ *    2. Reset & Base
+ *    3. Typography
+ *    4. Layout Utilities
+ *    5. Buttons  (structure only)
+ *    6. Forms    (structure only)
+ *    7. Header & Navigation
+ *    8. Footer
+ *    9. Auth Layout
+ *   10. Utility Classes
+ * ============================================================
+ */
+
+
+/* ============================================================
+   1. CSS CUSTOM PROPERTIES — DESIGN TOKENS
+   ============================================================ */
+
+:root {
+  /* --- Base Brand Palette (Locked) --- */
+  --color-cream:      #F7F3EA;
+  --color-dark:       #24211D;
+  --color-terracotta: #C85C3A;
+  --color-green:      #6F8064;
+  --color-white:      #FFFFFF;
+
+  /* --- Semantic Color System --- */
+  --color-background:     var(--color-cream);
+  --color-surface:        var(--color-white);
+  --color-surface-muted:  rgba(36, 33, 29, 0.04);
+  
+  --color-text:           var(--color-dark);
+  --color-text-muted:     rgba(36, 33, 29, 0.65);
+  
+  --color-primary:        var(--color-terracotta);
+  --color-primary-hover:  #B25132; /* Slightly darkened terracotta for hover state */
+  --color-primary-soft:   rgba(200, 92, 58, 0.1);
+  
+  --color-secondary:      var(--color-green);
+  
+  --color-success:        var(--color-green);
+  --color-success-soft:   rgba(111, 128, 100, 0.1);
+  
+  --color-border:         rgba(36, 33, 29, 0.15);
+
+  /* --- Typography --- */
+  --font-family-base: 'Poppins', sans-serif;
+
+  --font-size-xs:   0.75rem;   /*  12px */
+  --font-size-sm:   0.875rem;  /*  14px */
+  --font-size-base: 1rem;      /*  16px */
+  --font-size-md:   1.125rem;  /*  18px */
+  --font-size-lg:   1.25rem;   /*  20px */
+  --font-size-xl:   1.5rem;    /*  24px */
+  --font-size-2xl:  2rem;      /*  32px */
+  --font-size-3xl:  2.5rem;    /*  40px */
+  --font-size-4xl:  3rem;      /*  48px */
+  --font-size-5xl:  3.75rem;   /*  60px */
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold:600;
+  --font-weight-bold:    700;
+
+  --line-height-tight:  1.2;
+  --line-height-snug:   1.4;
+  --line-height-normal: 1.6;
+  --line-height-loose:  1.8;
+
+  /* --- Spacing Scale --- */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+
+  /* --- Section Spacing --- */
+  --section-space-sm: var(--space-8);
+  --section-space-md: var(--space-12);
+  --section-space-lg: var(--space-16);
+  --section-space-xl: var(--space-20);
+
+  /* --- Border Radius --- */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;   /* primary brand radius */
+  --radius-xl:   28px;
+  --radius-full: 9999px;
+
+  /* --- Shadows --- */
+  --shadow-sm:  0 1px 3px rgba(36, 33, 29, 0.08);
+  --shadow-md:  0 4px 16px rgba(36, 33, 29, 0.10);
+  --shadow-lg:  0 8px 32px rgba(36, 33, 29, 0.12);
+  --shadow-xl:  0 16px 48px rgba(36, 33, 29, 0.16);
+
+  /* --- Transitions --- */
+  --transition-fast:   150ms ease;
+  --transition-base:   250ms ease;
+  --transition-slow:   400ms ease;
+
+  /* --- Z-index Scale --- */
+  --z-below:   -1;
+  --z-base:     0;
+  --z-raised:  10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-toast:   300;
+
+  /* --- Layout --- */
+  --container-max:    1200px;
+  --container-gutter: var(--space-6);
+
+  /* --- Navigation --- */
+  --nav-height: 72px;
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--line-height-tight);
+  font-weight: var(--font-weight-semibold);
+}
+
+
+/* ============================================================
+   3. TYPOGRAPHY
+   ============================================================ */
+
+/* Headings */
+h1, .text-display {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+h5 {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Body Text */
+p {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  margin-bottom: 1em;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+/* Small / Metadata / Captions */
+small, .text-small {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+}
+
+.text-meta {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+.text-caption {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+/* Supporting Text */
+.text-lead {
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-loose);
+  color: var(--color-text);
+}
+
+
+/* ============================================================
+   4. LAYOUT UTILITIES
+   ============================================================ */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip-to-content link — keyboard accessibility shortcut */
+.skip-to-content {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-4);
+  z-index: var(--z-modal);
+  padding: var(--space-3) var(--space-6);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  /* Hidden off-screen until focused */
+  transform: translateY(-200%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
+  outline: 3px solid var(--color-dark);
+  outline-offset: 2px;
+}
+
+
+/* ============================================================
+   5. BUTTONS
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-6);
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--transition-base),
+              color var(--transition-base),
+              border-color var(--transition-base),
+              box-shadow var(--transition-base);
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Primary button — filled terracotta */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  /* Hover style to be refined in design step */
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+/* Outline button */
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+/* Ghost button — minimal */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: transparent;
+  padding-inline: var(--space-2);
+}
+
+/* Full-width modifier */
+.btn-block {
+  width: 100%;
+}
+
+
+/* ============================================================
+   6. FORMS
+   ============================================================ */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-group label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.form-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.optional {
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-regular);
+}
+
+.link-muted {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+
+/* ============================================================
+   7. HEADER & NAVIGATION
+   ============================================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-overlay);
+  height: var(--nav-height);
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+  gap: var(--space-8);
+}
+
+.nav-logo {
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.nav-links a {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  transition: color var(--transition-fast);
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="page"] {
+  color: var(--color-primary);
+}
+
+/* Hamburger toggle — visible on mobile only */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--space-2);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-text);
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+
+/* ============================================================
+   8. FOOTER
+   ============================================================ */
+
+.site-footer {
+  background-color: var(--color-dark);
+  color: var(--color-cream);
+  padding-block: var(--space-12) var(--space-8);
+}
+
+/* Multi-column footer layout: brand | discover links | account links */
+.footer-inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--space-10);
+  align-items: start;
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid rgba(247, 243, 234, 0.1);
+}
+
+/* Brand column */
+.footer-brand .footer-logo {
+  display: inline-block;
+  margin-bottom: var(--space-3);
+}
+
+.footer-brand .logo-text {
+  color: var(--color-cream);
+}
+
+.footer-brand p {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-loose);
+  opacity: 0.6;
+  max-width: 24ch;
+}
+
+/* Navigation groups */
+.footer-nav-group h3 {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin-bottom: var(--space-4);
+}
+
+.footer-nav-group ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.footer-nav-group a {
+  font-size: var(--font-size-sm);
+  opacity: 0.65;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+.footer-nav-group a:hover,
+.footer-nav-group a:focus-visible {
+  opacity: 1;
+  color: var(--color-cream);
+}
+
+/* Bottom bar: copyright */
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+}
+
+.footer-copy {
+  font-size: var(--font-size-xs);
+  opacity: 0.4;
+}
+
+
+/* ============================================================
+   9. AUTH LAYOUT
+   ============================================================ */
+
+.page-auth body,
+body.page-auth {
+  background-color: var(--color-cream);
+}
+
+.auth-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+
+.auth-visual {
+  background-color: var(--color-dark);
+  position: relative;
+  overflow: hidden;
+  /* Background image to be applied in design step */
+}
+
+.auth-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-8);
+}
+
+.auth-panel-inner {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.auth-logo {
+  display: inline-block;
+  margin-bottom: var(--space-2);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-switch,
+.auth-guest {
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.auth-switch a {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+
+/* ============================================================
+   10. UTILITY CLASSES
+   ============================================================ */
+
+.text-center  { text-align: center; }
+.text-muted   { color: var(--color-text-muted); }
+.text-primary { color: var(--color-primary); }
+.text-white   { color: var(--color-white); }
+
+.mt-auto { margin-top: auto; }
+.w-full  { width: 100%; }
+
+/* ============================================================
+   11. CONTENT RAILS  (Step 04 — structural scaffolding)
+   ============================================================ */
+
+/*
+ * .section-rail   — wrapper for a homepage discovery rail
+ * .section-header — rail title + "view all" link row
+ * .content-rail   — scrollable card row (visual scroll added in Task 02)
+ * .section-link   — "View all" affordance
+ */
+
+.section-rail {
+  padding-block: var(--section-space-md);
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.section-header h2 {
+  margin-bottom: var(--space-1);
+}
+
+.section-header p {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.section-link {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.section-link:hover {
+  opacity: 0.75;
+}
+
+/* Card row — horizontal layout; overflow and scroll styling in Task 02 */
+.content-rail {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  /* Prevent layout collapse when empty — cards come in Phase 02 */
+  min-height: var(--space-12);
+}
+
+/* ============================================================
+   12. STRUCTURAL LAYOUTS (Task 02 Step 03)
+   ============================================================ */
+
+/* Base Page Padding */
+.page-header,
+.dashboard-header,
+.reservation-header {
+  padding-block: var(--section-space-md);
+}
+
+/* Section Spacing */
+.about, .gallery, .menu, .location, .hours,
+.explore-controls, .restaurant-results {
+  padding-block: var(--section-space-md);
+}
+
+/* Content Grids */
+.restaurant-grid,
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-6);
+}
+
+/* Form Layouts */
+.reservation-form,
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Two-Column / Complex Layouts */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: var(--space-10);
+  padding-block: var(--section-space-md);
+}
+
+.dashboard-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.dashboard-nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-space-lg);
+}
+
+.reservation-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--space-10);
+  padding-block: var(--section-space-md);
+}
+
+.restaurant-tabs {
+  margin-top: var(--space-6);
+}
+
+.restaurant-tabs ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+/* ============================================================
+   13. COMPONENT FOUNDATIONS (Task 02 Step 04)
+   ============================================================ */
+
+/* Accessible Focus Ring */
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible,
+.form-control:focus-visible, input[type="text"]:focus-visible, input[type="email"]:focus-visible, input[type="password"]:focus-visible, input[type="number"]:focus-visible, input[type="date"]:focus-visible, input[type="time"]:focus-visible, input[type="search"]:focus-visible, input[type="tel"]:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* --- BUTTON EXTENSIONS --- */
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-text);
+}
+
+.btn-danger {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-danger:hover:not(:disabled) {
+  background-color: var(--color-primary-soft);
+}
+
+/* --- FAVORITE BUTTON --- */
+.btn-favorite {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  z-index: var(--z-raised);
+}
+.btn-favorite:hover {
+  transform: scale(1.05);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+.btn-favorite.is-active {
+  color: var(--color-primary);
+}
+.btn-favorite:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* --- RESTAURANT CARD --- */
+.restaurant-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+.restaurant-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.restaurant-card-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-surface-muted); /* Placeholder behavior */
+  object-fit: cover;
+}
+
+.restaurant-card-content {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* --- GENERIC CARD --- */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- BADGES / PILLS --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.badge-neutral {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text);
+}
+.badge-success {
+  background-color: var(--color-success-soft);
+  color: var(--color-success);
+}
+.badge-primary {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+/* --- STATUS INDICATORS --- */
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+.status-indicator::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+.status-available::before { background-color: var(--color-success); }
+.status-closed::before { background-color: var(--color-text-muted); }
+
+/* --- EMPTY STATE --- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-16) var(--space-4);
+  gap: var(--space-4);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--color-border);
+}
+.empty-state-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+.empty-state-desc {
+  color: var(--color-text-muted);
+  max-width: 400px;
+}
+
+/* --- FORM CONTROLS & VALIDATION --- */
+.form-control, input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="time"], input[type="search"], input[type="tel"], textarea, select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.form-control:disabled, input:disabled, textarea:disabled, select:disabled {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* Validation States */
+.is-error {
+  border-color: var(--color-primary) !important;
+}
+.is-success {
+  border-color: var(--color-success) !important;
+}
+
+::placeholder {
+  color: var(--color-text-muted);
+}
+/* --- PAGE / COMPONENT LAYOUTS --- */
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: var(--space-10);
+  padding-block: var(--section-space-xl);
+}
+
+.search-bar {
+  display: flex;
+  gap: var(--space-2);
+  width: 100%;
+  margin-top: var(--space-6);
+}
+
+.restaurant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.restaurant-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  padding: var(--space-6);
+  border-right: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.admin-content {
+  padding: var(--space-6) var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-space-lg);
+}
+
+.admin-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 600px; /* Forces scroll on mobile to prevent squishing */
+  border-collapse: collapse;
+}
+
+
+
+/* Reservation Ticket Layout */
+.ticket-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  padding-block: var(--section-space-lg);
+  text-align: center;
+}
+
+article.reservation-ticket {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 480px;
+  text-align: left;
+}
+
+.ticket-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.ticket-restaurant {
+  display: flex;
+  gap: var(--space-4);
+  align-items: center;
+  margin-bottom: var(--space-6);
+}
+
+.ticket-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+.ticket-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  width: 100%;
+  max-width: 320px;
+}
+
+/* Content rail card constraints */
+.content-rail .restaurant-card {
+  min-width: 280px;
+  flex-shrink: 0;
+}
+
+/* Category Discovery Pills */
+.discovery-categories {
+  padding-block: var(--section-space-sm);
+}
+.discovery-categories .content-rail {
+  padding-bottom: var(--space-2);
+  min-height: auto;
+}
+.badge-category {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.card-link-wrapper {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.section-cta {
+  padding-block: var(--section-space-xl);
+  text-align: center;
+}
+.cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+.cta-text {
+  max-width: 500px;
+}
+
+.search-input { flex: 2; }
+.location-input { flex: 1; }
+
+/* --- EXPLORE FILTER CONTROLS --- */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+}
+.filter-group-ui {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--section-space-lg);
+}
+
+/* --- RESTAURANT DETAIL SPECIFIC --- */
+.restaurant-hero-image {
+  width: 100%;
+  height: 400px;
+  background-color: var(--color-surface-muted);
+  margin-bottom: var(--space-8);
+}
+.restaurant-tabs {
+  margin-top: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+.restaurant-tabs ul {
+  display: flex;
+  gap: var(--space-6);
+  padding-bottom: var(--space-4);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.restaurant-tabs a {
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-muted);
+}
+.restaurant-tabs a:hover {
+  color: var(--color-text);
+}
+.menu-section {
+  margin-bottom: var(--space-8);
+}
+.menu-section-title {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+  gap: var(--space-4);
+}
+.menu-item-info {
+  flex: 1;
+}
+.menu-item-price {
+  font-weight: var(--font-weight-medium);
+}
+.hours-list {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+}
+.hours-row.hours-today {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+.hours-status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  vertical-align: middle;
+}
+.location-map {
+  width: 100%;
+  height: 320px;
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.location-address {
+  font-style: normal;
+}
+.gallery-image-wrapper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-lg);
+}
+
+.location-hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-10);
+}
+.location-hours-wrapper {
+  background-color: var(--color-surface);
+  padding-block: var(--section-space-lg);
+  border-top: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+}
+
+/* --- RESERVATION STEPPER --- */
+.reservation-stepper {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-4);
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+.step-item.active {
+  color: var(--color-text);
+}
+.step-item[aria-current="step"] {
+  color: var(--color-primary);
+}
+.step-item .step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-muted);
+  font-size: var(--font-size-xs);
+}
+.step-item.active .step-number {
+  background-color: var(--color-text);
+  color: var(--color-surface);
+}
+.step-item[aria-current="step"] .step-number {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* --- RESERVATION SUMMARY --- */
+.summary-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.summary-details dt {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+.summary-details dd {
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+  padding-bottom: var(--space-2);
+}
+.summary-details dd:last-child {
+  border-bottom: none;
+}
+.summary-restaurant-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+/* --- RESERVATION TICKET REFINEMENTS --- */
+.ticket-confirmation-message {
+  text-align: center;
+  max-width: 600px;
+  margin-inline: auto;
+}
+.ticket-confirmation-message h1 {
+  margin-bottom: var(--space-2);
+}
+.status-confirmed {
+  color: var(--color-success);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.ticket-divider {
+  border-bottom: 2px dashed var(--color-border-light, rgba(36,33,29,0.08));
+  margin-block: var(--space-6);
+}
+.ticket-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block: var(--space-8);
+  text-align: center;
+}
+.qr-placeholder {
+  width: 160px;
+  height: 160px;
+  background-color: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-muted);
+  letter-spacing: 2px;
+}
+.ticket-footer {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-6);
+}
+.arrival-instructions {
+  background-color: var(--color-surface-muted);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+  max-width: 480px;
+  margin-inline: auto;
+  margin-top: var(--space-4);
+}
+
+/* --- CUSTOMER DASHBOARD --- */
+.dashboard-page-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--section-space-lg);
+  padding-block: var(--section-space-md);
+  max-width: 1000px;
+  margin-inline: auto;
+}
+.dashboard-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+.dashboard-section-header {
+  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
+  padding-bottom: var(--space-2);
+}
+.upcoming-reservation-card {
+  padding: var(--space-6);
+  border: 2px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+.upcoming-reservation-card .summary-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+.upcoming-reservation-card .summary-details div {
+  margin-bottom: 0;
+}
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+}
+.history-item {
+  padding: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.profile-summary-card {
+  padding: var(--space-6);
+  max-width: 600px;
+}
+.profile-summary-card .summary-details {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  gap: var(--space-2);
+}
+.profile-summary-card .summary-details dd {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* --- STAFF AUTH LAYOUT --- */
+.customer-auth-layout {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--section-space-xl);
+}
+.customer-auth-card {
+  width: 100%;
+  max-width: 480px;
+  padding: var(--space-8);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+.customer-auth-header {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+.customer-auth-header h1 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-2);
+}
+.customer-auth-footer {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+/* --- GALLERY LIGHTBOX --- */
+.gallery-lightbox {
+  margin: auto;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  width: 100%;
+  max-width: 900px;
+  overflow: visible;
+}
+.gallery-lightbox::backdrop {
+  background-color: rgba(36, 33, 29, 0.85); /* var(--color-dark) with opacity */
+  backdrop-filter: blur(4px);
+}
+.lightbox-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  align-items: center;
+}
+.lightbox-close {
+  align-self: flex-end;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+#lightbox-image-container {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+/* --- PRINT STYLES --- */
+@media print {
+  body.page-ticket {
+    background: var(--color-white);
+  }
+  .page-ticket .site-header,
+  .page-ticket .ticket-actions,
+  .page-ticket .ticket-confirmation-message {
+    display: none !important;
+  }
+  .page-ticket .reservation-ticket {
+    box-shadow: none;
+    border: 2px solid var(--color-border);
+    margin: 0;
+  }
+}

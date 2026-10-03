@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BiteMap — Find your next favorite place. Discover, explore, and reserve at the best restaurants near you." />
+  <title>BiteMap — Find your next favorite place.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Skip to main content — keyboard accessibility -->
+  <a class="skip-to-content" href="#main-content">Skip to content</a>
+
+  <!-- ===== SITE HEADER ===== -->
+  <header class="site-header">
+    <nav class="nav-primary" aria-label="Primary navigation">
+      <a href="index.html" class="nav-logo" aria-label="BiteMap home">
+        <span class="logo-text">BITEMAP</span>
+      </a>
+
+      <ul class="nav-links" id="nav-links" role="list">
+        <li><a href="pages/explore.html">Explore</a></li>
+        <li><a href="pages/login.html">Sign In</a></li>
+        <li><a href="pages/register.html" class="btn btn-primary">Join Free</a></li>
+      </ul>
+
+      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="nav-links"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="main-content">
+
+    <!-- 1 & 2: HERO -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container hero-inner">
+        <div class="hero-content">
+          <h1 id="hero-heading">What are you craving?</h1>
+          <p class="hero-subtitle text-lead text-muted">Discover the best places to eat, drink, and gather around you.</p>
+
+          <form action="pages/explore.html" class="search-bar" role="search" aria-label="Restaurant discovery search">
+            <label for="hero-search" class="visually-hidden">What are you craving?</label>
+            <input
+              type="search"
+              id="hero-search"
+              name="q"
+              class="form-control search-input" placeholder="Sushi, coffee, pasta..."
+            />
+            <label for="hero-location" class="visually-hidden">Location</label>
+            <input
+              type="text"
+              id="hero-location"
+              name="loc"
+              class="form-control"
+              placeholder="Current location"
+              value="Jakarta"
+              class="form-control location-input"
+            />
+            <button type="submit" class="btn btn-primary">Discover</button>
+          </form>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <!-- Placeholder for large editorial hero presence -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 3: DISCOVERY CATEGORIES -->
+    <section class="discovery-categories" aria-label="Browse by category">
+      <div class="container">
+        <div class="content-rail">
+          <a href="pages/explore.html?category=Jajanan" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127854;</span> Jajanan</a>
+          <a href="pages/explore.html?category=Local%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127835;</span> Local Food</a>
+          <a href="pages/explore.html?category=Asian%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127836;</span> Asian Food</a>
+          <a href="pages/explore.html?category=Fast%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127828;</span> Fast Food</a>
+          <a href="pages/explore.html?category=Restaurant" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127869;</span> Restaurant</a>
+          <a href="pages/explore.html?category=Cafe%20%26%20Coffee" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#9749;</span> Cafe &amp; Coffee</a>
+          <a href="pages/explore.html?category=Drinks" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127865;</span> Drinks</a>
+          <a href="pages/explore.html?category=Dessert%20%26%20Bakery" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127856;</span> Dessert &amp; Bakery</a>
+          <a href="pages/explore.html?category=Healthy%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#129367;</span> Healthy Food</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4: POPULAR NEAR YOU -->
+    <section class="section-rail" aria-labelledby="popular-heading">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <h2 id="popular-heading">Popular Near You</h2>
+            <p id="popular-subtitle">Restaurants people are loving right now.</p>
+          </div>
+          <div class="section-actions" style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="btn-nearby-location" aria-label="Find restaurants near me" style="padding: var(--space-2) var(--space-4); font-size: var(--font-size-sm);">
+              <span aria-hidden="true">&#9678;</span> Find near me
+            </button>
+            <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+          </div>
+        </header>
+        <div id="nearby-status" class="nearby-status text-small text-muted" role="status" aria-live="polite" style="margin-bottom: var(--space-4); display: none;"></div>
+        <div class="content-rail">
+          <!-- Cards injected by js/main.js renderHomepageRails() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5: CATEGORY DISCOVERY RAIL -->
+    <section class="section-rail" aria-labelledby="cafe-heading">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <h2 id="cafe-heading">Cafe &amp; Coffee</h2>
+            <p>Your next favorite spot to sit and sip.</p>
+          </div>
+          <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+        </header>
+        <div class="content-rail">
+          <!-- Cards injected by js/main.js renderHomepageRails() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 6: CURATED DISCOVERY RAIL -->
+    <section class="section-rail" aria-labelledby="curated-heading">
+      <div class="container">
+        <header class="section-header">
+          <div>
+            <h2 id="curated-heading">Good Places for Study</h2>
+            <p>Wi-Fi, good vibes, and great coffee.</p>
+          </div>
+          <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+        </header>
+        <div class="content-rail">
+          <!-- Cards injected by js/main.js renderHomepageRails() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 7: DISCOVERY CTA -->
+    <section class="section-cta" aria-labelledby="cta-heading" >
+      <div class="container" class="cta-inner">
+        <h2 id="cta-heading">Still looking?</h2>
+        <p class="text-lead text-muted" class="cta-text">Explore more places around you. Discover hundreds of hidden gems, cafes, and restaurants.</p>
+        <a href="pages/explore.html" class="btn btn-primary" >Explore more places</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== SITE FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+
+        <!-- Brand column -->
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo" aria-label="BiteMap home">
+            <span class="logo-text">BITEMAP</span>
+          </a>
+          <p>Find your next favorite place.</p>
+        </div>
+
+        <!-- Discover navigation group -->
+        <nav class="footer-nav-group" aria-label="Discover">
+          <h3>Discover</h3>
+          <ul role="list">
+            <li><a href="pages/explore.html">Explore Restaurants</a></li>
+          </ul>
+        </nav>
+
+        <!-- Account navigation group -->
+        <nav class="footer-nav-group" aria-label="Account">
+          <h3>Account</h3>
+          <ul role="list">
+            <li><a href="pages/login.html">Sign In</a></li>
+            <li><a href="pages/register.html">Join Free</a></li>
+          </ul>
+        </nav>
+
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
