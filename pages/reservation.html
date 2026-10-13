@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../src/output.css" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
 </head>
@@ -17,27 +18,27 @@
   <a class="skip-to-content" href="#main-content">Skip to content</a>
 
   <!-- ===== SITE HEADER ===== -->
-  <header class="site-header">
-    <nav class="nav-primary" aria-label="Primary navigation">
-      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
-        <span class="logo-text">BITEMAP</span>
+  <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1200px] mx-auto px-4 md:px-6 xl:px-8 gap-6 md:gap-8" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo shrink-0" aria-label="BiteMap home">
+        <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
       </a>
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="explore.html">Explore</a></li>
-        <li><a href="login.html">Sign In</a></li>
-        <li><a href="register.html" class="btn btn-primary">Join Free</a></li>
+      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-8" id="nav-links" role="list">
+        <li class="w-full md:w-auto"><a href="explore.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explore</a></li>
+        <li class="w-full md:w-auto"><a href="login.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a></li>
+        <li class="w-full md:w-auto"><a href="register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Free</a></li>
       </ul>
       <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
       <button
         type="button"
-        class="nav-toggle"
+        class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="nav-links"
       >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-opacity duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
       </button>
     </nav>
   </header>
@@ -46,55 +47,55 @@
   <main id="main-content">
 
     <!-- Reservation Header -->
-    <section class="page-header" aria-labelledby="reservation-heading" style="padding-bottom: 0;">
-      <div class="container">
-        <h1 id="reservation-heading">Reserve a Table</h1>
-        <p class="text-lead text-muted">Complete your booking details below.</p>
+    <section class="page-header pt-8 pb-4 md:pt-12 md:pb-6 text-center" aria-labelledby="reservation-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <h1 id="reservation-heading" class="text-3xl sm:text-4xl font-bold tracking-tight text-dark leading-tight">Reserve a Table</h1>
+        <p class="text-lead text-muted text-lg sm:text-xl text-dark/65 mt-2">Complete your booking details below.</p>
       </div>
     </section>
 
     <!-- Reservation Flow -->
-    <section class="reservation-flow" aria-label="Reservation details">
-      <div class="container reservation-layout">
+    <section class="reservation-flow pb-12 md:pb-16" aria-label="Reservation details">
+      <div class="container reservation-layout max-w-[1200px] mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 lg:gap-10 items-start">
         
         <!-- Form Panel -->
         <div class="reservation-form-panel">
           
           <!-- Visual Stepper -->
-          <div class="reservation-stepper" aria-label="Reservation progress">
-            <div class="step-item active" aria-current="step">
+          <div class="reservation-stepper flex flex-nowrap gap-6 overflow-x-auto whitespace-nowrap mb-8 pb-4 border-b border-dark/15" aria-label="Reservation progress">
+            <div class="step-item active shrink-0" aria-current="step">
               <span class="step-number">1</span> DATE
             </div>
-            <div class="step-item">
+            <div class="step-item shrink-0">
               <span class="step-number">2</span> TIME
             </div>
-            <div class="step-item">
+            <div class="step-item shrink-0">
               <span class="step-number">3</span> TABLE
             </div>
-            <div class="step-item">
+            <div class="step-item shrink-0">
               <span class="step-number">4</span> CONFIRM
             </div>
           </div>
 
-          <form class="reservation-form" method="post" novalidate aria-label="Reservation form">
+          <form class="reservation-form flex flex-col gap-5" method="post" novalidate aria-label="Reservation form">
             
-            <div class="form-group">
-              <label for="res-date">Date</label>
+            <div class="form-group flex flex-col gap-1.5">
+              <label for="res-date" class="text-sm font-medium text-dark">Date</label>
               <input type="date" id="res-date" name="date" class="form-control" required />
             </div>
 
             <!-- Time and guest count are related booking details -->
-            <fieldset class="form-fieldset form-row">
+            <fieldset class="form-fieldset form-row grid grid-cols-1 sm:grid-cols-2 gap-4 border-0 p-0 m-0">
               <legend class="visually-hidden">Booking details</legend>
-              <div class="form-group">
-                <label for="res-time">Time</label>
+              <div class="form-group flex flex-col gap-1.5">
+                <label for="res-time" class="text-sm font-medium text-dark">Time</label>
                 <input type="time" id="res-time" name="time" class="form-control" required />
               </div>
-              <div class="empty-state" style="display: none;" aria-hidden="true">
+              <div class="empty-state hidden" style="display: none;" aria-hidden="true">
                 <p class="empty-state-desc">No available times.</p>
               </div>
-              <div class="form-group">
-                <label for="res-guests">Guests</label>
+              <div class="form-group flex flex-col gap-1.5">
+                <label for="res-guests" class="text-sm font-medium text-dark">Guests</label>
                 <select id="res-guests" name="guests" class="form-control" required>
                   <option value="">Select</option>
                   <option value="1">1 Guest</option>
@@ -106,13 +107,13 @@
                   <option value="7+">7+ Guests</option>
                 </select>
               </div>
-              <div class="empty-state" style="display: none;" aria-hidden="true">
+              <div class="empty-state hidden" style="display: none;" aria-hidden="true">
                 <p class="empty-state-desc">No available tables.</p>
               </div>
             </fieldset>
 
-            <div class="form-group">
-              <label for="res-name">Full name</label>
+            <div class="form-group flex flex-col gap-1.5">
+              <label for="res-name" class="text-sm font-medium text-dark">Full name</label>
               <input
                 type="text"
                 id="res-name"
@@ -124,8 +125,8 @@
               />
             </div>
 
-            <div class="form-group">
-              <label for="res-phone">Phone number</label>
+            <div class="form-group flex flex-col gap-1.5">
+              <label for="res-phone" class="text-sm font-medium text-dark">Phone number</label>
               <input
                 type="tel"
                 id="res-phone"
@@ -136,8 +137,8 @@
               />
             </div>
 
-            <div class="form-group">
-              <label for="res-notes">Special requests <span class="text-small text-muted">(optional)</span></label>
+            <div class="form-group flex flex-col gap-1.5">
+              <label for="res-notes" class="text-sm font-medium text-dark">Special requests <span class="text-small text-muted text-xs text-dark/65 font-normal">(optional)</span></label>
               <textarea
                 id="res-notes"
                 name="notes"
@@ -147,33 +148,33 @@
               ></textarea>
             </div>
 
-            <p class="text-small text-muted" style="margin-top: var(--space-4); text-align: center;">Table seating is assigned upon arrival. Confirmation generates a digital check-in ticket.</p>
-            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: var(--space-4);">Confirm Reservation</button>
+            <p class="text-small text-muted text-sm text-dark/65 text-center mt-4">Table seating is assigned upon arrival. Confirmation generates a digital check-in ticket.</p>
+            <button type="submit" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-4">Confirm Reservation</button>
           </form>
         </div>
 
         <!-- Summary Panel -->
         <aside class="reservation-summary" aria-label="Reservation summary">
-          <div class="card" style="padding: var(--space-6);">
-            <div class="summary-restaurant-image" aria-hidden="true" role="img" aria-label="Ramenku exterior" data-detail="summary-image">
+          <div class="card bg-white rounded-[20px] border border-dark/15 p-6 shadow-sm">
+            <div class="summary-restaurant-image w-full aspect-video rounded-xl mb-4" aria-hidden="true" role="img" aria-label="Restaurant exterior" data-detail="summary-image">
               <!-- Restaurant thumbnail placeholder -->
             </div>
-            <h2 class="text-lead" style="margin-bottom: var(--space-1);" data-detail="summary-name">Ramenku</h2>
-            <p class="text-small text-muted" data-detail="summary-category">Asian Food &middot; Japanese &middot; <span class="rating-icon" aria-hidden="true">&#9733;</span> 4.8 &bull; 1.2 km</p>
+            <h2 class="text-lead text-xl font-semibold text-dark mb-1" data-detail="summary-name">Restaurant</h2>
+            <p class="text-small text-muted text-sm text-dark/65 mb-4" data-detail="summary-category">—</p>
             
-            <dl class="summary-details">
-              <dt>Restaurant</dt>
-              <dd data-detail="summary-restaurant">Ramenku</dd>
-              <dt>Date</dt>
-              <dd data-detail="summary-date">Select a date</dd>
-              <dt>Time</dt>
-              <dd data-detail="summary-time">Select a time</dd>
-              <dt>Guests</dt>
-              <dd data-detail="summary-guests">Select guests</dd>
-              <dt data-detail="summary-name-label" style="display: none;">Guest</dt>
-              <dd data-detail="summary-guest-name" style="display: none;">—</dd>
-              <dt data-detail="summary-contact-label" style="display: none;">Contact</dt>
-              <dd data-detail="summary-guest-contact" style="display: none;">—</dd>
+            <dl class="summary-details flex flex-col gap-3 mt-4">
+              <dt class="text-sm text-dark/65">Restaurant</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b border-dark/[0.08]" data-detail="summary-restaurant">—</dd>
+              <dt class="text-sm text-dark/65">Date</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b border-dark/[0.08]" data-detail="summary-date">Select a date</dd>
+              <dt class="text-sm text-dark/65">Time</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b border-dark/[0.08]" data-detail="summary-time">Select a time</dd>
+              <dt class="text-sm text-dark/65">Guests</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b border-dark/[0.08]" data-detail="summary-guests">Select guests</dd>
+              <dt class="text-sm text-dark/65" data-detail="summary-name-label" style="display: none;">Guest</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b border-dark/[0.08]" data-detail="summary-guest-name" style="display: none;">—</dd>
+              <dt class="text-sm text-dark/65" data-detail="summary-contact-label" style="display: none;">Contact</dt>
+              <dd class="font-medium text-dark pb-2 mb-2 border-b-0" data-detail="summary-guest-contact" style="display: none;">—</dd>
             </dl>
           </div>
         </aside>
@@ -184,38 +185,38 @@
   </main>
 
   <!-- ===== SITE FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-inner">
+  <footer class="site-footer bg-dark text-cream pt-12 pb-8">
+    <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+      <div class="footer-inner grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-8 lg:gap-10 items-start pb-8 border-b border-cream/10">
 
         <!-- Brand column -->
-        <div class="footer-brand">
-          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
-            <span class="logo-text">BITEMAP</span>
+        <div class="footer-brand col-span-1 md:col-span-2 lg:col-span-1">
+          <a href="../index.html" class="footer-logo inline-block mb-3" aria-label="BiteMap home">
+            <span class="logo-text text-xl font-bold tracking-[0.08em] text-cream">BITEMAP</span>
           </a>
-          <p>Find your next favorite place.</p>
+          <p class="text-sm leading-relaxed text-cream/60 max-w-[24ch]">Find your next favorite place.</p>
         </div>
 
         <!-- Discover navigation group -->
         <nav class="footer-nav-group" aria-label="Discover">
-          <h3>Discover</h3>
-          <ul role="list">
-            <li><a href="explore.html">Explore Restaurants</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Discover</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="explore.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Explore Restaurants</a></li>
           </ul>
         </nav>
 
         <!-- Account navigation group -->
         <nav class="footer-nav-group" aria-label="Account">
-          <h3>Account</h3>
-          <ul role="list">
-            <li><a href="login.html">Sign In</a></li>
-            <li><a href="register.html">Join Free</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Account</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="login.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Sign In</a></li>
+            <li><a href="register.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Join Free</a></li>
           </ul>
         </nav>
 
       </div>
-      <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      <div class="footer-bottom flex items-center justify-between flex-wrap gap-4 pt-6">
+        <p class="footer-copy text-xs text-cream/40">&copy; 2026 BiteMap. All rights reserved.</p>
       </div>
     </div>
   </footer>

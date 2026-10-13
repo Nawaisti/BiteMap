@@ -4,10 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Restaurant detail — explore the menu, gallery, location, and make a reservation on BiteMap." />
-  <title>Restaurant Name — BiteMap</title>
+  <title>Restaurant Details — BiteMap</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Leaflet 1.9.4 CSS for Geoapify Map Tiles -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="../src/output.css" />
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
 </head>
@@ -17,27 +20,27 @@
   <a class="skip-to-content" href="#main-content">Skip to content</a>
 
   <!-- ===== SITE HEADER ===== -->
-  <header class="site-header">
-    <nav class="nav-primary" aria-label="Primary navigation">
-      <a href="../index.html" class="nav-logo" aria-label="BiteMap home">
-        <span class="logo-text">BITEMAP</span>
+  <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1200px] mx-auto px-4 md:px-6 xl:px-8 gap-6 md:gap-8" aria-label="Primary navigation">
+      <a href="../index.html" class="nav-logo shrink-0" aria-label="BiteMap home">
+        <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
       </a>
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="explore.html">Explore</a></li>
-        <li><a href="login.html">Sign In</a></li>
-        <li><a href="register.html" class="btn btn-primary">Join Free</a></li>
+      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-8" id="nav-links" role="list">
+        <li class="w-full md:w-auto"><a href="explore.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explore</a></li>
+        <li class="w-full md:w-auto"><a href="login.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a></li>
+        <li class="w-full md:w-auto"><a href="register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Free</a></li>
       </ul>
       <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
       <button
         type="button"
-        class="nav-toggle"
+        class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="nav-links"
       >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-opacity duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
       </button>
     </nav>
   </header>
@@ -46,109 +49,123 @@
   <main id="main-content">
 
     <!-- 1 & 2 & 3: RESTAURANT HERO & IDENTITY & ACTIONS -->
-    <section class="restaurant-hero" aria-labelledby="restaurant-name">
-      <div class="restaurant-hero-image" aria-label="Ramenku exterior view" role="img" data-detail="hero-image">
+    <section class="restaurant-hero pb-6 md:pb-10" aria-labelledby="restaurant-name">
+      <div class="restaurant-hero-image w-full h-[280px] sm:h-[340px] md:h-[400px] mb-8" aria-label="Restaurant exterior view" role="img" data-detail="hero-image">
         <!-- Placeholder for hero image -->
       </div>
-      <div class="container">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
         
-        <header class="restaurant-header">
+        <header class="restaurant-header flex flex-col md:flex-row justify-between items-start gap-4 flex-wrap">
           <div class="restaurant-info">
-            <h1 id="restaurant-name" data-detail="name">Ramenku</h1>
-            <p class="text-lead text-muted" style="margin-bottom: var(--space-2);" data-detail="category">Asian Food &middot; Japanese</p>
-            <p class="text-meta text-muted" data-detail="meta"><span class="rating-icon" aria-hidden="true">&#9733;</span> 4.8 &bull; 1.2 km</p>
+            <h1 id="restaurant-name" class="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-dark leading-tight" data-detail="name">Restaurant Details</h1>
+            <p class="text-lead text-muted text-lg sm:text-xl text-dark/65 mb-2 mt-1" data-detail="category">—</p>
+            <p class="text-meta text-muted text-xs font-medium uppercase tracking-wider text-dark/65" data-detail="meta"><span>New &middot; No reviews yet</span></p>
           </div>
-          <div class="restaurant-actions">
-            <a href="reservation.html?id=ramenku" class="btn btn-primary" data-detail="reserve-btn">Reserve a Table</a>
-            <button type="button" class="btn btn-outline" aria-label="Save Ramenku to favorites" data-detail="save-btn">
+          <div class="restaurant-actions flex gap-3 flex-wrap w-full sm:w-auto">
+            <a href="reservation.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" data-detail="reserve-btn">Reserve a Table</a>
+            <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" aria-label="Save to favorites" data-detail="save-btn">
               Save
             </button>
           </div>
         </header>
 
         <!-- 4: SECTION NAVIGATION -->
-        <nav class="restaurant-tabs" aria-label="Restaurant sections">
-          <ul role="list">
-            <li><a href="#about">About</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#location">Location</a></li>
-            <li><a href="#hours">Hours</a></li>
+        <nav class="restaurant-tabs mt-8 border-b border-dark/15" aria-label="Restaurant sections">
+          <ul class="flex flex-nowrap gap-6 pb-4 overflow-x-auto whitespace-nowrap" role="list">
+            <li class="shrink-0"><a href="#about" class="font-medium text-dark/65 hover:text-dark transition-colors duration-150">About</a></li>
+            <li class="shrink-0"><a href="#menu" class="font-medium text-dark/65 hover:text-dark transition-colors duration-150">Menu</a></li>
+            <li class="shrink-0"><a href="#gallery" class="font-medium text-dark/65 hover:text-dark transition-colors duration-150">Gallery</a></li>
+            <li class="shrink-0"><a href="#location" class="font-medium text-dark/65 hover:text-dark transition-colors duration-150">Location</a></li>
+            <li class="shrink-0"><a href="#hours" class="font-medium text-dark/65 hover:text-dark transition-colors duration-150">Hours</a></li>
           </ul>
         </nav>
       </div>
     </section>
 
     <!-- 5: ABOUT -->
-    <section id="about" class="about" aria-labelledby="about-heading" style="padding-top: var(--space-8);">
-      <div class="container">
-        <h2 id="about-heading" style="margin-bottom: var(--space-4);">About</h2>
-        <div style="max-width: 680px;" data-detail="about-content">
-          <p class="text-lead" data-detail="description">Ramenku serves comforting Japanese ramen, handmade sides, and simple drinks in a warm casual setting.</p>
-          <p class="text-muted" style="margin-top: var(--space-4);" data-detail="description-long">Ramenku is a casual Japanese-inspired spot focused on comforting bowls of ramen, handmade sides, and simple drinks. A relaxed place for a quick meal or a casual dinner.</p>
+    <section id="about" class="about py-6 md:py-10" aria-labelledby="about-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <h2 id="about-heading" class="text-2xl font-semibold text-dark mb-4">About</h2>
+        <div class="max-w-[680px]" data-detail="about-content">
+          <p class="text-lead text-lg text-dark leading-relaxed" data-detail="description">Description unavailable.</p>
         </div>
-        <div class="empty-state" data-detail="about-empty" style="display: none;" aria-hidden="true">
-          <p class="empty-state-desc">Description unavailable.</p>
+        <div class="empty-state hidden flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-[20px] border border-dashed border-dark/15" data-detail="about-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc text-dark/65">Description unavailable.</p>
         </div>
       </div>
     </section>
 
     <!-- 6: GALLERY -->
-    <section id="gallery" class="gallery" aria-labelledby="gallery-heading">
-      <div class="container">
-        <h2 id="gallery-heading" style="margin-bottom: var(--space-6);">Gallery</h2>
-        <ul class="gallery-grid" aria-label="Restaurant photo gallery" role="list" data-detail="gallery-grid">
+    <section id="gallery" class="gallery py-6 md:py-10" aria-labelledby="gallery-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <h2 id="gallery-heading" class="text-2xl font-semibold text-dark mb-6">Gallery</h2>
+        <ul class="gallery-grid grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6" aria-label="Restaurant photo gallery" role="list" data-detail="gallery-grid">
           <!-- Gallery figures injected by js/main.js renderRestaurantGallery() -->
         </ul>
-        <div class="empty-state" data-detail="gallery-empty" style="display: none;" aria-hidden="true">
-          <p class="empty-state-desc">Photos aren&#39;t available at the moment.</p>
+        <div class="empty-state hidden flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-[20px] border border-dashed border-dark/15" data-detail="gallery-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc text-dark/65">Photos aren&#39;t available at the moment.</p>
         </div>
       </div>
     </section>
 
     <!-- 7: MENU -->
-    <section id="menu" class="menu" aria-labelledby="menu-heading">
-      <div class="container">
-        <h2 id="menu-heading" style="margin-bottom: var(--space-6);">Menu</h2>
-        <div class="empty-state" data-detail="menu-empty" style="display: none;" aria-hidden="true">
-          <p class="empty-state-desc">Menu isn&#39;t available at the moment.</p>
+    <section id="menu" class="menu py-6 md:py-10" aria-labelledby="menu-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <h2 id="menu-heading" class="text-2xl font-semibold text-dark mb-6">Menu</h2>
+        <div class="empty-state hidden flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-[20px] border border-dashed border-dark/15" data-detail="menu-empty" style="display: none;" aria-hidden="true">
+          <p class="empty-state-desc text-dark/65">Menu isn&#39;t available at the moment.</p>
         </div>
         
-        <div style="max-width: 800px;" data-detail="menu-container">
+        <nav class="menu-category-nav" aria-label="Menu categories" data-detail="menu-category-nav" style="display: none;" aria-hidden="true">
+          <ul class="menu-category-pills" role="list" data-detail="menu-category-pills">
+            <!-- Category navigation pills injected by js/main.js renderRestaurantMenu() -->
+          </ul>
+        </nav>
+
+        <div class="max-w-[800px]" data-detail="menu-container">
           <!-- Menu sections injected by js/main.js renderRestaurantMenu() -->
+        </div>
+
+        <div class="menu-external-cta mt-8 pt-6 border-t border-dark/10" data-detail="menu-external-cta" style="display: none;" aria-hidden="true">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 cursor-pointer" data-detail="menu-external-link">
+            <span>Lihat Menu Lengkap</span>
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
         </div>
 
       </div>
     </section>
 
     <!-- 8: LOCATION & 9: HOURS -->
-    <div class="location-hours-wrapper">
-      <div class="container">
+    <div class="location-hours-wrapper bg-white py-10 md:py-14 border-t border-dark/[0.08]">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
         
-        <div class="location-hours-grid">
+        <div class="location-hours-grid grid grid-cols-1 md:grid-cols-2 gap-10">
           
           <!-- Location -->
-          <section id="location" class="location" aria-labelledby="location-heading" style="padding-block: 0;">
-            <h2 id="location-heading" style="margin-bottom: var(--space-6);">Location</h2>
-            <div class="location-map" aria-label="Map showing location of Ramenku" data-detail="location-map">
-              <span class="text-muted">Map Placeholder</span>
+          <section id="location" class="location p-0" aria-labelledby="location-heading">
+            <h2 id="location-heading" class="text-2xl font-semibold text-dark mb-6">Location</h2>
+            <div class="location-map w-full h-[320px] rounded-[20px] mb-4 flex items-center justify-center relative overflow-hidden" aria-label="Restaurant location map" data-detail="location-map">
+              <span class="text-muted text-dark/65">Map Placeholder</span>
             </div>
-            <address class="location-address" data-detail="location-address">
-              <p class="text-lead" data-detail="address-text">Jl. Contoh Kuliner No. 12, Malang</p>
+            <address class="location-address not-italic" data-detail="location-address">
+              <p class="text-lead text-lg text-dark" data-detail="address-text">Location unavailable.</p>
             </address>
-            <div class="empty-state" data-detail="location-empty" style="display: none;" aria-hidden="true">
-              <p class="empty-state-desc">Location unavailable.</p>
+            <div class="empty-state hidden flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-[20px] border border-dashed border-dark/15" data-detail="location-empty" style="display: none;" aria-hidden="true">
+              <p class="empty-state-desc text-dark/65">Location unavailable.</p>
             </div>
           </section>
 
           <!-- Hours -->
-          <section id="hours" class="hours" aria-labelledby="hours-heading" style="padding-block: 0;">
-            <h2 id="hours-heading" style="margin-bottom: var(--space-6);">Opening Hours</h2>
-            <dl class="hours-list" data-detail="hours-list">
+          <section id="hours" class="hours p-0" aria-labelledby="hours-heading">
+            <h2 id="hours-heading" class="text-2xl font-semibold text-dark mb-6">Opening Hours</h2>
+            <dl class="hours-list max-w-[400px] flex flex-col" data-detail="hours-list">
               <!-- Hours rows injected by js/main.js renderRestaurantHours() -->
             </dl>
-            <div class="empty-state" data-detail="hours-empty" style="display: none;" aria-hidden="true">
-              <p class="empty-state-desc">Hours not available.</p>
+            <div class="empty-state hidden flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-[20px] border border-dashed border-dark/15" data-detail="hours-empty" style="display: none;" aria-hidden="true">
+              <p class="empty-state-desc text-dark/65">Hours not available.</p>
             </div>
           </section>
         </div>
@@ -157,49 +174,49 @@
     </div>
 
     <!-- 10: RESERVATION CTA -->
-    <section class="section-cta" aria-labelledby="cta-heading" style="padding-block: var(--section-space-xl); text-align: center; border-top: 1px solid var(--color-border-light, rgba(36,33,29,0.08));">
-      <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4);">
-        <h2 id="cta-heading">Ready to visit?</h2>
-        <p class="text-lead text-muted" style="max-width: 500px;" data-detail="reservation-cta-text">Reserve your table before you arrive.</p>
-        <a href="reservation.html?id=ramenku" class="btn btn-primary" style="margin-top: var(--space-2);" data-detail="cta-reserve-btn">Reserve a Table</a>
+    <section class="section-cta py-10 md:py-16 text-center border-t border-dark/[0.08]" aria-labelledby="cta-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6 flex flex-col items-center gap-4">
+        <h2 id="cta-heading" class="text-2xl font-semibold text-dark">Ready to visit?</h2>
+        <p class="text-lead text-muted text-lg sm:text-xl text-dark/65 max-w-[500px]" data-detail="reservation-cta-text">Reserve your table before you arrive.</p>
+        <a href="reservation.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer mt-2" data-detail="cta-reserve-btn">Reserve a Table</a>
       </div>
     </section>
 
   </main>
 
   <!-- ===== SITE FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-inner">
+  <footer class="site-footer bg-dark text-cream pt-12 pb-8">
+    <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+      <div class="footer-inner grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-8 lg:gap-10 items-start pb-8 border-b border-cream/10">
 
         <!-- Brand column -->
-        <div class="footer-brand">
-          <a href="../index.html" class="footer-logo" aria-label="BiteMap home">
-            <span class="logo-text">BITEMAP</span>
+        <div class="footer-brand col-span-1 md:col-span-2 lg:col-span-1">
+          <a href="../index.html" class="footer-logo inline-block mb-3" aria-label="BiteMap home">
+            <span class="logo-text text-xl font-bold tracking-[0.08em] text-cream">BITEMAP</span>
           </a>
-          <p>Find your next favorite place.</p>
+          <p class="text-sm leading-relaxed text-cream/60 max-w-[24ch]">Find your next favorite place.</p>
         </div>
 
         <!-- Discover navigation group -->
         <nav class="footer-nav-group" aria-label="Discover">
-          <h3>Discover</h3>
-          <ul role="list">
-            <li><a href="explore.html">Explore Restaurants</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Discover</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="explore.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Explore Restaurants</a></li>
           </ul>
         </nav>
 
         <!-- Account navigation group -->
         <nav class="footer-nav-group" aria-label="Account">
-          <h3>Account</h3>
-          <ul role="list">
-            <li><a href="login.html">Sign In</a></li>
-            <li><a href="register.html">Join Free</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Account</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="login.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Sign In</a></li>
+            <li><a href="register.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Join Free</a></li>
           </ul>
         </nav>
 
       </div>
-      <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      <div class="footer-bottom flex items-center justify-between flex-wrap gap-4 pt-6">
+        <p class="footer-copy text-xs text-cream/40">&copy; 2026 BiteMap. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -207,11 +224,15 @@
   <!-- GALLERY LIGHTBOX -->
   <dialog id="gallery-lightbox" class="gallery-lightbox" aria-modal="true" aria-label="Image viewer">
     <div class="lightbox-content">
-      <button type="button" class="btn btn-outline lightbox-close" aria-label="Close image viewer">Close</button>
+      <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer lightbox-close" aria-label="Close image viewer">Close</button>
       <div id="lightbox-image-container" aria-live="polite"></div>
     </div>
   </dialog>
 
+  <!-- Leaflet 1.9.4 JS (lightweight map viewer for Geoapify raster tiles) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Local environment config (git-ignored, optional) -->
+  <script src="../js/config.local.js" onerror="this.remove()"></script>
   <script src="../js/main.js" defer></script>
 </body>
 </html>

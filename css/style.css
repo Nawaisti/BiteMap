@@ -19,6 +19,15 @@
  * ============================================================
  */
 
+/*
+ * Task 07 - Cascade layer: everything below is wrapped in `@layer legacy`
+ * (order declared in src/input.css: theme, base, legacy, components, utilities).
+ * Without this wrapper these unlayered rules (notably the `*{margin:0;padding:0}`
+ * reset, .container, .hero-inner, .restaurant-grid, .reservation-layout ...)
+ * beat every Tailwind utility regardless of source order.
+ */
+@layer legacy {
+
 
 /* ============================================================
    1. CSS CUSTOM PROPERTIES — DESIGN TOKENS
@@ -319,59 +328,10 @@ small, .text-small {
 
 /* ============================================================
    5. BUTTONS
+   Shared button primitives (.btn, .btn-primary, .btn-outline)
+   migrated to Tailwind CSS v4 in Task 03 Step 03A.
+   Modifiers (.btn-ghost, .btn-block) retained.
    ============================================================ */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-3) var(--space-6);
-  border: 2px solid transparent;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color var(--transition-base),
-              color var(--transition-base),
-              border-color var(--transition-base),
-              box-shadow var(--transition-base);
-  white-space: nowrap;
-}
-
-.btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-/* Primary button — filled terracotta */
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-white);
-  border-color: var(--color-primary);
-}
-
-.btn-primary:hover,
-.btn-primary:focus-visible {
-  /* Hover style to be refined in design step */
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-}
-
-/* Outline button */
-.btn-outline {
-  background-color: transparent;
-  color: var(--color-text);
-  border-color: var(--color-text);
-}
-
-.btn-outline:hover,
-.btn-outline:focus-visible {
-  background-color: var(--color-dark);
-  color: var(--color-white);
-}
 
 /* Ghost button — minimal */
 .btn-ghost {
@@ -448,31 +408,10 @@ small, .text-small {
 
 /* ============================================================
    7. HEADER & NAVIGATION
+   Header layout and navigation rules migrated to Tailwind CSS v4
+   in Task 03 Step 01. .logo-text is retained for shared brand typography
+   (used in Footer and Admin).
    ============================================================ */
-
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: var(--z-overlay);
-  height: var(--nav-height);
-  background-color: var(--color-background);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.nav-primary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-  max-width: var(--container-max);
-  margin-inline: auto;
-  padding-inline: var(--container-gutter);
-  gap: var(--space-8);
-}
-
-.nav-logo {
-  flex-shrink: 0;
-}
 
 .logo-text {
   font-size: var(--font-size-lg);
@@ -481,184 +420,20 @@ small, .text-small {
   color: var(--color-text);
 }
 
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-}
-
-.nav-links a {
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text);
-  transition: color var(--transition-fast);
-}
-
-.nav-links a:hover,
-.nav-links a[aria-current="page"] {
-  color: var(--color-primary);
-}
-
-/* Hamburger toggle — visible on mobile only */
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  padding: var(--space-2);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.nav-toggle span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background-color: var(--color-text);
-  border-radius: var(--radius-full);
-  transition: transform var(--transition-base), opacity var(--transition-base);
-}
-
 
 /* ============================================================
    8. FOOTER
+   Global footer layout, typography, and navigation rules migrated
+   to Tailwind CSS v4 in Task 03 Step 02.
    ============================================================ */
-
-.site-footer {
-  background-color: var(--color-dark);
-  color: var(--color-cream);
-  padding-block: var(--space-12) var(--space-8);
-}
-
-/* Multi-column footer layout: brand | discover links | account links */
-.footer-inner {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: var(--space-10);
-  align-items: start;
-  padding-bottom: var(--space-8);
-  border-bottom: 1px solid rgba(247, 243, 234, 0.1);
-}
-
-/* Brand column */
-.footer-brand .footer-logo {
-  display: inline-block;
-  margin-bottom: var(--space-3);
-}
-
-.footer-brand .logo-text {
-  color: var(--color-cream);
-}
-
-.footer-brand p {
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-loose);
-  opacity: 0.6;
-  max-width: 24ch;
-}
-
-/* Navigation groups */
-.footer-nav-group h3 {
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.45;
-  margin-bottom: var(--space-4);
-}
-
-.footer-nav-group ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.footer-nav-group a {
-  font-size: var(--font-size-sm);
-  opacity: 0.65;
-  transition: opacity var(--transition-fast), color var(--transition-fast);
-}
-
-.footer-nav-group a:hover,
-.footer-nav-group a:focus-visible {
-  opacity: 1;
-  color: var(--color-cream);
-}
-
-/* Bottom bar: copyright */
-.footer-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  padding-top: var(--space-6);
-}
-
-.footer-copy {
-  font-size: var(--font-size-xs);
-  opacity: 0.4;
-}
 
 
 /* ============================================================
    9. AUTH LAYOUT
+   Legacy auth layout rules (.page-auth, .auth-layout, .auth-visual, .auth-panel,
+   .auth-panel-inner, .auth-logo, .auth-form, .auth-switch, .auth-guest)
+   migrated to Tailwind CSS v4 in Task 04 Step 07.
    ============================================================ */
-
-.page-auth body,
-body.page-auth {
-  background-color: var(--color-cream);
-}
-
-.auth-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: 100vh;
-}
-
-.auth-visual {
-  background-color: var(--color-dark);
-  position: relative;
-  overflow: hidden;
-  /* Background image to be applied in design step */
-}
-
-.auth-panel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-12) var(--space-8);
-}
-
-.auth-panel-inner {
-  width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.auth-logo {
-  display: inline-block;
-  margin-bottom: var(--space-2);
-}
-
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-}
-
-.auth-switch,
-.auth-guest {
-  font-size: var(--font-size-sm);
-  text-align: center;
-}
-
-.auth-switch a {
-  color: var(--color-primary);
-  font-weight: var(--font-weight-medium);
-}
 
 
 /* ============================================================
@@ -721,6 +496,7 @@ body.page-auth {
 /* Card row — horizontal layout; overflow and scroll styling in Task 02 */
 .content-rail {
   display: flex;
+  align-items: flex-start;
   gap: var(--space-4);
   overflow-x: auto;
   /* Prevent layout collapse when empty — cards come in Phase 02 */
@@ -799,7 +575,7 @@ body.page-auth {
 
 .restaurant-tabs ul {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--space-6);
 }
 
@@ -835,37 +611,10 @@ button:focus-visible,
   background-color: var(--color-primary-soft);
 }
 
-/* --- FAVORITE BUTTON --- */
-.btn-favorite {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-white);
-  border: none;
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  color: var(--color-text-muted);
-  transition: transform var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
-  z-index: var(--z-raised);
-}
-.btn-favorite:hover {
-  transform: scale(1.05);
-  color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-}
-.btn-favorite.is-active {
-  color: var(--color-primary);
-}
-.btn-favorite:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
-}
+/* --- FAVORITE BUTTON ---
+   Favorite button (.btn-favorite, .btn-favorite.is-active, hover, focus)
+   migrated to Tailwind CSS v4 in Task 03 Step 03C (src/input.css).
+*/
 
 /* --- RESTAURANT CARD --- */
 .restaurant-card {
@@ -888,9 +637,13 @@ button:focus-visible,
 
 .restaurant-card-image {
   width: 100%;
-  aspect-ratio: 4 / 3;
-  background-color: var(--color-surface-muted); /* Placeholder behavior */
+  aspect-ratio: 16 / 10;
+  flex-shrink: 0;
+  background-color: #EDE6D8;
+  background-image: radial-gradient(circle at 50% 45%, rgba(200, 92, 58, 0.14) 0%, rgba(36, 33, 29, 0.04) 70%, transparent 100%);
+  border-bottom: 1px solid rgba(36, 33, 29, 0.06);
   object-fit: cover;
+  position: relative;
 }
 
 .restaurant-card-content {
@@ -898,6 +651,14 @@ button:focus-visible,
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  min-width: 0;
+}
+
+.restaurant-card-content h3,
+.restaurant-card-content .text-lead {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* --- GENERIC CARD --- */
@@ -909,31 +670,10 @@ button:focus-visible,
   box-shadow: var(--shadow-sm);
 }
 
-/* --- BADGES / PILLS --- */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-1) var(--space-3);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-medium);
-  border-radius: var(--radius-full);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  line-height: 1;
-}
-.badge-neutral {
-  background-color: var(--color-surface-muted);
-  color: var(--color-text);
-}
-.badge-success {
-  background-color: var(--color-success-soft);
-  color: var(--color-success);
-}
-.badge-primary {
-  background-color: var(--color-primary-soft);
-  color: var(--color-primary);
-}
+/* --- BADGES / PILLS ---
+   Shared badge primitives (.badge, .badge-neutral, .badge-success, .badge-primary)
+   migrated to Tailwind CSS v4 in Task 03 Step 03B.
+*/
 
 /* --- STATUS INDICATORS --- */
 .status-indicator {
@@ -1011,7 +751,7 @@ button:focus-visible,
   grid-template-columns: 1fr 1fr;
   align-items: center;
   gap: var(--space-10);
-  padding-block: var(--section-space-xl);
+  padding-block: 0;
 }
 
 .search-bar {
@@ -1035,94 +775,37 @@ button:focus-visible,
   flex-wrap: wrap;
 }
 
-.admin-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 100vh;
-}
-
-.admin-sidebar {
-  padding: var(--space-6);
-  border-right: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-
-.admin-content {
-  padding: var(--space-6) var(--space-8);
-  display: flex;
-  flex-direction: column;
-  gap: var(--section-space-lg);
-}
-
-.admin-table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.admin-table {
-  width: 100%;
-  min-width: 600px; /* Forces scroll on mobile to prevent squishing */
-  border-collapse: collapse;
-}
+/* ============================================================
+   10. ADMIN LAYOUT
+   Admin layout, sidebar, content, and table rules
+   migrated to Tailwind CSS v4 in Task 04 Step 08.
+   ============================================================ */
 
 
 
-/* Reservation Ticket Layout */
-.ticket-layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-8);
-  padding-block: var(--section-space-lg);
-  text-align: center;
-}
-
-article.reservation-ticket {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-6);
-  width: 100%;
-  max-width: 480px;
-  text-align: left;
-}
-
-.ticket-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-6);
-}
-
-.ticket-restaurant {
-  display: flex;
-  gap: var(--space-4);
-  align-items: center;
-  margin-bottom: var(--space-6);
-}
-
-.ticket-details {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
-
-.ticket-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-  width: 100%;
-  max-width: 320px;
-}
+/* ============================================================
+   11. RESERVATION TICKET LAYOUT
+   Reservation ticket visual layout, details, and action rules
+   migrated to Tailwind CSS v4 in Task 04 Step 05.
+   (Print styles in Section 18 are preserved).
+   ============================================================ */
 
 /* Content rail card constraints */
 .content-rail .restaurant-card {
-  min-width: 280px;
+  min-width: 220px;
+  max-width: 224px;
   flex-shrink: 0;
+  flex: 0 0 220px;
+  width: 220px;
+}
+
+@media (min-width: 1024px) {
+  .content-rail .restaurant-card {
+    min-width: 216px;
+    max-width: 220px;
+    flex: 0 0 216px;
+    width: 216px;
+  }
 }
 
 /* Category Discovery Pills */
@@ -1133,13 +816,7 @@ article.reservation-ticket {
   padding-bottom: var(--space-2);
   min-height: auto;
 }
-.badge-category {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  text-transform: none;
-  white-space: nowrap;
-}
+/* Category Discovery Pills migrated to Tailwind CSS v4 in Task 03 Step 03B (.badge-category in src/input.css) */
 
 .card-link-wrapper {
   text-decoration: none;
@@ -1147,6 +824,7 @@ article.reservation-ticket {
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-width: 0;
 }
 
 .section-cta {
@@ -1215,27 +893,303 @@ article.reservation-ticket {
 .restaurant-tabs a:hover {
   color: var(--color-text);
 }
-.menu-section {
-  margin-bottom: var(--space-8);
-}
+#about,
+#gallery,
+#menu,
+#location,
+#hours,
+.menu-section,
 .menu-section-title {
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-2);
-  margin-bottom: var(--space-4);
+  scroll-margin-top: 96px;
 }
+
+.menu-category-nav {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: var(--space-6);
+  overflow: hidden;
+}
+
+.menu-category-pills {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(36, 33, 29, 0.22) transparent;
+}
+
+.menu-category-pills::-webkit-scrollbar {
+  height: 5px;
+}
+
+.menu-category-pills::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.menu-category-pills::-webkit-scrollbar-thumb {
+  background-color: rgba(36, 33, 29, 0.22);
+  border-radius: 9999px;
+}
+
+.menu-category-pill-item {
+  flex-shrink: 0;
+}
+
+.menu-category-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4375rem 0.9375rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: var(--font-weight-medium, 500);
+  line-height: 1.25;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: var(--color-text);
+  background-color: var(--color-white, #FFFFFF);
+  border: 1px solid rgba(36, 33, 29, 0.14);
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.menu-category-pill:hover {
+  border-color: var(--color-primary, #C85C3A);
+  color: var(--color-primary, #C85C3A);
+  background-color: rgba(200, 92, 58, 0.06);
+}
+
+.menu-category-pill--addon {
+  border-style: dashed;
+  border-color: rgba(111, 128, 100, 0.45);
+  background-color: rgba(111, 128, 100, 0.08);
+  color: #42503A;
+}
+
+.menu-category-pill--promo {
+  border-color: rgba(200, 92, 58, 0.4);
+  background-color: rgba(200, 92, 58, 0.08);
+  color: var(--color-primary, #C85C3A);
+}
+
+.menu-category-pill.is-active,
+.menu-category-pill[aria-current="location"] {
+  background-color: var(--color-dark, #24211D);
+  border-color: var(--color-dark, #24211D);
+  border-style: solid;
+  color: var(--color-white, #FFFFFF);
+}
+
+.menu-section {
+  margin-bottom: 2.75rem;
+}
+
+.menu-section:last-child {
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .menu-section {
+    margin-bottom: 3.25rem;
+  }
+}
+
+#menu-upgrade-addon,
+.menu-section--addon {
+  background-color: #F2ECE1;
+  border: 1.5px dashed rgba(36, 33, 29, 0.22);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-top: 2.75rem;
+}
+
+#menu-promo,
+.menu-section--promo {
+  background-color: var(--color-white, #FFFFFF);
+  border: 1.5px solid rgba(200, 92, 58, 0.35);
+  border-radius: 16px;
+  padding: 1.25rem;
+  box-shadow: 0 6px 20px -4px rgba(36, 33, 29, 0.07), 0 2px 6px -1px rgba(200, 92, 58, 0.06);
+}
+
+@media (min-width: 768px) {
+  #menu-upgrade-addon,
+  .menu-section--addon,
+  #menu-promo,
+  .menu-section--promo {
+    padding: 1.625rem 1.875rem;
+  }
+}
+
+#menu-upgrade-addon .menu-item:last-child,
+.menu-section--addon .menu-item:last-child,
+#menu-promo .menu-item:last-child,
+.menu-section--promo .menu-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.menu-section-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: var(--font-weight-semibold, 600);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+
+.menu-section-badge--addon {
+  background-color: rgba(111, 128, 100, 0.14);
+  color: #42503A;
+  border: 1px solid rgba(111, 128, 100, 0.28);
+}
+
+.menu-section-badge--promo {
+  background-color: rgba(200, 92, 58, 0.12);
+  color: var(--color-primary, #C85C3A);
+  border: 1px solid rgba(200, 92, 58, 0.28);
+}
+
+.menu-section-title {
+  position: relative;
+  padding-left: 0.875rem;
+  font-size: 1.4375rem; /* 23px mobile */
+  font-weight: var(--font-weight-bold, 700);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--color-dark, #24211D);
+  border-bottom: 1.5px solid rgba(36, 33, 29, 0.14);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.menu-section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.16em;
+  width: 4px;
+  height: 0.95em;
+  border-radius: 9999px;
+  background-color: var(--color-terracotta, #C85C3A);
+}
+
+@media (min-width: 768px) {
+  .menu-section-title {
+    font-size: 1.5625rem; /* 25px tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  .menu-section-title {
+    font-size: 1.6875rem; /* 27px desktop (26-28px spec) */
+  }
+}
+
 .menu-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-block: var(--space-3);
-  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
-  gap: var(--space-4);
+  padding-block: 0.9375rem;
+  border-bottom: 1px solid rgba(36, 33, 29, 0.09);
+  gap: 1.25rem;
 }
+
 .menu-item-info {
-  flex: 1;
+  flex: 1 1 0%;
+  min-width: 0;
 }
+
+.menu-item-info h4 {
+  font-size: 1.1875rem; /* 19px mobile */
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: var(--color-dark, #24211D);
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .menu-item-info h4 {
+    font-size: 1.21875rem; /* 19.5px tablet/desktop (19-20px spec) */
+  }
+}
+
+.menu-item-info p {
+  font-size: 0.90625rem; /* 14.5px (14-15px spec) */
+  font-weight: var(--font-weight-regular, 400);
+  line-height: 1.55;
+  color: #5C554E;
+  margin-top: 0.3125rem !important;
+  margin-bottom: 0;
+  overflow-wrap: break-word;
+}
+
 .menu-item-price {
-  font-weight: var(--font-weight-medium);
+  font-size: 1.03125rem; /* 16.5px (16-17px spec) */
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.35;
+  color: var(--color-dark, #24211D);
+  text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding-top: 0.0625rem;
+}
+
+.menu-item-price-main {
+  display: block;
+  font-size: 1.03125rem; /* 16.5px */
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-dark, #24211D);
+  white-space: nowrap;
+}
+
+.menu-item-price-note {
+  display: block;
+  font-size: 0.75rem; /* 12px */
+  font-weight: var(--font-weight-regular, 400);
+  color: #5C554E;
+  line-height: 1.35;
+  margin-top: 0.1875rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 359px) {
+  #menu-upgrade-addon,
+  .menu-section--addon,
+  #menu-promo,
+  .menu-section--promo {
+    padding: 1rem;
+  }
+  .menu-section-title {
+    font-size: 1.3125rem; /* 21px on 320px */
+  }
+  .menu-item {
+    gap: var(--space-3);
+  }
+  .menu-item-info h4 {
+    font-size: 1.0625rem; /* 17px on 320px */
+  }
+  .menu-item-price,
+  .menu-item-price-main {
+    font-size: 0.96875rem; /* 15.5px on 320px */
+  }
+  .menu-item-price-note {
+    white-space: normal;
+    max-width: 105px;
+    margin-left: auto;
+  }
 }
 .hours-list {
   max-width: 400px;
@@ -1252,13 +1206,7 @@ article.reservation-ticket {
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
 }
-.hours-status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  vertical-align: middle;
-}
+/* .hours-status-badge migrated to Tailwind CSS v4 in Task 03 Step 03B (src/input.css) */
 .location-map {
   width: 100%;
   height: 320px;
@@ -1268,6 +1216,64 @@ article.reservation-ticket {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.location-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-lg);
+  font-family: inherit;
+  background-color: var(--color-surface-muted);
+}
+
+.location-map .leaflet-control-attribution {
+  font-size: 11px;
+  background: rgba(247, 243, 234, 0.9) !important;
+  color: #24211D !important;
+  border-top-left-radius: 6px;
+  padding: 2px 6px;
+}
+
+.location-map .leaflet-control-attribution a {
+  color: #C85C3A !important;
+  text-decoration: underline;
+}
+
+.bitemap-marker-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.bitemap-map-popup {
+  font-family: inherit;
+  min-width: 140px;
+}
+
+.location-map .leaflet-popup-content-wrapper {
+  background: #FFFFFF;
+  color: #24211D;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(36, 33, 29, 0.14);
+}
+
+.location-map .leaflet-popup-tip {
+  background: #FFFFFF;
+}
+
+.map-lazy-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: rgba(36, 33, 29, 0.45);
+  font-family: inherit;
+  user-select: none;
 }
 .location-address {
   font-style: normal;
@@ -1360,15 +1366,10 @@ article.reservation-ticket {
   margin-bottom: var(--space-4);
 }
 
-/* --- RESERVATION TICKET REFINEMENTS --- */
-.ticket-confirmation-message {
-  text-align: center;
-  max-width: 600px;
-  margin-inline: auto;
-}
-.ticket-confirmation-message h1 {
-  margin-bottom: var(--space-2);
-}
+/* --- RESERVATION TICKET REFINEMENTS ---
+   Reservation ticket visual refinements (confirmation message, divider, qr, instructions)
+   migrated to Tailwind CSS v4 in Task 04 Step 05.
+*/
 .status-confirmed {
   color: var(--color-success);
   font-weight: var(--font-weight-bold);
@@ -1376,145 +1377,17 @@ article.reservation-ticket {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-.ticket-divider {
-  border-bottom: 2px dashed var(--color-border-light, rgba(36,33,29,0.08));
-  margin-block: var(--space-6);
-}
-.ticket-qr {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  margin-block: var(--space-8);
-  text-align: center;
-}
-.qr-placeholder {
-  width: 160px;
-  height: 160px;
-  background-color: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-muted);
-  letter-spacing: 2px;
-}
-.ticket-footer {
-  text-align: center;
-  font-size: var(--font-size-xs);
-  color: var(--color-text-muted);
-  margin-top: var(--space-6);
-}
-.arrival-instructions {
-  background-color: var(--color-surface-muted);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  text-align: center;
-  max-width: 480px;
-  margin-inline: auto;
-  margin-top: var(--space-4);
-}
 
-/* --- CUSTOMER DASHBOARD --- */
-.dashboard-page-layout {
-  display: flex;
-  flex-direction: column;
-  gap: var(--section-space-lg);
-  padding-block: var(--section-space-md);
-  max-width: 1000px;
-  margin-inline: auto;
-}
-.dashboard-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-}
-.dashboard-section-header {
-  border-bottom: 1px solid var(--color-border-light, rgba(36,33,29,0.08));
-  padding-bottom: var(--space-2);
-}
-.upcoming-reservation-card {
-  padding: var(--space-6);
-  border: 2px solid var(--color-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: var(--space-6);
-}
-.upcoming-reservation-card .summary-details {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-}
-.upcoming-reservation-card .summary-details div {
-  margin-bottom: 0;
-}
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  list-style: none;
-  padding: 0;
-}
-.history-item {
-  padding: var(--space-4);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-}
-.profile-summary-card {
-  padding: var(--space-6);
-  max-width: 600px;
-}
-.profile-summary-card .summary-details {
-  display: grid;
-  grid-template-columns: 100px 1fr;
-  align-items: center;
-  gap: var(--space-2);
-}
-.profile-summary-card .summary-details dd {
-  border-bottom: none;
-  margin-bottom: 0;
-  padding-bottom: 0;
-}
+/* --- CUSTOMER DASHBOARD ---
+   Customer dashboard layout, section, card, and history rules
+   migrated to Tailwind CSS v4 in Task 04 Step 06.
+*/
 
-/* --- STAFF AUTH LAYOUT --- */
-.customer-auth-layout {
-  display: flex;
-  justify-content: center;
-  padding-block: var(--section-space-xl);
-}
-.customer-auth-card {
-  width: 100%;
-  max-width: 480px;
-  padding: var(--space-8);
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
-}
-.customer-auth-header {
-  text-align: center;
-  margin-bottom: var(--space-6);
-}
-.customer-auth-header h1 {
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: var(--font-size-xl);
-  margin-bottom: var(--space-2);
-}
-.customer-auth-footer {
-  text-align: center;
-  margin-top: var(--space-6);
-  font-size: var(--font-size-sm);
-  color: var(--color-text-muted);
-}
+
+/* --- CUSTOMER AUTH LAYOUT ---
+   Customer auth layout, card, header, and footer rules
+   migrated to Tailwind CSS v4 in Task 04 Step 07.
+*/
 
 /* --- GALLERY LIGHTBOX --- */
 .gallery-lightbox {
@@ -1550,6 +1423,122 @@ article.reservation-ticket {
   box-shadow: var(--shadow-lg);
 }
 
+/* --- LOCATION AUTOCOMPLETE DROPDOWN (Step C1) --- */
+.location-input-wrapper {
+  position: relative;
+  display: flex;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.location-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: var(--color-white, #FFFFFF);
+  border: 1px solid rgba(36, 33, 29, 0.12);
+  border-radius: var(--radius-lg, 14px);
+  box-shadow: 0 10px 25px -5px rgba(36, 33, 29, 0.12), 0 8px 10px -6px rgba(36, 33, 29, 0.08);
+  z-index: 50;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+}
+
+.location-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md, 10px);
+  cursor: pointer;
+  transition: background-color var(--transition-fast, 0.15s ease), color var(--transition-fast, 0.15s ease);
+  user-select: none;
+}
+
+.location-dropdown-item:hover,
+.location-dropdown-item.is-active {
+  background-color: var(--color-surface, #F7F3EA);
+}
+
+.location-dropdown-item .location-item-icon {
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-primary, #C85C3A);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.location-dropdown-item .location-item-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.location-dropdown-item .location-item-title {
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold, 600);
+  color: var(--color-text, #24211D);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.location-dropdown-item .location-item-subtitle {
+  font-size: 11px;
+  color: var(--color-text-muted, rgba(36, 33, 29, 0.65));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.location-dropdown-status {
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--color-text-muted, rgba(36, 33, 29, 0.65));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-dropdown-status.is-error {
+  color: var(--color-primary, #C85C3A);
+}
+
+.location-dropdown-spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  color: var(--color-primary, #C85C3A);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Word break utilities */
+.break-all {
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+}
+
+.break-words {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+.location-contact-info a {
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+}
+
 /* --- PRINT STYLES --- */
 @media print {
   body.page-ticket {
@@ -1566,3 +1555,5 @@ article.reservation-ticket {
     margin: 0;
   }
 }
+
+} /* end @layer legacy */

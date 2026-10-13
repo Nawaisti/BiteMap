@@ -25,6 +25,8 @@
  * ============================================================
  */
 
+/* Task 07 - wrapped in the same `legacy` cascade layer as style.css. */
+@layer legacy {
 
 /* ============================================================
    1. BREAKPOINT REFERENCE (CSS custom properties — read-only)
@@ -41,101 +43,20 @@
 
 /* ============================================================
    2. NAVIGATION — MOBILE MENU
+   Migrated to Tailwind CSS v4 in Task 03 Step 01.
    ============================================================ */
-
-@media (max-width: 767px) {
-
-  /* Show hamburger */
-  .nav-toggle {
-    display: flex;
-  }
-
-  /* Hide desktop nav links — JS will toggle .nav-open class */
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: var(--nav-height);
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    background-color: var(--color-background);
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--space-4) var(--container-gutter);
-    z-index: var(--z-overlay);
-  }
-
-  .nav-links.nav-open {
-    display: flex;
-  }
-
-  .nav-links li {
-    width: 100%;
-  }
-
-  .nav-links a {
-    display: block;
-    padding-block: var(--space-3);
-    font-size: var(--font-size-base);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .nav-links .btn {
-    margin-top: var(--space-3);
-    width: 100%;
-    justify-content: center;
-  }
-}
 
 
 /* ============================================================
    3. FOOTER LAYOUT
+   Responsive footer grid layouts migrated to Tailwind CSS v4 in Task 03 Step 02.
    ============================================================ */
-
-/* Tablet: collapse to 2 columns (brand spans full width above the nav groups) */
-@media (max-width: 1023px) {
-  .footer-inner {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Mobile: single column, stacked */
-@media (max-width: 767px) {
-  .footer-inner {
-    grid-template-columns: 1fr;
-    gap: var(--space-8);
-  }
-
-  .footer-brand {
-    grid-column: auto;
-  }
-}
 
 
 /* ============================================================
    4. AUTH LAYOUT
+   Customer auth responsive layout migrated to Tailwind CSS v4 in Task 04 Step 07.
    ============================================================ */
-
-/* Stack vertically on tablet and below */
-@media (max-width: 767px) {
-  .auth-layout {
-    grid-template-columns: 1fr;
-  }
-
-  /* Hide decorative visual panel on mobile */
-  .auth-visual {
-    display: none;
-  }
-
-  .auth-panel {
-    padding: var(--space-8) var(--space-6);
-  }
-}
 
 
 /* ============================================================
@@ -227,30 +148,11 @@
 
 /* --- COMPONENT & PAGE OVERRIDES (Task 02 Step 05) --- */
 
-/* Tablet (=1023px) */
-@media (max-width: 1023px) {
-  .admin-layout {
-    grid-template-columns: 1fr;
-  }
-  .admin-sidebar {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-  }
-}
+/* Tablet (<=1023px) */
+/* Admin layout responsive behavior migrated to Tailwind CSS v4 in Task 04 Step 08. */
 
 /* Mobile (=767px) */
 @media (max-width: 767px) {
-  .hero-inner {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: var(--space-8);
-    padding-block: var(--section-space-md);
-  }
-  
-  .hero-visual {
-    order: -1; /* Move image above text on mobile for better hierarchy */
-  }
-  
   .search-bar {
     justify-content: center;
   }
@@ -267,10 +169,6 @@
   .restaurant-actions .btn {
     flex: 1; /* Make buttons share width evenly */
     justify-content: center;
-  }
-  
-  .admin-content {
-    padding: var(--space-4) var(--container-gutter);
   }
 }
 
@@ -291,8 +189,6 @@
   }
 }
 
-@media (max-width: 479px) {
-  .ticket-details {
-    grid-template-columns: 1fr; /* Stack ticket details on small mobile */
-  }
-}
+
+
+} /* end @layer legacy */

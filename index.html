@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/output.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
 </head>
@@ -17,29 +18,29 @@
   <a class="skip-to-content" href="#main-content">Skip to content</a>
 
   <!-- ===== SITE HEADER ===== -->
-  <header class="site-header">
-    <nav class="nav-primary" aria-label="Primary navigation">
-      <a href="index.html" class="nav-logo" aria-label="BiteMap home">
-        <span class="logo-text">BITEMAP</span>
+  <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1200px] mx-auto px-4 md:px-6 xl:px-8 gap-6 md:gap-8" aria-label="Primary navigation">
+      <a href="index.html" class="nav-logo shrink-0" aria-label="BiteMap home">
+        <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
       </a>
 
-      <ul class="nav-links" id="nav-links" role="list">
-        <li><a href="pages/explore.html">Explore</a></li>
-        <li><a href="pages/login.html">Sign In</a></li>
-        <li><a href="pages/register.html" class="btn btn-primary">Join Free</a></li>
+      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-8" id="nav-links" role="list">
+        <li class="w-full md:w-auto"><a href="pages/explore.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explore</a></li>
+        <li class="w-full md:w-auto"><a href="pages/login.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a></li>
+        <li class="w-full md:w-auto"><a href="pages/register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Free</a></li>
       </ul>
 
       <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
       <button
         type="button"
-        class="nav-toggle"
+        class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
         aria-label="Open navigation menu"
         aria-expanded="false"
         aria-controls="nav-links"
       >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-opacity duration-250" aria-hidden="true"></span>
+        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
       </button>
     </nav>
   </header>
@@ -48,158 +49,158 @@
   <main id="main-content">
 
     <!-- 1 & 2: HERO -->
-    <section class="hero" aria-labelledby="hero-heading">
-      <div class="container hero-inner">
+    <section class="hero py-6 md:py-12" aria-labelledby="hero-heading">
+      <div class="container hero-inner max-w-[1200px] mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 items-center gap-6 md:gap-10 text-center md:text-left py-0">
         <div class="hero-content">
-          <h1 id="hero-heading">What are you craving?</h1>
-          <p class="hero-subtitle text-lead text-muted">Discover the best places to eat, drink, and gather around you.</p>
+          <h1 id="hero-heading" class="text-3xl sm:text-4xl lg:text-[48px] font-bold tracking-tight text-dark leading-tight">What are you craving?</h1>
+          <p class="hero-subtitle text-lead text-muted text-base sm:text-xl text-dark/65 mt-2">Discover the best places to eat, drink, and gather around you.</p>
 
-          <form action="pages/explore.html" class="search-bar" role="search" aria-label="Restaurant discovery search">
+          <form action="pages/explore.html" class="search-bar flex flex-col sm:flex-row gap-2 w-full mt-5 sm:mt-6 justify-center md:justify-start" role="search" aria-label="Restaurant discovery search">
             <label for="hero-search" class="visually-hidden">What are you craving?</label>
             <input
               type="search"
               id="hero-search"
               name="q"
-              class="form-control search-input" placeholder="Sushi, coffee, pasta..."
+              class="form-control search-input flex-[2] min-w-0" placeholder="Sushi, coffee, pasta..."
             />
             <label for="hero-location" class="visually-hidden">Location</label>
             <input
               type="text"
               id="hero-location"
               name="loc"
-              class="form-control"
-              placeholder="Current location"
-              value="Jakarta"
-              class="form-control location-input"
+              value="Malang"
+              class="form-control location-input flex-1 min-w-0"
+              placeholder="Malang"
             />
-            <button type="submit" class="btn btn-primary">Discover</button>
+            <button type="submit" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full sm:w-auto">Discover</button>
           </form>
         </div>
-        <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual max-md:hidden" aria-hidden="true">
           <!-- Placeholder for large editorial hero presence -->
         </div>
       </div>
     </section>
 
     <!-- 3: DISCOVERY CATEGORIES -->
-    <section class="discovery-categories" aria-label="Browse by category">
-      <div class="container">
-        <div class="content-rail">
-          <a href="pages/explore.html?category=Jajanan" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127854;</span> Jajanan</a>
-          <a href="pages/explore.html?category=Local%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127835;</span> Local Food</a>
-          <a href="pages/explore.html?category=Asian%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127836;</span> Asian Food</a>
-          <a href="pages/explore.html?category=Fast%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127828;</span> Fast Food</a>
-          <a href="pages/explore.html?category=Restaurant" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127869;</span> Restaurant</a>
-          <a href="pages/explore.html?category=Cafe%20%26%20Coffee" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#9749;</span> Cafe &amp; Coffee</a>
-          <a href="pages/explore.html?category=Drinks" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127865;</span> Drinks</a>
-          <a href="pages/explore.html?category=Dessert%20%26%20Bakery" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#127856;</span> Dessert &amp; Bakery</a>
-          <a href="pages/explore.html?category=Healthy%20Food" class="badge badge-neutral badge-category" ><span class="category-icon" aria-hidden="true">&#129367;</span> Healthy Food</a>
+    <section class="discovery-categories py-3 md:py-5" aria-label="Browse by category">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <div class="content-rail flex gap-3 sm:gap-4 overflow-x-auto pb-2 min-h-auto">
+          <a href="pages/explore.html?category=Jajanan" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127854;</span> Jajanan</a>
+          <a href="pages/explore.html?category=Local%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127835;</span> Local Food</a>
+          <a href="pages/explore.html?category=Asian%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127836;</span> Asian Food</a>
+          <a href="pages/explore.html?category=Fast%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127828;</span> Fast Food</a>
+          <a href="pages/explore.html?category=Restaurant" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127869;</span> Restaurant</a>
+          <a href="pages/explore.html?category=Cafe%20%26%20Coffee" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#9749;</span> Cafe &amp; Coffee</a>
+          <a href="pages/explore.html?category=Drinks" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127865;</span> Drinks</a>
+          <a href="pages/explore.html?category=Dessert%20%26%20Bakery" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127856;</span> Dessert &amp; Bakery</a>
+          <a href="pages/explore.html?category=Healthy%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#129367;</span> Healthy Food</a>
         </div>
       </div>
     </section>
 
-    <!-- 4: POPULAR NEAR YOU -->
-    <section class="section-rail" aria-labelledby="popular-heading">
-      <div class="container">
-        <header class="section-header">
-          <div>
-            <h2 id="popular-heading">Popular Near You</h2>
-            <p id="popular-subtitle">Restaurants people are loving right now.</p>
+    <!-- 4: FEATURED IN MALANG -->
+    <section class="section-rail py-5 md:py-7" aria-labelledby="popular-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <header class="section-header flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div class="flex items-start justify-between gap-2 w-full sm:w-auto">
+            <div>
+              <h2 id="popular-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Featured in Malang</h2>
+              <p id="popular-subtitle" class="text-xs sm:text-sm text-dark/65">Curated dining in the heart of Malang.</p>
+            </div>
+            <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150 sm:hidden">Lihat semua &rarr;</a>
           </div>
-          <div class="section-actions" style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
-            <button type="button" class="btn btn-outline" id="btn-nearby-location" aria-label="Find restaurants near me" style="padding: var(--space-2) var(--space-4); font-size: var(--font-size-sm);">
-              <span aria-hidden="true">&#9678;</span> Find near me
-            </button>
-            <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+          <div class="section-actions flex items-center justify-between sm:justify-start gap-4">
+            <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150 hidden sm:inline-block">Lihat semua &rarr;</a>
           </div>
         </header>
-        <div id="nearby-status" class="nearby-status text-small text-muted" role="status" aria-live="polite" style="margin-bottom: var(--space-4); display: none;"></div>
-        <div class="content-rail">
+        <div class="content-rail flex gap-4 overflow-x-auto min-h-12">
           <!-- Cards injected by js/main.js renderHomepageRails() -->
         </div>
       </div>
     </section>
 
     <!-- 5: CATEGORY DISCOVERY RAIL -->
-    <section class="section-rail" aria-labelledby="cafe-heading">
-      <div class="container">
-        <header class="section-header">
+    <section class="section-rail py-5 md:py-7" aria-labelledby="cafe-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <header class="section-header flex items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <h2 id="cafe-heading">Cafe &amp; Coffee</h2>
-            <p>Your next favorite spot to sit and sip.</p>
+            <h2 id="cafe-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Cafe &amp; Coffee</h2>
+            <p class="text-xs sm:text-sm text-dark/65">Your next favorite spot to sit and sip.</p>
           </div>
-          <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+          <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150">Lihat semua &rarr;</a>
         </header>
-        <div class="content-rail">
+        <div class="content-rail flex gap-4 overflow-x-auto min-h-12">
           <!-- Cards injected by js/main.js renderHomepageRails() -->
         </div>
       </div>
     </section>
 
     <!-- 6: CURATED DISCOVERY RAIL -->
-    <section class="section-rail" aria-labelledby="curated-heading">
-      <div class="container">
-        <header class="section-header">
+    <section class="section-rail py-5 md:py-7" aria-labelledby="curated-heading">
+      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+        <header class="section-header flex items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <h2 id="curated-heading">Good Places for Study</h2>
-            <p>Wi-Fi, good vibes, and great coffee.</p>
+            <h2 id="curated-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Good Places for Study</h2>
+            <p class="text-xs sm:text-sm text-dark/65">Wi-Fi, good vibes, and great coffee.</p>
           </div>
-          <a href="pages/explore.html" class="section-link">Lihat semua &rarr;</a>
+          <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150">Lihat semua &rarr;</a>
         </header>
-        <div class="content-rail">
+        <div class="content-rail flex gap-4 overflow-x-auto min-h-12">
           <!-- Cards injected by js/main.js renderHomepageRails() -->
         </div>
       </div>
     </section>
 
     <!-- 7: DISCOVERY CTA -->
-    <section class="section-cta" aria-labelledby="cta-heading" >
-      <div class="container" class="cta-inner">
-        <h2 id="cta-heading">Still looking?</h2>
-        <p class="text-lead text-muted" class="cta-text">Explore more places around you. Discover hundreds of hidden gems, cafes, and restaurants.</p>
-        <a href="pages/explore.html" class="btn btn-primary" >Explore more places</a>
+    <section class="section-cta py-8 md:py-14 text-center" aria-labelledby="cta-heading" >
+      <div class="container cta-inner max-w-[1200px] mx-auto px-4 md:px-6 flex flex-col items-center gap-3 sm:gap-4">
+        <h2 id="cta-heading" class="text-xl sm:text-2xl font-semibold text-dark">Still looking?</h2>
+        <p class="cta-text text-lead text-muted text-base sm:text-xl text-dark/65 max-w-[500px]">Explore more places around you. Discover hundreds of hidden gems, cafes, and restaurants.</p>
+        <a href="pages/explore.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full sm:w-auto mt-1 sm:mt-0">Explore more places</a>
       </div>
     </section>
 
   </main>
 
   <!-- ===== SITE FOOTER ===== -->
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-inner">
+  <footer class="site-footer bg-dark text-cream pt-12 pb-8">
+    <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
+      <div class="footer-inner grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr] gap-8 lg:gap-10 items-start pb-8 border-b border-cream/10">
 
         <!-- Brand column -->
-        <div class="footer-brand">
-          <a href="index.html" class="footer-logo" aria-label="BiteMap home">
-            <span class="logo-text">BITEMAP</span>
+        <div class="footer-brand col-span-1 md:col-span-2 lg:col-span-1">
+          <a href="index.html" class="footer-logo inline-block mb-3" aria-label="BiteMap home">
+            <span class="logo-text text-xl font-bold tracking-[0.08em] text-cream">BITEMAP</span>
           </a>
-          <p>Find your next favorite place.</p>
+          <p class="text-sm leading-relaxed text-cream/60 max-w-[24ch]">Find your next favorite place.</p>
         </div>
 
         <!-- Discover navigation group -->
         <nav class="footer-nav-group" aria-label="Discover">
-          <h3>Discover</h3>
-          <ul role="list">
-            <li><a href="pages/explore.html">Explore Restaurants</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Discover</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="pages/explore.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Explore Restaurants</a></li>
           </ul>
         </nav>
 
         <!-- Account navigation group -->
         <nav class="footer-nav-group" aria-label="Account">
-          <h3>Account</h3>
-          <ul role="list">
-            <li><a href="pages/login.html">Sign In</a></li>
-            <li><a href="pages/register.html">Join Free</a></li>
+          <h3 class="text-xs font-semibold tracking-[0.1em] uppercase text-cream/45 mb-4">Account</h3>
+          <ul class="flex flex-col gap-3" role="list">
+            <li><a href="pages/login.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Sign In</a></li>
+            <li><a href="pages/register.html" class="text-sm text-cream/65 hover:text-cream hover:opacity-100 focus-visible:text-cream focus-visible:opacity-100 transition-opacity transition-colors duration-150">Join Free</a></li>
           </ul>
         </nav>
 
       </div>
-      <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 BiteMap. All rights reserved.</p>
+      <div class="footer-bottom flex items-center justify-between flex-wrap gap-4 pt-6">
+        <p class="footer-copy text-xs text-cream/40">&copy; 2026 BiteMap. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
+  <!-- Local environment config (git-ignored, optional) -->
+  <script src="js/config.local.js" onerror="this.remove()"></script>
   <script src="js/main.js" defer></script>
 </body>
 </html>

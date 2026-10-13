@@ -1,0 +1,443 @@
+/*
+ * BiteMap Cascade Layer Order (Task 07)
+ * Legacy hand-written CSS (css/style.css, css/responsive.css) is wrapped in
+ * `@layer legacy`. Declaring the order here (first rule in the compiled
+ * stylesheet) places legacy BELOW components + utilities, so Tailwind utilities
+ * written in the HTML always win over legacy rules - instead of unlayered
+ * legacy CSS silently beating every utility (margin/padding resets, grids, etc).
+ */
+@layer theme, base, legacy, components, utilities;
+
+@import "tailwindcss";
+
+/* 
+ * BiteMap Content Detection
+ * Ensure Tailwind scans all root and sub-page templates and scripts
+ */
+@source "../index.html";
+@source "../pages/**/*.html";
+@source "../js/**/*.js";
+
+/* 
+ * BiteMap Design Tokens Theme Configuration (Tailwind v4)
+ * Preserves brand palette, typography, and semantic color hierarchy
+ */
+@theme {
+  /* --- Base Brand Palette (Locked) --- */
+  --color-cream: #F7F3EA;
+  --color-dark: #24211D;
+  --color-terracotta: #C85C3A;
+  --color-green: #6F8064;
+  --color-white: #FFFFFF;
+
+  /* --- Typography --- */
+  --font-poppins: 'Poppins', sans-serif;
+  --font-sans: 'Poppins', sans-serif;
+
+  /* --- Semantic Color System --- */
+  --color-background: var(--color-cream);
+  --color-surface: var(--color-white);
+  --color-surface-muted: rgba(36, 33, 29, 0.04);
+
+  --color-text: var(--color-dark);
+  --color-text-muted: rgba(36, 33, 29, 0.65);
+
+  --color-primary: var(--color-terracotta);
+  --color-primary-hover: #B25132;
+  --color-primary-soft: rgba(200, 92, 58, 0.1);
+
+  --color-secondary: var(--color-green);
+
+  --color-success: var(--color-green);
+  --color-success-soft: rgba(111, 128, 100, 0.1);
+
+  --color-border: rgba(36, 33, 29, 0.15);
+}
+
+:root {
+  --color-cream: #F7F3EA;
+  --color-dark: #24211D;
+  --color-terracotta: #C85C3A;
+  --color-green: #6F8064;
+  --color-white: #FFFFFF;
+  --color-secondary: #6F8064;
+  --font-family-base: 'Poppins', sans-serif;
+}
+
+/* 
+ * Mobile Navigation Drawer Compatibility
+ * Ensures .nav-open display state on mobile viewport
+ */
+@media (max-width: 767px) {
+  .nav-links.nav-open {
+    display: flex !important;
+  }
+}
+
+/*
+ * Shared component primitives below live in `@layer components` (Task 07) so that
+ * utility classes on the same element (py-2, px-4, rounded-md, w-full ...) override them.
+ */
+@layer components {
+
+/* 
+ * Shared Button Primitives (Tailwind v4)
+ * Replaces legacy .btn, .btn-primary, .btn-outline with exact BiteMap design tokens.
+ * Retains compatibility with dynamic JS toggling (e.g. syncFavoriteButton) and JS-injected links.
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 250ms ease, color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible {
+  background-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+/*
+ * Shared Badge Primitives (Tailwind v4)
+ * Replaces legacy Section 14 badge rules (.badge, .badge-neutral, .badge-success, .badge-primary, .badge-category, .hours-status-badge).
+ * Retains exact design tokens and full compatibility with dynamic JS badge rendering in main.js.
+ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+.badge-neutral {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+.badge-success {
+  background-color: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.badge-primary {
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.badge-category {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid rgba(36, 33, 29, 0.08);
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.badge-category:hover {
+  background-color: rgba(200, 92, 58, 0.08);
+  border-color: rgba(200, 92, 58, 0.25);
+  color: var(--color-primary);
+}
+
+/*
+ * "Open Now" filter pill active state (Explore page, Task 07 Step 03)
+ * When toggled active by JS (.is-active class), shows a restrained dark treatment.
+ */
+.filter-btn-open-now.is-active {
+  background-color: var(--color-dark);
+  border-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+.hours-status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  vertical-align: middle;
+}
+
+/*
+ * Favorite Button Primitives (Tailwind v4)
+ * Replaces legacy .btn-favorite rules with BiteMap design tokens.
+ * Fully preserves dynamic in-memory favorite toggling and .is-active state handling.
+ */
+.btn-favorite {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
+  border: none;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: transform 150ms ease, color 150ms ease, box-shadow 150ms ease;
+  z-index: 10;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.05);
+  color: var(--color-primary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-favorite.is-active {
+  color: var(--color-primary);
+}
+
+.btn-favorite:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/*
+ * Reservation Stepper Primitives (Tailwind v4)
+ * Controls dynamic stepper progression while preserving JS classes and ARIA current state.
+ */
+.reservation-stepper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 1rem;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.step-item.active {
+  color: var(--color-text);
+}
+
+.step-item[aria-current="step"] {
+  color: var(--color-primary);
+}
+
+.step-item .step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-surface-muted);
+  font-size: 0.75rem;
+}
+
+.step-item.active .step-number {
+  background-color: var(--color-text);
+  color: var(--color-surface);
+}
+
+.step-item[aria-current="step"] .step-number {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+} /* end @layer components */
+
+/*
+ * Form Validation State (.is-error)
+ * Preserves dynamic form validation border and error message styling.
+ */
+.form-control.is-error,
+input.is-error,
+select.is-error,
+textarea.is-error,
+.is-error {
+  border-color: var(--color-primary) !important;
+}
+
+/*
+ * Reservation Summary Card Elements
+ */
+@layer components {
+  .summary-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .summary-details dt {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .summary-details dd {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(36, 33, 29, 0.08);
+    padding-bottom: 0.5rem;
+  }
+
+  .summary-details dd:last-child {
+    border-bottom: none;
+  }
+
+  /*
+   * Subtle Scrollbar Foundation (Task 07 - Step 01)
+   * Refined scrollbar styling for horizontal discovery rails and overflow regions.
+   * Keeps rails discoverable and easily scrollable without harsh OS default scrollbars.
+   */
+  .content-rail,
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(36, 33, 29, 0.22) transparent;
+  }
+
+  .content-rail::-webkit-scrollbar,
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  .content-rail::-webkit-scrollbar-track,
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .content-rail::-webkit-scrollbar-thumb,
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background-color: rgba(36, 33, 29, 0.22);
+    border-radius: 9999px;
+  }
+
+  .content-rail::-webkit-scrollbar-thumb:hover,
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(36, 33, 29, 0.38);
+  }
+
+  /*
+   * Restaurant Card Visual Refinements (Task 07 - Step 02 Final Patch)
+   * Distinct warm editorial placeholder and single-line ellipsis truncation.
+   */
+  .restaurant-card-image {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 45%, rgba(200, 92, 58, 0.14) 0%, rgba(36, 33, 29, 0.04) 70%, transparent 100%);
+    border-bottom: 1px solid rgba(36, 33, 29, 0.06);
+  }
+
+  /*
+   * Restaurant Detail Warm Editorial Placeholders & Framing (Task 07 - Step 04)
+   * Consistent with card placeholder: warm sand/beige base, subtle terracotta radial glow, subtle border.
+   */
+  .restaurant-hero-image {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 40%, rgba(200, 92, 58, 0.12) 0%, rgba(36, 33, 29, 0.04) 65%, transparent 100%);
+    border-bottom: 1px solid rgba(36, 33, 29, 0.08);
+  }
+
+  .gallery-image-wrapper {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 45%, rgba(200, 92, 58, 0.12) 0%, rgba(36, 33, 29, 0.04) 70%, transparent 100%);
+    border: 1px solid rgba(36, 33, 29, 0.08);
+  }
+
+  .location-map {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 50%, rgba(200, 92, 58, 0.08) 0%, rgba(36, 33, 29, 0.03) 70%, transparent 100%);
+    border: 1px solid rgba(36, 33, 29, 0.10);
+  }
+
+  /*
+   * Reservation & Ticket Warm Editorial Placeholders (Task 07 - Step 05)
+   */
+  .summary-restaurant-image {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 45%, rgba(200, 92, 58, 0.12) 0%, rgba(36, 33, 29, 0.04) 70%, transparent 100%);
+    border: 1px solid rgba(36, 33, 29, 0.08);
+  }
+
+  .qr-placeholder {
+    background-color: #EDE6D8;
+    background-image: radial-gradient(circle at 50% 50%, rgba(200, 92, 58, 0.10) 0%, rgba(36, 33, 29, 0.03) 70%, transparent 100%);
+    border: 1px solid rgba(36, 33, 29, 0.12);
+  }
+
+  .restaurant-card-content {
+    min-width: 0;
+  }
+
+  .restaurant-card-content h3,
+  .restaurant-card-content .text-lead {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /*
+   * Mobile Restaurant Card Refinements on Grid Feed (Task 07 Step 03 - <= 639px)
+   * Moderates card image dominance from 16:10 to 16:9 on single-column feed,
+   * and elevates restaurant name to 20px (1.25rem) for confident editorial hierarchy.
+   */
+  @media (max-width: 639px) {
+    .restaurant-grid .restaurant-card-image {
+      aspect-ratio: 16 / 9;
+    }
+
+    .restaurant-grid .restaurant-card-content h3,
+    .restaurant-grid .restaurant-card-content .text-lead {
+      font-size: 1.25rem;
+      line-height: 1.35;
+    }
+  }
+}
