@@ -532,6 +532,28 @@ function getRestaurantHours(restaurant) {
 }
 
 /**
+ * Determines whether a restaurant is currently open based on verified operating hours.
+ * Safely handles missing, invalid, or closed schedules.
+ * @param {object} restaurant
+ * @param {Date} [now]
+ * @returns {boolean}
+ */
+function isRestaurantOpenNow(restaurant, now = new Date()) {
+    const hours = getRestaurantHours(restaurant);
+    if (!hours) return false;
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayName = days[now.getDay()];
+    const todayHoursStr = hours[dayName];
+    if (!todayHoursStr || typeof todayHoursStr !== 'string') return false;
+    const timeMatch = todayHoursStr.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+    if (!timeMatch) return false;
+    const currentMins = now.getHours() * 60 + now.getMinutes();
+    const openMins = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
+    const closeMins = parseInt(timeMatch[3], 10) * 60 + parseInt(timeMatch[4], 10);
+    return currentMins >= openMins && currentMins < closeMins;
+}
+
+/**
  * Safely determines whether a restaurant has reservation capability enabled.
  * Returns a boolean.
  */
@@ -543,7 +565,48 @@ function hasReservationCapability(restaurant) {
 // Centralized Favorite State & Helpers
 // ==========================================
 
+const FAVORITES_STORAGE_KEY = 'bitemap_favorites';
 const BITEMAP_FAVORITES = new Set();
+
+/**
+ * Loads persisted favorite restaurant IDs from browser localStorage.
+ * Handles missing, empty, malformed, or restricted storage gracefully.
+ */
+function loadFavoritesFromStorage() {
+    try {
+        if (typeof window === 'undefined' || !window.localStorage) return;
+        const raw = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+            parsed.forEach(id => {
+                if (typeof id === 'string' && id.trim()) {
+                    BITEMAP_FAVORITES.add(id.trim());
+                }
+            });
+        }
+    } catch (e) {
+        // Handle SecurityError, JSON parse errors, or quota exceptions safely
+        console.warn('Unable to load favorites from localStorage:', e);
+    }
+}
+
+/**
+ * Persists the current active favorite IDs to browser localStorage.
+ * Saves only an array of canonical string IDs — never full objects.
+ */
+function saveFavoritesToStorage() {
+    try {
+        if (typeof window === 'undefined' || !window.localStorage) return;
+        const ids = Array.from(BITEMAP_FAVORITES);
+        window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(ids));
+    } catch (e) {
+        console.warn('Unable to save favorites to localStorage:', e);
+    }
+}
+
+// Hydrate stored favorites on initial script evaluation
+loadFavoritesFromStorage();
 
 /**
  * Checks if a restaurant is currently in the favorites set.
@@ -556,20 +619,23 @@ function isFavorite(restaurantId) {
 }
 
 /**
- * Toggles a restaurant in the centralized favorites set.
+ * Toggles a restaurant in the centralized favorites set and persists changes.
  * Returns the new active state (true = saved, false = removed).
  * @param {string} restaurantId
  * @returns {boolean}
  */
 function toggleFavorite(restaurantId) {
     if (!restaurantId) return false;
+    let newState = false;
     if (BITEMAP_FAVORITES.has(restaurantId)) {
         BITEMAP_FAVORITES.delete(restaurantId);
-        return false;
+        newState = false;
     } else {
         BITEMAP_FAVORITES.add(restaurantId);
-        return true;
+        newState = true;
     }
+    saveFavoritesToStorage();
+    return newState;
 }
 
 /**
@@ -2260,6 +2326,7 @@ function filterRestaurants(restaurants, options = {}) {
     const selectCui = (options.selectCuisine || '').trim().toLowerCase();
     const minRating = typeof options.minRating === 'number' ? options.minRating : 0;
     const maxDistance = typeof options.maxDistance === 'number' ? options.maxDistance : 999;
+    const openNow = Boolean(options.openNow);
     const sort = options.sort || 'Recommended';
 
     const results = restaurants.filter(r => {
@@ -2305,6 +2372,13 @@ function filterRestaurants(restaurants, options = {}) {
         // 6. Distance Filter: matches r.distance <= maxDistance (graceful if distance missing)
         if (maxDistance < 999) {
             if (typeof r.distance !== 'number' || r.distance > maxDistance) {
+                return false;
+            }
+        }
+
+        // 7. Open Now Filter: matches verified operating hours
+        if (openNow) {
+            if (!isRestaurantOpenNow(r)) {
                 return false;
             }
         }
@@ -2368,6 +2442,7 @@ function initExploreFilters() {
     const btnResetFilters = $('#btn-reset-filters', mainContent);
     const btnClearFilters = $('#btn-clear-filters', mainContent);
     const locationInput = $('#explore-location', mainContent) || $('#explore-location');
+    const btnFilterOpenNow = $('.filter-btn-open-now', mainContent);
 
     const PAGE_SIZE = 12;
     let currentLimit = PAGE_SIZE;
@@ -2481,6 +2556,7 @@ function initExploreFilters() {
         }
 
         const sortVal = sortSelect ? sortSelect.value : 'Recommended';
+        const isOpenNow = Boolean(btnFilterOpenNow && btnFilterOpenNow.classList.contains('is-active'));
 
         // Filter and sort canonical dataset
         const allRestaurants = getRestaurants();
@@ -2491,6 +2567,7 @@ function initExploreFilters() {
             selectCuisine,
             minRating,
             maxDistance,
+            openNow: isOpenNow,
             sort: sortVal
         });
 
@@ -2541,6 +2618,7 @@ function initExploreFilters() {
             selectCuisine ||
             minRating > 0 ||
             maxDistance < 999 ||
+            isOpenNow ||
             sortVal !== 'Recommended'
         );
 
@@ -2585,7 +2663,15 @@ function initExploreFilters() {
 
         // Clear Filters button in filter bar
         if (btnClearFilters) {
-            btnClearFilters.style.display = hasActiveFilters ? 'inline-flex' : 'none';
+            if (hasActiveFilters) {
+                btnClearFilters.style.display = 'inline-flex';
+                btnClearFilters.classList.remove('hidden');
+                btnClearFilters.removeAttribute('aria-hidden');
+            } else {
+                btnClearFilters.style.display = 'none';
+                btnClearFilters.classList.add('hidden');
+                btnClearFilters.setAttribute('aria-hidden', 'true');
+            }
         }
         
         // URL synchronization (without reload)
@@ -2615,6 +2701,10 @@ function initExploreFilters() {
         }
         currentCategory = '';
         updateCategoryUI();
+        if (btnFilterOpenNow) {
+            btnFilterOpenNow.classList.remove('is-active');
+            btnFilterOpenNow.setAttribute('aria-pressed', 'false');
+        }
         if (filterCatSelect) filterCatSelect.selectedIndex = 0;
         if (filterCuiSelect) filterCuiSelect.selectedIndex = 0;
         if (filterDistSelect) filterDistSelect.selectedIndex = 0;
@@ -2626,6 +2716,22 @@ function initExploreFilters() {
     }
 
     // Attach interaction listeners
+    if (btnFilterOpenNow && !btnFilterOpenNow.dataset.openNowBound) {
+        btnFilterOpenNow.dataset.openNowBound = 'true';
+        btnFilterOpenNow.addEventListener('click', (e) => {
+            e.preventDefault();
+            const wasActive = btnFilterOpenNow.classList.contains('is-active');
+            if (wasActive) {
+                btnFilterOpenNow.classList.remove('is-active');
+                btnFilterOpenNow.setAttribute('aria-pressed', 'false');
+            } else {
+                btnFilterOpenNow.classList.add('is-active');
+                btnFilterOpenNow.setAttribute('aria-pressed', 'true');
+            }
+            performCanonicalFilters();
+        });
+    }
+
     if (searchInput) {
         searchInput.addEventListener('input', () => {
             if (debounceTimer) clearTimeout(debounceTimer);
@@ -3722,7 +3828,7 @@ function initReservation() {
             notFound.innerHTML = `
               <div class="container">
                 <div class="empty-state" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4); max-width: 520px; margin-inline: auto;">
-                  <h2 class="empty-state-title">Restaurant not found</h2>
+                  <h1 class="empty-state-title">Restaurant not found</h1>
                   <p class="empty-state-desc text-muted">Please select a valid restaurant to make a reservation.</p>
                   <a href="explore.html" class="btn btn-primary" style="margin-top: var(--space-2);">Back to Explore</a>
                 </div>
@@ -3757,7 +3863,7 @@ function initReservation() {
             notice.innerHTML = `
               <div class="container">
                 <div class="empty-state" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4); max-width: 520px; margin-inline: auto;">
-                  <h2 class="empty-state-title">Online reservations unavailable</h2>
+                  <h1 class="empty-state-title">Online reservations unavailable</h1>
                   <p class="empty-state-desc text-muted">Online reservations are currently unavailable for ${escapeMapHtml(restaurant.name)}. Please check back later or contact the restaurant directly.</p>
                   <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: center; margin-top: var(--space-2);">
                     <a href="restaurant.html?id=${encodeURIComponent(restaurant.id)}" class="btn btn-outline">View Restaurant</a>
@@ -4173,7 +4279,7 @@ function showRestaurantNotFound(main) {
     notFound.innerHTML = `
       <div class="container">
         <div class="empty-state" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4); max-width: 520px; margin-inline: auto;">
-          <h2 class="empty-state-title">Restaurant not found</h2>
+          <h1 class="empty-state-title">Restaurant not found</h1>
           <p class="empty-state-desc text-muted">The restaurant you're looking for doesn't exist or the link may be incorrect.</p>
           <a href="explore.html" class="btn btn-primary" style="margin-top: var(--space-2);">Back to Explore</a>
         </div>
@@ -4203,7 +4309,7 @@ function showRestaurantError(main, message) {
     errorSection.innerHTML = `
       <div class="container">
         <div class="empty-state" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-4); max-width: 520px; margin-inline: auto;">
-          <h2 class="empty-state-title">Unable to load restaurant details</h2>
+          <h1 class="empty-state-title">Unable to load restaurant details</h1>
           <p class="empty-state-desc text-muted">${message || "We encountered an issue fetching live details for this place. Please try again later or return to Explore."}</p>
           <a href="explore.html" class="btn btn-primary" style="margin-top: var(--space-2);">Back to Explore</a>
         </div>
@@ -4533,7 +4639,7 @@ function updateFavoritesState() {
 
     const cards = grid ? grid.querySelectorAll('.restaurant-card') : [];
     const count = cards.length;
-    const hasFavorites = count > 0 && grid.style.display !== 'none';
+    const hasFavorites = count > 0;
 
     const countEl = document.querySelector('[data-detail="favorites-count"]');
     if (countEl) {
@@ -4567,10 +4673,10 @@ function updateFavoritesState() {
 
 /**
  * Initializes dashboard data rendering for dashboard.html.
- * Renders demo favorites from canonical BITEMAP_RESTAURANTS.
+ * Renders persisted favorites from canonical BITEMAP_RESTAURANTS.
  * Aligns upcoming reservation restaurant identity with canonical data.
  * Controls section and empty-state visibility safely from local DOM state.
- * Does not implement persistence, real user accounts, or backend booking.
+ * Does not implement fake accounts or backend booking.
  */
 function initDashboard() {
     const dashboardHeader = $('.dashboard-header');
@@ -4588,6 +4694,7 @@ function initDashboard() {
         });
         favGrid.innerHTML = '';
         favGrid.appendChild(fragment);
+        initFavorites(favGrid);
     }
 
     // 2. Align upcoming reservation restaurant identity with canonical data
@@ -4632,6 +4739,204 @@ function initDashboard() {
 }
 
 // ==========================================
+// Authentication Forms & Demonstration Notice
+// ==========================================
+
+function initAuth() {
+    const authCard = $('.customer-auth-card');
+    if (!authCard) return;
+
+    const form = $('.auth-form', authCard);
+    if (!form || form.dataset.authBound) return;
+    form.dataset.authBound = 'true';
+
+    function clearFieldError(input) {
+        input.classList.remove('is-error');
+        input.removeAttribute('aria-invalid');
+        const parent = input.closest('.form-group') || input.parentNode;
+        const errEl = parent ? parent.querySelector('.form-error-msg') : null;
+        if (errEl) errEl.remove();
+        input.removeAttribute('aria-describedby');
+    }
+
+    function setFieldError(input, message) {
+        clearFieldError(input);
+        input.classList.add('is-error');
+        input.setAttribute('aria-invalid', 'true');
+        const errorId = (input.id || 'field') + '-error';
+        input.setAttribute('aria-describedby', errorId);
+
+        const msgEl = document.createElement('span');
+        msgEl.id = errorId;
+        msgEl.className = 'form-error-msg';
+        msgEl.setAttribute('role', 'alert');
+        msgEl.textContent = message;
+        input.insertAdjacentElement('afterend', msgEl);
+    }
+
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            if (input.classList.contains('is-error')) {
+                clearFieldError(input);
+            }
+        });
+    });
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        // Clear existing errors & banners
+        inputs.forEach(input => clearFieldError(input));
+        const existingBanner = authCard.querySelector('.auth-status-banner');
+        if (existingBanner) existingBanner.remove();
+
+        let hasError = false;
+        let firstInvalidInput = null;
+
+        // 1. Full name validation (Register page)
+        const nameInput = form.querySelector('#full-name');
+        if (nameInput) {
+            const val = nameInput.value.trim();
+            if (!val) {
+                setFieldError(nameInput, 'Please enter your full name.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = nameInput;
+            }
+        }
+
+        // 2. Email validation (Login & Register)
+        const emailInput = form.querySelector('#email');
+        if (emailInput) {
+            const val = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!val) {
+                setFieldError(emailInput, 'Email address is required.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = emailInput;
+            } else if (!emailRegex.test(val)) {
+                setFieldError(emailInput, 'Please enter a valid email address.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = emailInput;
+            }
+        }
+
+        // 3. Password validation (Login & Register)
+        const passwordInput = form.querySelector('#password');
+        if (passwordInput) {
+            const val = passwordInput.value;
+            if (!val) {
+                setFieldError(passwordInput, 'Password is required.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = passwordInput;
+            } else if (val.length < 8) {
+                setFieldError(passwordInput, 'Password must be at least 8 characters long.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = passwordInput;
+            }
+        }
+
+        // 4. Confirm password validation (Register)
+        const confirmInput = form.querySelector('#password-confirm');
+        if (confirmInput) {
+            const val = confirmInput.value;
+            const passVal = passwordInput ? passwordInput.value : '';
+            if (!val) {
+                setFieldError(confirmInput, 'Please confirm your password.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = confirmInput;
+            } else if (val !== passVal) {
+                setFieldError(confirmInput, 'Passwords do not match.');
+                hasError = true;
+                if (!firstInvalidInput) firstInvalidInput = confirmInput;
+            }
+        }
+
+        // Always clear password inputs immediately on submit for security hygiene
+        const passwordInputs = form.querySelectorAll('input[type="password"]');
+        passwordInputs.forEach(p => { p.value = ''; });
+
+        if (hasError) {
+            if (firstInvalidInput) firstInvalidInput.focus();
+            return;
+        }
+
+        // Honest demonstration notice banner
+        const isRegister = !!nameInput;
+        const banner = document.createElement('div');
+        banner.className = 'auth-status-banner mt-6';
+        banner.setAttribute('role', 'status');
+        banner.setAttribute('aria-live', 'polite');
+        banner.innerHTML = `
+            <div style="font-weight: 600; margin-bottom: 4px; color: var(--color-primary, #C85C3A);">Demonstration Notice</div>
+            <div>${isRegister ? 'Account creation' : 'User authentication'} is currently in preview mode. Server-side authentication and session management are scheduled for the upcoming backend phase. No credentials were saved or submitted.</div>
+        `;
+
+        form.insertAdjacentElement('afterend', banner);
+    });
+}
+
+// ==========================================
+// Admin Portal (Demonstration Navigation & Feedback)
+// ==========================================
+
+function initAdmin() {
+    const adminMain = $('.admin-main');
+    if (!adminMain) return;
+
+    const sidebarNav = $('.admin-nav');
+    if (sidebarNav && !sidebarNav.dataset.adminBound) {
+        sidebarNav.dataset.adminBound = 'true';
+        const navLinks = sidebarNav.querySelectorAll('a[href^="#"]');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const targetId = link.getAttribute('href').slice(1);
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) {
+                    e.preventDefault();
+                    // Update active state in sidebar
+                    navLinks.forEach(l => {
+                        l.removeAttribute('aria-current');
+                    });
+                    link.setAttribute('aria-current', 'page');
+
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Update URL hash without jumping
+                    window.history.replaceState(null, '', '#' + targetId);
+                }
+            });
+        });
+    }
+
+    // Inert management action feedback
+    const managementSection = $('#management');
+    if (managementSection && !managementSection.dataset.actionsBound) {
+        managementSection.dataset.actionsBound = 'true';
+        const actionButtons = managementSection.querySelectorAll('button');
+
+        actionButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const card = btn.closest('.card');
+                const actionTitle = (card && card.querySelector('h3')) ? card.querySelector('h3').textContent.trim() : 'This management feature';
+
+                let notice = managementSection.querySelector('.admin-action-notice');
+                if (!notice) {
+                    notice = document.createElement('div');
+                    notice.className = 'admin-action-notice auth-status-banner mt-6';
+                    notice.setAttribute('role', 'status');
+                    notice.setAttribute('aria-live', 'polite');
+                    managementSection.appendChild(notice);
+                }
+                notice.innerHTML = `<div style="font-weight: 600; margin-bottom: 4px; color: var(--color-primary, #C85C3A);">Demonstration Preview</div><div><strong>${actionTitle}</strong> is a demonstration interface. Backend administrative API endpoints and live data synchronization are scheduled for the upcoming phase.</div>`;
+                notice.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+    }
+}
+
+// ==========================================
 // Shared Initialization
 // ==========================================
 
@@ -4654,6 +4959,8 @@ function initBiteMap() {
     initRestaurantGallery();
     initReservation();
     initReservationTicket();
+    initAuth();
+    initAdmin();
 }
 
 initBiteMap();

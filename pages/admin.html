@@ -56,6 +56,12 @@
       <!-- Admin Content -->
       <main class="admin-content p-4 sm:p-6 lg:p-8 flex flex-col gap-10 md:gap-12">
 
+        <!-- Demonstration Interface Banner -->
+        <aside class="admin-demo-banner flex items-start sm:items-center gap-3 p-4 bg-cream rounded-xl border border-dark/15 text-sm text-dark/75 shadow-xs" role="status" aria-label="Demonstration notice">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-terracotta shrink-0 mt-1 sm:mt-0" aria-hidden="true"></span>
+          <p class="m-0"><strong class="font-semibold text-dark">Demonstration Interface:</strong> Staff authentication and live administrative management are scheduled for the upcoming backend phase. Controls shown below are demonstration previews.</p>
+        </aside>
+
         <!-- Restaurant Overview -->
         <section id="overview" aria-labelledby="overview-heading" class="flex flex-col gap-4">
           <h2 id="overview-heading" class="text-lead text-xl font-bold text-dark mb-4">Restaurant Overview</h2>
@@ -75,7 +81,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <!-- Profile -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="restaurant" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Restaurant Profile</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Edit restaurant information, categories, and tags.</p>
@@ -84,7 +90,7 @@
             </article>
 
             <!-- Photos -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="photos" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Photos</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Manage restaurant photos and gallery.</p>
@@ -93,7 +99,7 @@
             </article>
 
             <!-- Menu -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="menu" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Menu</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Manage menu categories and items.</p>
@@ -102,7 +108,7 @@
             </article>
 
             <!-- Opening Hours -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="opening-hours" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Opening Hours</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Update your weekly opening hours.</p>
@@ -111,7 +117,7 @@
             </article>
 
             <!-- Tables -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="tables" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Tables</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Manage restaurant tables and layout.</p>
@@ -120,7 +126,7 @@
             </article>
 
             <!-- Reservations -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="reservations" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Reservations</h3>
                 <p class="text-small text-muted text-sm text-dark/65">View and manage all reservations.</p>
@@ -129,7 +135,7 @@
             </article>
 
             <!-- Check-in -->
-            <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+            <article id="check-in" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
               <div>
                 <h3 class="text-lg font-bold text-dark mb-1">Check-in</h3>
                 <p class="text-small text-muted text-sm text-dark/65">Check in arriving customers.</p>

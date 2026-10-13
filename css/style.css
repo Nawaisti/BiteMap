@@ -741,6 +741,32 @@ button:focus-visible,
 .is-success {
   border-color: var(--color-success) !important;
 }
+.form-error-msg {
+  display: block;
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-primary, #C85C3A);
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+.auth-status-banner {
+  background-color: var(--color-cream, #F7F3EA);
+  border: 1px solid rgba(200, 92, 58, 0.35);
+  border-left: 4px solid var(--color-primary, #C85C3A);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.875rem 1rem;
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text, #24211D);
+  line-height: 1.5;
+}
+.filter-btn-open-now.is-active {
+  background-color: var(--color-primary, #C85C3A) !important;
+  color: var(--color-white, #FFFFFF) !important;
+  border-color: var(--color-primary, #C85C3A) !important;
+}
+.filter-btn-open-now.is-active:hover {
+  background-color: #B25132 !important;
+  border-color: #B25132 !important;
+}
 
 ::placeholder {
   color: var(--color-text-muted);
