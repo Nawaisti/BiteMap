@@ -723,14 +723,21 @@ function createRestaurantCard(restaurant, linkBase = 'restaurant.html', isActive
         ? `<span class="rating-icon" aria-hidden="true">&#9733;</span> ${restaurant.rating.toFixed(1)}`
         : '<span>New &middot; No reviews yet</span>';
 
-    let distanceText = '--';
+    let distanceText = null;
     if (customDistance != null) {
-        distanceText = formatDistance(customDistance) || distanceText;
+        distanceText = formatDistance(customDistance) || null;
     } else if (restaurant.distance != null) {
         distanceText = typeof restaurant.distance === 'number'
             ? restaurant.distance.toFixed(1) + ' km'
-            : String(restaurant.distance);
+            : (String(restaurant.distance).trim() || null);
     }
+
+    const metaParts = [ratingHtml];
+    if (distanceText) {
+        metaParts.push(distanceText);
+    }
+    const metaHtml = metaParts.join(' &bull; ');
+
     const isFav = (typeof isActiveFavorite === 'boolean') ? isActiveFavorite : isFavorite(restaurant.id);
     const favClass = isFav ? 'btn-favorite is-active' : 'btn-favorite';
     const favLabel = isFav ? `Remove ${restaurant.name} from favorites` : `Save ${restaurant.name} to favorites`;
@@ -745,7 +752,7 @@ function createRestaurantCard(restaurant, linkBase = 'restaurant.html', isActive
         <div class="restaurant-card-content">
           <h3 class="text-lead">${restaurant.name}</h3>
           <p class="text-small text-muted" style="margin-bottom: var(--space-1);">${restaurant.category}</p>
-          <p class="text-meta text-muted">${ratingHtml} &bull; ${distanceText}</p>
+          <p class="text-meta text-muted">${metaHtml}</p>
         </div>
       </a>`;
 
@@ -2362,6 +2369,19 @@ function initExploreFilters() {
     const btnClearFilters = $('#btn-clear-filters', mainContent);
     const locationInput = $('#explore-location', mainContent) || $('#explore-location');
 
+    const PAGE_SIZE = 12;
+    let currentLimit = PAGE_SIZE;
+
+    const btnLoadMore = loadMoreContainer ? loadMoreContainer.querySelector('button') : null;
+    if (btnLoadMore && !btnLoadMore.dataset.loadMoreBound) {
+        btnLoadMore.dataset.loadMoreBound = 'true';
+        btnLoadMore.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentLimit += PAGE_SIZE;
+            performCanonicalFilters(true);
+        });
+    }
+
     // Map DOM cards by restaurant ID for non-destructive DOM toggling & reordering
     const cardMap = new Map();
     function indexCanonicalCards() {
@@ -2429,7 +2449,11 @@ function initExploreFilters() {
         });
     }
 
-    function performCanonicalFilters() {
+    function performCanonicalFilters(isLoadMore = false) {
+        if (!isLoadMore) {
+            currentLimit = PAGE_SIZE;
+        }
+
         const queryText = searchInput ? searchInput.value.trim() : '';
 
         // Read native select states
@@ -2470,19 +2494,20 @@ function initExploreFilters() {
             sort: sortVal
         });
 
-        const matchingIds = new Set(filtered.map(r => r.id));
+        const pagedResults = filtered.slice(0, currentLimit);
+        const pagedIds = new Set(pagedResults.map(r => r.id));
         let visibleCount = 0;
 
         // Ensure canonical cards are indexed
-        if (cardMap.size === 0) {
+        const currentCards = $$('.restaurant-card', restaurantGrid);
+        if (cardMap.size !== currentCards.length) {
             indexCanonicalCards();
         }
 
         // Toggle card visibility in DOM
-        const currentCards = $$('.restaurant-card', restaurantGrid);
         currentCards.forEach(card => {
             const id = card.dataset.id || (card.querySelector('a')?.href.match(/id=([^&]+)/) || [])[1];
-            if (matchingIds.has(id)) {
+            if (pagedIds.has(id)) {
                 card.hidden = false;
                 card.style.display = '';
                 visibleCount++;
@@ -2494,7 +2519,7 @@ function initExploreFilters() {
 
         // Reorder visible DOM cards to reflect sorted order
         if (restaurantGrid) {
-            filtered.forEach(r => {
+            pagedResults.forEach(r => {
                 const card = cardMap.get(r.id);
                 if (card) {
                     restaurantGrid.appendChild(card);
@@ -2520,28 +2545,41 @@ function initExploreFilters() {
         );
 
         // Update Result Count text: dynamic ("1 restaurant", "0 restaurants", or "N restaurants")
+        const totalMatches = filtered.length;
         if (resultsCountEl) {
-            if (visibleCount === 1) {
+            if (totalMatches === 1) {
                 resultsCountEl.textContent = '1 restaurant';
-            } else if (visibleCount === 0) {
+            } else if (totalMatches === 0) {
                 resultsCountEl.textContent = '0 restaurants';
             } else {
-                resultsCountEl.textContent = `${visibleCount} restaurants`;
+                resultsCountEl.textContent = `${totalMatches} restaurants`;
             }
         }
 
         // Empty State handling
         if (emptyState) {
-            if (visibleCount === 0) {
+            if (totalMatches === 0) {
                 emptyState.style.display = 'flex';
                 emptyState.classList.remove('hidden');
                 emptyState.removeAttribute('aria-hidden');
-                if (loadMoreContainer) loadMoreContainer.style.display = 'none';
             } else {
                 emptyState.style.display = 'none';
                 emptyState.classList.add('hidden');
                 emptyState.setAttribute('aria-hidden', 'true');
-                if (loadMoreContainer) loadMoreContainer.style.display = '';
+            }
+        }
+
+        // Load More handling: only visible when more results exist than currently displayed
+        const hasMore = totalMatches > visibleCount;
+        if (loadMoreContainer) {
+            if (hasMore && visibleCount > 0) {
+                loadMoreContainer.style.display = 'flex';
+                loadMoreContainer.classList.remove('hidden');
+                loadMoreContainer.removeAttribute('aria-hidden');
+            } else {
+                loadMoreContainer.style.display = 'none';
+                loadMoreContainer.classList.add('hidden');
+                loadMoreContainer.setAttribute('aria-hidden', 'true');
             }
         }
 
@@ -2568,6 +2606,7 @@ function initExploreFilters() {
     }
 
     function clearAllFilters() {
+        currentLimit = PAGE_SIZE;
         if (debounceTimer) clearTimeout(debounceTimer);
         if (searchInput) searchInput.value = '';
         if (locationInput) locationInput.value = 'Malang';

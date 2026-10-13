@@ -47,7 +47,7 @@
   <main id="main-content">
 
     <!-- 2: PAGE HEADER -->
-    <section class="page-header py-5 sm:py-6 md:py-8" aria-labelledby="explore-heading">
+    <section class="page-header pt-5 pb-2 sm:pt-6 sm:pb-4 md:py-8" aria-labelledby="explore-heading">
       <div class="container max-w-[1200px] mx-auto px-4 md:px-6 text-center">
         <h1 id="explore-heading" class="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-dark leading-tight">Explore restaurants</h1>
         <p class="text-lead text-muted text-lg sm:text-xl text-dark/65 max-w-[600px] mx-auto mt-2">Discover places based on category, cuisine, mood, or location.</p>
@@ -55,11 +55,11 @@
     </section>
 
     <!-- 3 & 4 & 5: SEARCH, CATEGORIES, & FILTERS -->
-    <section class="explore-controls pb-3 sm:pb-6 md:pb-8" aria-label="Search and filter options">
+    <section class="explore-controls pt-1 pb-3 sm:pt-2 sm:pb-6 md:pb-8" aria-label="Search and filter options">
       <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
         
         <!-- Search UI -->
-        <form class="search-bar flex flex-col sm:flex-row gap-2 w-full max-w-[800px] mx-auto mb-4 sm:mb-8" role="search" aria-label="Restaurant search">
+        <form class="search-bar flex flex-col sm:flex-row gap-2 w-full max-w-[800px] mx-auto mt-2 sm:mt-4 md:mt-6 mb-4 sm:mb-8" role="search" aria-label="Restaurant search">
           <label for="explore-search" class="visually-hidden">What are you craving?</label>
           <input
             type="search"
@@ -95,7 +95,7 @@
 
         <!-- Filter / Sort Controls -->
         <div class="filter-bar flex flex-col sm:flex-row gap-2.5 sm:gap-3 sm:items-center sm:justify-between mt-3.5 pt-3.5 sm:mt-6 sm:pt-6 border-t border-dark/[0.08]">
-          <div class="filter-group-ui flex flex-nowrap items-center gap-2 sm:gap-3 overflow-x-auto max-w-full pb-1 sm:pb-0 sm:flex-wrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" aria-label="Filter refinements">
+          <div class="filter-group-ui flex flex-wrap items-center gap-2 sm:gap-2.5 max-w-full" aria-label="Filter refinements">
             <select class="form-control !w-auto text-sm py-2 px-3 shrink-0" aria-label="Category filter">
               <option>Category</option>
               <option>Restaurant</option>
@@ -152,7 +152,7 @@
         </div>
 
         <!-- Pagination / Load More -->
-        <div class="load-more-container flex justify-center mt-12 md:mt-16">
+        <div class="load-more-container hidden flex justify-center mt-12 md:mt-16" style="display: none;" aria-hidden="true">
           <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer">Lihat lebih banyak</button>
         </div>
 

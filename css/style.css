@@ -748,10 +748,16 @@ button:focus-visible,
 /* --- PAGE / COMPONENT LAYOUTS --- */
 .hero-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: var(--space-10);
+  gap: var(--space-6);
   padding-block: 0;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 .search-bar {
@@ -921,21 +927,69 @@ button:focus-visible,
   padding-left: 0;
   list-style: none;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(36, 33, 29, 0.22) transparent;
 }
 
+.content-rail,
+.discovery-categories .content-rail,
+.restaurant-tabs ul {
+  -webkit-overflow-scrolling: touch;
+}
+
+.content-rail,
+.discovery-categories .content-rail,
+.restaurant-tabs ul,
+.menu-category-pills {
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .content-rail,
+  .discovery-categories .content-rail,
+  .restaurant-tabs ul,
+  .menu-category-pills {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(140, 128, 116, 0.42) transparent;
+  }
+}
+
+.content-rail::-webkit-scrollbar,
+.discovery-categories .content-rail::-webkit-scrollbar,
+.restaurant-tabs ul::-webkit-scrollbar,
 .menu-category-pills::-webkit-scrollbar {
   height: 5px;
+  width: 5px;
 }
 
+.content-rail::-webkit-scrollbar-button,
+.discovery-categories .content-rail::-webkit-scrollbar-button,
+.restaurant-tabs ul::-webkit-scrollbar-button,
+.menu-category-pills::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.content-rail::-webkit-scrollbar-track,
+.discovery-categories .content-rail::-webkit-scrollbar-track,
+.restaurant-tabs ul::-webkit-scrollbar-track,
 .menu-category-pills::-webkit-scrollbar-track {
   background: transparent;
 }
 
+.content-rail::-webkit-scrollbar-thumb,
+.discovery-categories .content-rail::-webkit-scrollbar-thumb,
+.restaurant-tabs ul::-webkit-scrollbar-thumb,
 .menu-category-pills::-webkit-scrollbar-thumb {
-  background-color: rgba(36, 33, 29, 0.22);
+  background-color: rgba(140, 128, 116, 0.42);
   border-radius: 9999px;
+}
+
+.content-rail::-webkit-scrollbar-thumb:hover,
+.discovery-categories .content-rail::-webkit-scrollbar-thumb:hover,
+.restaurant-tabs ul::-webkit-scrollbar-thumb:hover,
+.menu-category-pills::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(110, 99, 89, 0.65);
 }
 
 .menu-category-pill-item {
