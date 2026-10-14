@@ -483,6 +483,75 @@ const BITEMAP_RESTAURANTS = [
             },
         ],
     },
+    {
+        id: 'burger-king-ijen-besar-malang',
+        name: 'Burger King Ijen Besar Malang',
+        category: 'Fast Food',
+        cuisine: 'American / Burger',
+        rating: null,
+        distance: null,
+        description: 'Restoran cepat saji Burger King di kawasan Jl. Besar Ijen Malang yang menyajikan burger panggang khas, aneka paket ayam, kentang goreng, dan hidangan penutup dengan fasilitas 24 jam dan drive-thru.',
+        location: 'Jl. Besar Ijen No. 84, Oro-oro Dowo, Kec. Klojen, Kota Malang, Jawa Timur 65119',
+        latitude: null,
+        longitude: null,
+        phone: '0819-1708-1121',
+        website: 'https://bkdelivery.co.id/',
+        maps_url: 'https://www.google.com/maps/search/?api=1&query=Burger+King+Ijen+Besar+Malang',
+        instagram_url: 'https://www.instagram.com/burgerking.id/',
+        external_menu_url: null,
+        hero_image: 'assets/restaurants/burger-king-ijen-besar-malang/exterior/Screenshot_20261013_130205_Maps.jpg',
+        hours: {
+            Monday: '00:00 – 24:00',
+            Tuesday: '00:00 – 24:00',
+            Wednesday: '00:00 – 24:00',
+            Thursday: '00:00 – 24:00',
+            Friday: '00:00 – 24:00',
+            Saturday: '00:00 – 24:00',
+            Sunday: '00:00 – 24:00',
+        },
+        reservation_enabled: false,
+        external_links: [
+            {
+                label: 'Kunjungi Website Resmi',
+                url: 'https://bkdelivery.co.id/',
+            },
+            {
+                label: 'Petunjuk Arah',
+                url: 'https://www.google.com/maps/search/?api=1&query=Burger+King+Ijen+Besar+Malang',
+            },
+            {
+                label: 'Instagram Resmi',
+                url: 'https://www.instagram.com/burgerking.id/',
+            },
+        ],
+        gallery: [
+            {
+                alt: 'Pintu masuk dan fasad depan Burger King Ijen Besar Malang',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/exterior/Screenshot_20261013_130407_Maps.jpg',
+            },
+            {
+                alt: 'Area pemesanan kasir dan dapur bersih Burger King Ijen Besar Malang',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/interior/Screenshot_20261013_130233_Maps.jpg',
+            },
+            {
+                alt: 'Es krim sundae vanilla Burger King dengan saus cokelat',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/food/Food1.jpg',
+            },
+            {
+                alt: 'Burger Whopper dengan roti wijen dan sayuran segar di Burger King Ijen',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/food/Food2.jpg',
+            },
+            {
+                alt: 'Burger ayam renyah dengan selada dan saus mayones di Burger King',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/food/Food3.jpg',
+            },
+            {
+                alt: 'Paket combo Burger King dengan kentang goreng, burger, dan minuman dingin',
+                src: 'assets/restaurants/burger-king-ijen-besar-malang/food/Food4.jpg',
+            },
+        ],
+        menu: [],
+    },
 ];
 
 /**
@@ -545,6 +614,7 @@ function isRestaurantOpenNow(restaurant, now = new Date()) {
     const dayName = days[now.getDay()];
     const todayHoursStr = hours[dayName];
     if (!todayHoursStr || typeof todayHoursStr !== 'string') return false;
+    if (/24\s*(jam|hours?)/i.test(todayHoursStr)) return true;
     const timeMatch = todayHoursStr.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
     if (!timeMatch) return false;
     const currentMins = now.getHours() * 60 + now.getMinutes();
@@ -2038,6 +2108,9 @@ if (typeof window !== 'undefined') {
         // Step C3 & C4: External Places Search & Canonical Audit
         fetchGeoapifyPlacesSearch,
         getRestaurants,
+        getRestaurantById,
+        isFavorite,
+        toggleFavorite,
         getFavoriteRestaurants,
         BITEMAP_RESTAURANTS,
         BITEMAP_FAVORITES,
@@ -3583,15 +3656,25 @@ function renderRestaurantLocation(restaurant) {
             const existingContact = locationAddress.querySelector('.location-contact-info');
             if (existingContact) existingContact.remove();
 
-            if (restaurant && (restaurant.website || restaurant.phone)) {
+            if (restaurant && (restaurant.website || restaurant.phone || restaurant.external_links)) {
                 const contactDiv = document.createElement('div');
-                contactDiv.className = 'location-contact-info mt-3 pt-3 border-t border-dark/10 flex flex-col gap-1 text-sm text-dark/75 break-words';
+                contactDiv.className = 'location-contact-info mt-3 pt-3 border-t border-dark/10 flex flex-col gap-1.5 text-sm text-dark/75 break-words';
                 if (restaurant.phone) {
                     const pPhone = document.createElement('p');
                     pPhone.innerHTML = `<strong>Phone:</strong> <a href="tel:${restaurant.phone}" class="hover:underline text-dark">${restaurant.phone}</a>`;
                     contactDiv.appendChild(pPhone);
                 }
-                if (restaurant.website) {
+                if (Array.isArray(restaurant.external_links) && restaurant.external_links.length > 0) {
+                    restaurant.external_links.forEach(link => {
+                        if (!link || !link.url) return;
+                        const pLink = document.createElement('p');
+                        pLink.className = 'break-all';
+                        pLink.style.cssText = 'word-break: break-all; overflow-wrap: anywhere;';
+                        const label = link.label || 'Tautan';
+                        pLink.innerHTML = `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="external-link hover:underline text-terracotta font-medium inline-flex items-center gap-1.5 break-all" style="word-break: break-all; overflow-wrap: anywhere;"><span>${label}</span> <svg class="w-3.5 h-3.5 inline shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg></a>`;
+                        contactDiv.appendChild(pLink);
+                    });
+                } else if (restaurant.website) {
                     const pWeb = document.createElement('p');
                     pWeb.className = 'break-all';
                     pWeb.style.cssText = 'word-break: break-all; overflow-wrap: anywhere;';
@@ -3699,36 +3782,49 @@ function renderRestaurantHours(restaurant) {
 
     // Determine Today's open/closing/closed status if time format is verifiable
     if (hoursHeading && todayHoursStr) {
-        const timeMatch = todayHoursStr.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
-        if (timeMatch) {
-            const now = new Date();
-            const currentMins = now.getHours() * 60 + now.getMinutes();
-            const openMins = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
-            const closeMins = parseInt(timeMatch[3], 10) * 60 + parseInt(timeMatch[4], 10);
-
-            let statusText = '';
-            let badgeClass = 'badge badge-neutral';
-
-            if (currentMins >= openMins && currentMins < closeMins) {
-                if (closeMins - currentMins <= 30) {
-                    statusText = 'Closing soon';
-                    badgeClass = 'badge badge-primary';
-                } else {
-                    statusText = 'Open now';
-                    badgeClass = 'badge badge-success';
-                }
-            } else {
-                statusText = 'Closed';
-                badgeClass = 'badge badge-neutral';
-            }
-
+        if (/24\s*(jam|hours?)/i.test(todayHoursStr)) {
             const statusBadge = document.createElement('span');
-            statusBadge.className = 'hours-status-badge ' + badgeClass;
+            statusBadge.className = 'hours-status-badge badge badge-success';
             statusBadge.style.marginLeft = 'var(--space-2)';
             statusBadge.style.fontSize = 'var(--font-size-xs)';
             statusBadge.style.verticalAlign = 'middle';
-            statusBadge.textContent = statusText;
+            statusBadge.textContent = 'Open 24 hours';
             hoursHeading.appendChild(statusBadge);
+        } else {
+            const timeMatch = todayHoursStr.match(/(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/);
+            if (timeMatch) {
+                const now = new Date();
+                const currentMins = now.getHours() * 60 + now.getMinutes();
+                const openMins = parseInt(timeMatch[1], 10) * 60 + parseInt(timeMatch[2], 10);
+                const closeMins = parseInt(timeMatch[3], 10) * 60 + parseInt(timeMatch[4], 10);
+
+                let statusText = '';
+                let badgeClass = 'badge badge-neutral';
+
+                if (currentMins >= openMins && currentMins < closeMins) {
+                    if (openMins === 0 && closeMins === 1440) {
+                        statusText = 'Open 24 hours';
+                        badgeClass = 'badge badge-success';
+                    } else if (closeMins - currentMins <= 30) {
+                        statusText = 'Closing soon';
+                        badgeClass = 'badge badge-primary';
+                    } else {
+                        statusText = 'Open now';
+                        badgeClass = 'badge badge-success';
+                    }
+                } else {
+                    statusText = 'Closed';
+                    badgeClass = 'badge badge-neutral';
+                }
+
+                const statusBadge = document.createElement('span');
+                statusBadge.className = 'hours-status-badge ' + badgeClass;
+                statusBadge.style.marginLeft = 'var(--space-2)';
+                statusBadge.style.fontSize = 'var(--font-size-xs)';
+                statusBadge.style.verticalAlign = 'middle';
+                statusBadge.textContent = statusText;
+                hoursHeading.appendChild(statusBadge);
+            }
         }
     }
 }
