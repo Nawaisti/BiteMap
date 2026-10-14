@@ -1386,6 +1386,14 @@ function getAssetPath(relativePath) {
     }
 }
 
+/**
+ * Detects whether the current page context is PHP or static HTML.
+ */
+function getPageExtension() {
+    const path = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname.toLowerCase() : '';
+    return (path.endsWith('.php') || path.includes('.php')) ? '.php' : '.html';
+}
+
 // ==========================================
 // Dynamic Restaurant Card Rendering
 // ==========================================
@@ -1394,7 +1402,10 @@ function getAssetPath(relativePath) {
  * Creates a single restaurant card DOM element from a data object.
  * Mirrors the exact markup of the existing static cards in explore.html.
  */
-function createRestaurantCard(restaurant, linkBase = 'restaurant.html', isActiveFavorite = null, customDistance = null) {
+function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = null, customDistance = null) {
+    if (!linkBase) {
+        linkBase = 'restaurant' + getPageExtension();
+    }
     const href = linkBase + '?id=' + encodeURIComponent(restaurant.id);
     const article = document.createElement('article');
     article.className = 'restaurant-card';
@@ -1450,8 +1461,9 @@ function renderRestaurantCards(restaurants, grid) {
 
     // Fragment for efficient single-reflow insertion
     const fragment = document.createDocumentFragment();
+    const linkBase = 'restaurant' + getPageExtension();
     restaurants.forEach(restaurant => {
-        fragment.appendChild(createRestaurantCard(restaurant, 'restaurant.html'));
+        fragment.appendChild(createRestaurantCard(restaurant, linkBase));
     });
 
     // Clear only the injected comment placeholder — safe even if already empty
@@ -1575,8 +1587,9 @@ function renderGeoapifyPlaces(features, rail) {
     if (places.length === 0) return 0;
 
     const fragment = document.createDocumentFragment();
+    const linkBase = 'pages/restaurant' + getPageExtension();
     places.slice(0, 5).forEach(place => {
-        fragment.appendChild(createRestaurantCard(place, 'pages/restaurant.html'));
+        fragment.appendChild(createRestaurantCard(place, linkBase));
     });
 
     rail.innerHTML = '';
@@ -1680,7 +1693,8 @@ function renderCanonicalPopularRail(rail) {
     const all = getRestaurants();
     const subset = [...all].sort((a, b) => b.rating - a.rating).slice(0, 5);
     const fragment = document.createDocumentFragment();
-    subset.forEach(r => fragment.appendChild(createRestaurantCard(r, 'pages/restaurant.html')));
+    const linkBase = 'pages/restaurant' + getPageExtension();
+    subset.forEach(r => fragment.appendChild(createRestaurantCard(r, linkBase)));
     rail.innerHTML = '';
     rail.appendChild(fragment);
     initFavorites(rail);
@@ -2669,7 +2683,7 @@ if (typeof window !== 'undefined') {
 function renderHomepageRails() {
     const all = getRestaurants();
     const MAX = 5;
-    const linkBase = 'pages/restaurant.html';
+    const linkBase = 'pages/restaurant' + getPageExtension();
 
     function fillRail(sectionId, filterFn, sortFn) {
         const section = document.querySelector('[aria-labelledby="' + sectionId + '"]');
@@ -2917,7 +2931,8 @@ function initHeroSearch() {
         if (query) params.set('q', query);
         if (loc) params.set('loc', loc);
         const qs = params.toString();
-        window.location.href = qs ? 'pages/explore.html?' + qs : 'pages/explore.html';
+        const exploreUrl = 'pages/explore' + getPageExtension();
+        window.location.href = qs ? exploreUrl + '?' + qs : exploreUrl;
     });
 }
 
@@ -5387,8 +5402,9 @@ function renderDashboardFavoritesGrid() {
 
     const fragment = document.createDocumentFragment();
     favoriteRestaurants.forEach(restaurant => {
-        // Dashboard is in /pages/, so linkBase is 'restaurant.html'
-        fragment.appendChild(createRestaurantCard(restaurant, 'restaurant.html', true));
+        // Dashboard is in /pages/, so linkBase uses local page extension
+        const linkBase = 'restaurant' + getPageExtension();
+        fragment.appendChild(createRestaurantCard(restaurant, linkBase, true));
     });
     favGrid.innerHTML = '';
     favGrid.appendChild(fragment);
