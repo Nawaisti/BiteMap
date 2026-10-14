@@ -569,6 +569,26 @@ const FAVORITES_STORAGE_KEY = 'bitemap_favorites';
 const BITEMAP_FAVORITES = new Set();
 
 /**
+ * Safely parses raw favorites JSON string and returns an array of valid canonical restaurant IDs.
+ * Filters out malformed entries, non-strings, and unknown restaurant IDs.
+ * @param {string|null} raw
+ * @returns {Array<string>}
+ */
+function parseFavoritesString(raw) {
+    if (!raw || typeof raw !== 'string') return [];
+    try {
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return [];
+        return parsed
+            .filter(id => typeof id === 'string' && id.trim())
+            .map(id => id.trim())
+            .filter(id => !!getRestaurantById(id));
+    } catch (_) {
+        return [];
+    }
+}
+
+/**
  * Loads persisted favorite restaurant IDs from browser localStorage.
  * Handles missing, empty, malformed, or restricted storage gracefully.
  */
@@ -576,13 +596,11 @@ function loadFavoritesFromStorage() {
     try {
         if (typeof window === 'undefined' || !window.localStorage) return;
         const raw = window.localStorage.getItem(FAVORITES_STORAGE_KEY);
-        if (!raw) return;
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-            parsed.forEach(id => {
-                if (typeof id === 'string' && id.trim()) {
-                    BITEMAP_FAVORITES.add(id.trim());
-                }
+        BITEMAP_FAVORITES.clear();
+        if (raw) {
+            const validIds = parseFavoritesString(raw);
+            validIds.forEach(id => {
+                BITEMAP_FAVORITES.add(id);
             });
         }
     } catch (e) {
@@ -2023,6 +2041,10 @@ if (typeof window !== 'undefined') {
         getFavoriteRestaurants,
         BITEMAP_RESTAURANTS,
         BITEMAP_FAVORITES,
+        parseFavoritesString,
+        refreshAllFavoriteButtons,
+        initFavoritesCrossTabSync,
+        renderDashboardFavoritesGrid,
         // Step C5: Place Details & External Detail Resolution
         parseOsmOpeningHours,
         normalizeGeoapifyPlaceDetails,
@@ -2806,6 +2828,7 @@ function initExploreFilters() {
 // ==========================================
 
 function initFavorites(container = document) {
+    initFavoritesCrossTabSync();
     const favButtons = $$('button[aria-label*="favorites"], [data-detail="save-btn"], .btn-favorite', container);
     
     if (favButtons.length === 0) return;
@@ -2865,6 +2888,65 @@ function initFavorites(container = document) {
                 }
             }
         });
+    });
+}
+
+/**
+ * Refreshes all favorite buttons across the document to match current BITEMAP_FAVORITES.
+ * Synchronizes ARIA pressed attributes, accessible labels, button text, and active styling.
+ * @param {Document|HTMLElement} [container=document]
+ */
+function refreshAllFavoriteButtons(container = document) {
+    if (!container || typeof container.querySelectorAll !== 'function') return;
+    const favButtons = $$('button[aria-label*="favorites"], [data-detail="save-btn"], .btn-favorite', container);
+    favButtons.forEach(btn => {
+        const card = btn.closest('.restaurant-card');
+        let restaurantId = card ? (card.dataset.id || card.dataset.restaurantId) : null;
+        if (!restaurantId && btn.dataset.restaurantId) {
+            restaurantId = btn.dataset.restaurantId;
+        }
+        if (!restaurantId) {
+            const params = new URLSearchParams(window.location.search);
+            const pageId = params.get('id');
+            if (pageId && getRestaurantById(pageId)) {
+                restaurantId = pageId;
+            }
+        }
+        if (restaurantId) {
+            syncFavoriteButton(btn, restaurantId);
+        }
+    });
+}
+
+/**
+ * Initializes reactive cross-tab synchronization for favorites using the native storage event.
+ * Listens for external changes to 'bitemap_favorites' from other tabs, validates canonical IDs,
+ * updates BITEMAP_FAVORITES, and re-renders affected UI components in real time.
+ */
+function initFavoritesCrossTabSync() {
+    if (typeof window === 'undefined' || !window.addEventListener) return;
+    if (window._bitemapFavSyncBound) return;
+    window._bitemapFavSyncBound = true;
+
+    window.addEventListener('storage', (event) => {
+        // Only react to changes on our key or full storage clear (key === null)
+        if (event.key !== FAVORITES_STORAGE_KEY && event.key !== null) return;
+        if (event.storageArea && event.storageArea !== window.localStorage) return;
+
+        // Key removed or storage cleared
+        if (event.newValue === null || event.newValue === '') {
+            BITEMAP_FAVORITES.clear();
+        } else {
+            const validIds = parseFavoritesString(event.newValue);
+            BITEMAP_FAVORITES.clear();
+            validIds.forEach(id => BITEMAP_FAVORITES.add(id));
+        }
+
+        // 1. Synchronize all favorite buttons on current page (cards & detail page)
+        refreshAllFavoriteButtons();
+
+        // 2. If on dashboard, re-render favorites grid and toggle empty states
+        renderDashboardFavoritesGrid();
     });
 }
 
@@ -4672,6 +4754,25 @@ function updateFavoritesState() {
 // ==========================================
 
 /**
+ * Renders the dashboard favorites grid from canonical data and updates empty state.
+ */
+function renderDashboardFavoritesGrid() {
+    const favGrid = document.querySelector('[data-detail="dashboard-favorites-grid"]');
+    if (!favGrid) return;
+    const favoriteRestaurants = getFavoriteRestaurants();
+
+    const fragment = document.createDocumentFragment();
+    favoriteRestaurants.forEach(restaurant => {
+        // Dashboard is in /pages/, so linkBase is 'restaurant.html'
+        fragment.appendChild(createRestaurantCard(restaurant, 'restaurant.html', true));
+    });
+    favGrid.innerHTML = '';
+    favGrid.appendChild(fragment);
+    initFavorites(favGrid);
+    updateFavoritesState();
+}
+
+/**
  * Initializes dashboard data rendering for dashboard.html.
  * Renders persisted favorites from canonical BITEMAP_RESTAURANTS.
  * Aligns upcoming reservation restaurant identity with canonical data.
@@ -4683,19 +4784,7 @@ function initDashboard() {
     if (!dashboardHeader) return;
 
     // 1. Render favorites grid from canonical data
-    const favGrid = document.querySelector('[data-detail="dashboard-favorites-grid"]');
-    if (favGrid) {
-        const favoriteRestaurants = getFavoriteRestaurants();
-
-        const fragment = document.createDocumentFragment();
-        favoriteRestaurants.forEach(restaurant => {
-            // Dashboard is in /pages/, so linkBase is 'restaurant.html'
-            fragment.appendChild(createRestaurantCard(restaurant, 'restaurant.html', true));
-        });
-        favGrid.innerHTML = '';
-        favGrid.appendChild(fragment);
-        initFavorites(favGrid);
-    }
+    renderDashboardFavoritesGrid();
 
     // 2. Align upcoming reservation restaurant identity with canonical data
     const upcomingCard = document.querySelector('.upcoming-reservation-card');
@@ -4956,6 +5045,7 @@ function initBiteMap() {
     initMobileNavigation();
     initExploreFilters();
     initFavorites();
+    initFavoritesCrossTabSync();
     initRestaurantGallery();
     initReservation();
     initReservationTicket();
