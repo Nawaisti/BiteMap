@@ -18,7 +18,7 @@ $allRestaurants = getRestaurants();
 $featuredRestaurants = array_slice($allRestaurants, 0, 5);
 
 // Category rails
-$cafeRestaurants = array_values(array_filter($allRestaurants, fn($r) => ($r['category'] ?? '') === 'Cafe & Coffee'));
+$cafeRestaurants = array_values(array_filter($allRestaurants, fn(Restaurant $r) => $r->getCategory() === 'Cafe & Coffee'));
 $curatedRestaurants = $cafeRestaurants; // matches JS logic
 
 require_once __DIR__ . '/includes/header.php';
@@ -97,7 +97,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
           <?php else: ?>
             <?php foreach ($featuredRestaurants as $restaurant): ?>
-              <?= renderRestaurantCard($restaurant, 'pages/restaurant.php', '') ?>
+              <?= $restaurant->renderCard('pages/restaurant.php', '') ?>
             <?php endforeach; ?>
           <?php endif; ?>
         </div>
@@ -122,7 +122,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
           <?php else: ?>
             <?php foreach ($cafeRestaurants as $restaurant): ?>
-              <?= renderRestaurantCard($restaurant, 'pages/restaurant.php', '') ?>
+              <?= $restaurant->renderCard('pages/restaurant.php', '') ?>
             <?php endforeach; ?>
           <?php endif; ?>
         </div>
@@ -147,7 +147,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
           <?php else: ?>
             <?php foreach ($curatedRestaurants as $restaurant): ?>
-              <?= renderRestaurantCard($restaurant, 'pages/restaurant.php', '') ?>
+              <?= $restaurant->renderCard('pages/restaurant.php', '') ?>
             <?php endforeach; ?>
           <?php endif; ?>
         </div>

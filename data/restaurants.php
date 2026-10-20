@@ -1,10 +1,16 @@
 <?php
 /**
- * BiteMap - Canonical Restaurant Dataset (Sprint 04 PHP Adaptation)
+ * BiteMap - Canonical Restaurant Dataset (Sprint 05 OOP Architecture)
  * Single source of truth for restaurant data on the server side.
+ * Returns an array of Restaurant domain model instances.
  */
 
-return [
+declare(strict_types=1);
+
+require_once __DIR__ . '/../classes/MenuItem.php';
+require_once __DIR__ . '/../classes/Restaurant.php';
+
+$rawRestaurants = [
     [
         'id' => 'okiru-ramen',
         'name' => 'Okiru Ramen',
@@ -1075,3 +1081,5 @@ return [
         ],
     ],
 ];
+
+return array_map(fn(array $data): Restaurant => Restaurant::fromArray($data), $rawRestaurants);

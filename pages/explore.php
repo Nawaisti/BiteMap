@@ -127,7 +127,7 @@ require_once __DIR__ . '/../includes/header.php';
 
         <div class="restaurant-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           <?php foreach ($restaurants as $restaurant): ?>
-            <?= renderRestaurantCard($restaurant, 'restaurant.php', '../') ?>
+            <?= $restaurant->renderCard('restaurant.php', '../') ?>
           <?php endforeach; ?>
         </div>
 

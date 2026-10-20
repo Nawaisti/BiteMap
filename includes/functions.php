@@ -1,10 +1,13 @@
 <?php
 /**
- * BiteMap - Core Helper Functions (Sprint 04 PHP Server-Side Adaptation)
- * Procedural helper functions adhering to Week 5 curriculum standards.
+ * BiteMap - Core Helper Functions (Sprint 05 Object-Oriented PHP Integration)
+ * Bridges procedural templates with Week 6 OOP Domain Models.
  */
 
 declare(strict_types=1);
+
+require_once __DIR__ . '/../classes/MenuItem.php';
+require_once __DIR__ . '/../classes/Restaurant.php';
 
 /**
  * Escapes a string for safe HTML output (prevents XSS).
@@ -15,10 +18,10 @@ function e(?string $value): string
 }
 
 /**
- * Loads and returns all canonical restaurants from data/restaurants.php.
+ * Loads and returns all canonical restaurants from data/restaurants.php as domain objects.
  * Uses static caching to avoid repeated filesystem reads during a request.
  *
- * @return array<int, array<string, mixed>>
+ * @return array<int, Restaurant>
  */
 function getRestaurants(): array
 {
@@ -28,7 +31,15 @@ function getRestaurants(): array
         $dataFile = __DIR__ . '/../data/restaurants.php';
         if (file_exists($dataFile)) {
             $data = require $dataFile;
-            $restaurants = is_array($data) ? $data : [];
+            $list = is_array($data) ? $data : [];
+            $restaurants = [];
+            foreach ($list as $item) {
+                if ($item instanceof Restaurant) {
+                    $restaurants[] = $item;
+                } elseif (is_array($item)) {
+                    $restaurants[] = Restaurant::fromArray($item);
+                }
+            }
         } else {
             $restaurants = [];
         }
@@ -38,13 +49,13 @@ function getRestaurants(): array
 }
 
 /**
- * Finds a single canonical restaurant by its unique ID.
+ * Finds a single canonical restaurant domain object by its unique ID.
  * Returns null if not found.
  *
  * @param string|null $id
- * @return array<string, mixed>|null
+ * @return Restaurant|null
  */
-function getRestaurantById(?string $id): ?array
+function getRestaurantById(?string $id): ?Restaurant
 {
     if ($id === null || trim($id) === '') {
         return null;
@@ -54,8 +65,9 @@ function getRestaurantById(?string $id): ?array
     $restaurants = getRestaurants();
 
     foreach ($restaurants as $restaurant) {
-        if (isset($restaurant['id']) && $restaurant['id'] === $cleanId) {
-            return $restaurant;
+        $rId = $restaurant instanceof Restaurant ? $restaurant->getId() : ($restaurant['id'] ?? null);
+        if ($rId === $cleanId) {
+            return $restaurant instanceof Restaurant ? $restaurant : Restaurant::fromArray($restaurant);
         }
     }
 
@@ -64,13 +76,17 @@ function getRestaurantById(?string $id): ?array
 
 /**
  * Formats restaurant rating as HTML.
- * Matches client-side JavaScript rendering contract.
+ * Delegates to Restaurant::getFormattedRating() when given a domain model.
  *
- * @param array<string, mixed> $restaurant
+ * @param Restaurant|array<string, mixed> $restaurant
  * @return string
  */
-function formatRestaurantRating(array $restaurant): string
+function formatRestaurantRating(Restaurant|array $restaurant): string
 {
+    if ($restaurant instanceof Restaurant) {
+        return $restaurant->getFormattedRating();
+    }
+
     if (isset($restaurant['rating']) && is_numeric($restaurant['rating'])) {
         $formatted = number_format((float)$restaurant['rating'], 1);
         return '<span class="rating-icon" aria-hidden="true">&#9733;</span> ' . $formatted;
@@ -81,12 +97,17 @@ function formatRestaurantRating(array $restaurant): string
 
 /**
  * Formats restaurant distance if available.
+ * Delegates to Restaurant::getFormattedDistance() when given a domain model.
  *
- * @param array<string, mixed> $restaurant
+ * @param Restaurant|array<string, mixed> $restaurant
  * @return string|null
  */
-function formatRestaurantDistance(array $restaurant): ?string
+function formatRestaurantDistance(Restaurant|array $restaurant): ?string
 {
+    if ($restaurant instanceof Restaurant) {
+        return $restaurant->getFormattedDistance();
+    }
+
     if (isset($restaurant['distance']) && $restaurant['distance'] !== null) {
         if (is_numeric($restaurant['distance'])) {
             return number_format((float)$restaurant['distance'], 1) . ' km';
@@ -100,25 +121,34 @@ function formatRestaurantDistance(array $restaurant): ?string
 
 /**
  * Checks if restaurant has reservation capability enabled.
+ * Delegates to Restaurant::hasReservationCapability() when given a domain model.
  *
- * @param array<string, mixed> $restaurant
+ * @param Restaurant|array<string, mixed> $restaurant
  * @return bool
  */
-function hasReservationCapability(array $restaurant): bool
+function hasReservationCapability(Restaurant|array $restaurant): bool
 {
+    if ($restaurant instanceof Restaurant) {
+        return $restaurant->hasReservationCapability();
+    }
+
     return !empty($restaurant['reservation_enabled']);
 }
 
 /**
  * Evaluates whether a restaurant is currently open based on operating hours.
- * Safe fallback if hours cannot be determined.
+ * Delegates to Restaurant::isOpenNow() when given a domain model.
  *
- * @param array<string, mixed> $restaurant
+ * @param Restaurant|array<string, mixed> $restaurant
  * @param DateTimeInterface|null $now
  * @return bool
  */
-function isRestaurantOpenNow(array $restaurant, ?DateTimeInterface $now = null): bool
+function isRestaurantOpenNow(Restaurant|array $restaurant, ?DateTimeInterface $now = null): bool
 {
+    if ($restaurant instanceof Restaurant) {
+        return $restaurant->isOpenNow($now);
+    }
+
     if (empty($restaurant['hours']) || !is_array($restaurant['hours'])) {
         return false;
     }
@@ -199,9 +229,9 @@ function getConciseCategoryLabel(?string $categoryName): string
 
 /**
  * Renders a canonical restaurant card as semantic HTML.
- * Matches the exact markup of client-side createRestaurantCard() in js/main.js.
+ * Delegates to Restaurant::renderCard() when given a domain model.
  *
- * @param array<string, mixed> $restaurant
+ * @param Restaurant|array<string, mixed> $restaurant
  * @param string $linkBase URL destination for card link (e.g. 'pages/restaurant.php' or 'restaurant.php')
  * @param string $assetPrefix Base path for asset URLs ('' or '../')
  * @param bool $isFav Initial favorite state
@@ -209,12 +239,16 @@ function getConciseCategoryLabel(?string $categoryName): string
  * @return string
  */
 function renderRestaurantCard(
-    array $restaurant,
+    Restaurant|array $restaurant,
     string $linkBase = 'restaurant.php',
     string $assetPrefix = '',
     bool $isFav = false,
     ?float $customDistance = null
 ): string {
+    if ($restaurant instanceof Restaurant) {
+        return $restaurant->renderCard($linkBase, $assetPrefix, $isFav, $customDistance);
+    }
+
     $id = e($restaurant['id'] ?? '');
     $name = e($restaurant['name'] ?? '');
     $category = e($restaurant['category'] ?? '');
