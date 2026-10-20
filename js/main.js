@@ -2698,11 +2698,12 @@ function renderHomepageRails() {
         rail.innerHTML = '';
         if (subset.length === 0) {
             const emptyEl = document.createElement('div');
-            emptyEl.className = 'rail-empty-state w-full py-8 px-4 text-center bg-white rounded-2xl border border-dashed border-dark/15 flex flex-col items-center justify-center gap-1.5';
+            emptyEl.className = 'rail-empty-state w-full py-6 px-4 text-center bg-white/80 rounded-2xl border border-dark/10 flex flex-col items-center justify-center gap-1.5 shadow-sm';
             emptyEl.setAttribute('role', 'status');
             emptyEl.innerHTML = `
-                <p class="text-sm font-semibold text-dark">No places listed yet</p>
-                <p class="text-xs text-dark/65">We are currently curating verified spots in this category.</p>
+                <div class="w-8 h-8 rounded-full bg-terracotta/10 text-terracotta flex items-center justify-center text-sm font-semibold mb-0.5" aria-hidden="true">&#10022;</div>
+                <p class="text-sm font-semibold text-dark">Curating New Spots</p>
+                <p class="text-xs text-dark/65 max-w-[320px]">We are hand-verifying dining spots and authentic menus in this category.</p>
             `;
             rail.appendChild(emptyEl);
             return;
@@ -2717,11 +2718,11 @@ function renderHomepageRails() {
     // Rail 1: "Featured in Malang" — renders canonical restaurants directly
     fillRail('popular-heading', null, null);
 
-    // Rail 2: "Cafe & Coffee" — category match, deliberate designed empty state if empty
-    fillRail('cafe-heading', r => r.category === 'Cafe & Coffee', null);
+    // Rail 2: "Asian Dining & Specialties" — Okiru Ramen & Dialoogi Signature
+    fillRail('cafe-heading', r => r.category === 'Asian Food' || r.category === 'Restaurant', null);
 
-    // Rail 3: "Good Places for Study" — deliberate designed empty state if empty
-    fillRail('curated-heading', r => r.category === 'Cafe & Coffee', (a, b) => ((b.rating ?? -1) - (a.rating ?? -1)));
+    // Rail 3: "Late Night & Quick Cravings" — Burger King
+    fillRail('curated-heading', r => r.category === 'Fast Food', null);
 }
 
 // ==========================================

@@ -15,7 +15,11 @@
  * Ensure Tailwind scans all root and sub-page templates and scripts
  */
 @source "../index.html";
+@source "../index.php";
 @source "../pages/**/*.html";
+@source "../pages/**/*.php";
+@source "../includes/**/*.php";
+@source "../classes/**/*.php";
 @source "../js/**/*.js";
 
 /* 
@@ -456,9 +460,13 @@ textarea.is-error,
 
   .restaurant-card-content h3,
   .restaurant-card-content .text-lead {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.35;
+    min-height: 2.7em;
   }
 
   /*
