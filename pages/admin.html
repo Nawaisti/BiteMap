@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BiteMap Restaurant Staff Portal &mdash; manage your restaurant, menu, and reservations." />
+  <title>Restaurant Dashboard &mdash; BiteMap Staff</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../src/output.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body class="page-admin">
+
+  <!-- ===== ADMIN SHELL ===== -->
+  <div class="admin-layout min-h-screen grid grid-cols-1 lg:grid-cols-[240px_1fr]">
+
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar p-6 border-b lg:border-b-0 lg:border-r border-dark/15 flex flex-col gap-6 bg-cream" aria-label="Staff navigation">
+      <!-- Sidebar brand / logo mark -->
+      <header class="admin-brand" aria-label="BiteMap Staff Portal">
+        <a href="../index.html" class="inline-flex items-baseline gap-2 text-dark no-underline">
+          <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
+          <span class="admin-label text-xs font-medium text-dark/65">Staff</span>
+        </a>
+      </header>
+
+      <nav class="admin-nav" aria-label="Staff menu">
+        <ul role="list" class="flex flex-col gap-2 list-none p-0 m-0">
+          <li><a href="#overview" aria-current="page" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 aria-[current=page]:bg-terracotta aria-[current=page]:text-white text-dark hover:text-terracotta aria-[current=page]:hover:text-white">Overview</a></li>
+          <li><a href="#restaurant" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 text-dark hover:text-terracotta">Restaurant</a></li>
+          <li><a href="#menu" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 text-dark hover:text-terracotta">Menu</a></li>
+          <li><a href="#tables" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 text-dark hover:text-terracotta">Tables</a></li>
+          <li><a href="#reservations" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 text-dark hover:text-terracotta">Reservations</a></li>
+          <li><a href="#check-in" class="block py-2 px-3 rounded-lg text-sm font-medium transition-colors duration-150 text-dark hover:text-terracotta">Check-in</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Admin Main Area -->
+    <div class="admin-main flex flex-col flex-1">
+
+      <!-- Admin Top Bar -->
+      <header class="admin-topbar p-4 sm:p-6 lg:px-8 border-b border-dark/10 flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div>
+          <h1 class="admin-page-title text-2xl sm:text-3xl font-bold tracking-tight text-dark">Restaurant Dashboard</h1>
+          <p class="text-muted text-sm sm:text-base text-dark/65 mt-1">Manage your restaurant, menu, reservations, and more.</p>
+        </div>
+        <div class="admin-topbar-actions w-full sm:w-auto flex justify-end">
+          <a href="login.html" class="btn btn-outline inline-flex items-center justify-center gap-2 py-2.5 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer w-full sm:w-auto">Log Out</a>
+        </div>
+      </header>
+
+      <!-- Admin Content -->
+      <main class="admin-content p-4 sm:p-6 lg:p-8 flex flex-col gap-10 md:gap-12">
+
+        <!-- Demonstration Interface Banner -->
+        <aside class="admin-demo-banner flex items-start sm:items-center gap-3 p-4 bg-cream rounded-xl border border-dark/15 text-sm text-dark/75 shadow-xs" role="status" aria-label="Demonstration notice">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-terracotta shrink-0 mt-1 sm:mt-0" aria-hidden="true"></span>
+          <p class="m-0"><strong class="font-semibold text-dark">Demonstration Interface:</strong> Staff authentication and live administrative management are scheduled for the upcoming backend phase. Controls shown below are demonstration previews.</p>
+        </aside>
+
+        <!-- Restaurant Overview -->
+        <section id="overview" aria-labelledby="overview-heading" class="flex flex-col gap-4">
+          <h2 id="overview-heading" class="text-lead text-xl font-bold text-dark mb-4">Restaurant Overview</h2>
+          <article class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col sm:flex-row justify-between items-start flex-wrap gap-4">
+            <div>
+              <h3 class="text-lead text-xl font-bold text-dark mb-1">Okiru Ramen</h3>
+              <p class="text-small text-muted text-sm text-dark/65 mb-4">Asian Food &middot; Japanese</p>
+              <p class="text-small text-sm text-dark">Jl. Bandung No. 5A, Penanggungan, Kec. Klojen, Kota Malang, Jawa Timur 65113</p>
+            </div>
+            <span class="status-confirmed text-xs sm:text-sm font-bold uppercase tracking-wider text-green">Active</span>
+          </article>
+        </section>
+
+        <!-- Management Actions -->
+        <section id="management" aria-labelledby="management-heading" class="flex flex-col gap-4">
+          <h2 id="management-heading" class="text-lead text-xl font-bold text-dark mb-4">Management</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Profile -->
+            <article id="restaurant" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Restaurant Profile</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Edit restaurant information, categories, and tags.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Edit Profile</button>
+            </article>
+
+            <!-- Photos -->
+            <article id="photos" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Photos</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Manage restaurant photos and gallery.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Manage Photos</button>
+            </article>
+
+            <!-- Menu -->
+            <article id="menu" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Menu</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Manage menu categories and items.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Manage Menu</button>
+            </article>
+
+            <!-- Opening Hours -->
+            <article id="opening-hours" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Opening Hours</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Update your weekly opening hours.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Edit Hours</button>
+            </article>
+
+            <!-- Tables -->
+            <article id="tables" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Tables</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Manage restaurant tables and layout.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Manage Tables</button>
+            </article>
+
+            <!-- Reservations -->
+            <article id="reservations" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Reservations</h3>
+                <p class="text-small text-muted text-sm text-dark/65">View and manage all reservations.</p>
+              </div>
+              <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Manage Reservations</button>
+            </article>
+
+            <!-- Check-in -->
+            <article id="check-in" class="card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col justify-between gap-6">
+              <div>
+                <h3 class="text-lg font-bold text-dark mb-1">Check-in</h3>
+                <p class="text-small text-muted text-sm text-dark/65">Check in arriving customers.</p>
+              </div>
+              <button type="button" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer self-start">Check In</button>
+            </article>
+            
+          </div>
+        </section>
+
+        <!-- Today's Reservations -->
+        <section id="todays-reservations" aria-labelledby="today-heading" class="flex flex-col gap-4">
+          <h2 id="today-heading" class="text-lead text-xl font-bold text-dark mb-4">Today's Reservations</h2>
+          
+          <!-- Empty State for Today's Reservations -->
+          <div class="empty-state flex flex-col items-center justify-center text-center py-16 px-4 gap-4 bg-white rounded-2xl border border-dashed border-dark/15">
+            <h3 class="empty-state-title text-lg font-semibold text-dark">No reservations yet.</h3>
+            <p class="empty-state-desc text-sm sm:text-base text-dark/65 max-w-[400px]">New guest reservations will appear here once booked.</p>
+          </div>
+          
+        </section>
+
+      </main>
+
+    </div>
+
+  </div>
+
+  <script src="../js/main.js" defer></script>
+</body>
+</html>
