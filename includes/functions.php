@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 require_once dirname(__DIR__) . '/app/Models/MenuItem.php';
 require_once dirname(__DIR__) . '/app/Models/Restaurant.php';
+require_once dirname(__DIR__) . '/app/Models/Quest.php';
 
 /**
  * Escapes a string for safe HTML output (prevents XSS — Week 5).
@@ -208,4 +209,24 @@ function getAssetPath(?string $relativePath, string $basePath = ''): string
 function getConciseCategoryLabel(?string $categoryName): string
 {
     return trim((string) preg_replace('/\s*\([^)]*\)\s*$/', '', (string) $categoryName));
+}
+
+/**
+ * Returns all canonical Culinary Quests as Quest domain objects.
+ *
+ * @return array<int, Quest>
+ */
+function getQuests(): array
+{
+    return Quest::all();
+}
+
+/**
+ * Returns all Culinary Quests associated with a given restaurant ID.
+ *
+ * @return array<int, Quest>
+ */
+function getQuestsForRestaurant(string $restaurantId): array
+{
+    return Quest::forRestaurant($restaurantId);
 }

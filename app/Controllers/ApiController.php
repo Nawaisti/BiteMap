@@ -77,10 +77,11 @@ class ApiController
         // 4. Collection filtering & sorting via Restaurant::filter()
         $filtered = Restaurant::filter($query);
         $serialized = array_map(static fn(Restaurant $r): array => $r->toArray(), $filtered);
+        $questsList = array_map(static fn(Quest $q): array => $q->toArray(), Quest::all());
 
         echo json_encode([
             'status' => 'success',
-            'source' => 'BiteMap REST API v1',
+            'source' => 'BiteMap — Culinary Quest REST API v1',
             'timestamp' => gmdate('c'),
             'count' => count($serialized),
             'filters' => [
@@ -93,6 +94,7 @@ class ApiController
                 'sort' => isset($query['sort']) && trim((string) $query['sort']) !== '' ? trim((string) $query['sort']) : 'Recommended',
             ],
             'data' => $serialized,
+            'quests' => $questsList,
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 

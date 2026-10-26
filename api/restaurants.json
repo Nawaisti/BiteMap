@@ -1,7 +1,7 @@
 ﻿{
     "status": "success",
-    "source": "BiteMap REST API v1",
-    "timestamp": "2026-10-26T17:32:41+00:00",
+    "source": "BiteMap ÔÇö Culinary Quest REST API v1",
+    "timestamp": "2026-10-26T18:09:10+00:00",
     "count": 3,
     "filters": {
         "q": "",
@@ -37,6 +37,7 @@
                 "Saturday": "10:00 ÔÇô 22:00",
                 "Sunday": "10:00 ÔÇô 22:00"
             },
+            "open_now": false,
             "reservation_enabled": true,
             "gallery": [
                 {
@@ -72,17 +73,20 @@
                         {
                             "name": "Wagyu Steak",
                             "price": "Rp 55.000",
-                            "description": "Daging premium yang dengan marmer lemak yang halus merata"
+                            "description": "Daging premium yang dengan marmer lemak yang halus merata",
+                            "category": "Paitan Soup Ramen (Rich and Creamy)"
                         },
                         {
                             "name": "Wagyu Saikoro",
                             "price": "Rp 58.000",
-                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru"
+                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru",
+                            "category": "Paitan Soup Ramen (Rich and Creamy)"
                         },
                         {
                             "name": "Chicken Chasu",
                             "price": "Rp 48.000",
-                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru"
+                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru",
+                            "category": "Paitan Soup Ramen (Rich and Creamy)"
                         }
                     ]
                 },
@@ -93,17 +97,20 @@
                         {
                             "name": "Nitamago",
                             "price": "Rp 35.000",
-                            "description": "Telur omega yang di marinasi belasan jam dengan bumbu khas Okiru"
+                            "description": "Telur omega yang di marinasi belasan jam dengan bumbu khas Okiru",
+                            "category": "Shoyu Soup Ramen (Light)"
                         },
                         {
                             "name": "Wagyu Saikoro",
                             "price": "Rp 58.000",
-                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru"
+                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru",
+                            "category": "Shoyu Soup Ramen (Light)"
                         },
                         {
                             "name": "Chicken Chasu",
                             "price": "Rp 48.000",
-                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru"
+                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru",
+                            "category": "Shoyu Soup Ramen (Light)"
                         }
                     ]
                 },
@@ -114,17 +121,20 @@
                         {
                             "name": "Wagyu Steak",
                             "price": "Rp 55.000",
-                            "description": "Daging premium yang dengan marmer lemak yang halus merata"
+                            "description": "Daging premium yang dengan marmer lemak yang halus merata",
+                            "category": "Tantan Ramen (Level Spicy 1-5)"
                         },
                         {
                             "name": "Wagyu Saikoro",
                             "price": "Rp 58.000",
-                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru"
+                            "description": "Daging yang dipotong bentuk cube / dadu dan dibumbui khas Okiru",
+                            "category": "Tantan Ramen (Level Spicy 1-5)"
                         },
                         {
                             "name": "Chicken Chasu",
                             "price": "Rp 48.000",
-                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru"
+                            "description": "Ayam gulung rebus yang dimasak dengan bumbu khas Okiru",
+                            "category": "Tantan Ramen (Level Spicy 1-5)"
                         }
                     ]
                 },
@@ -135,17 +145,20 @@
                         {
                             "name": "Tantan Katsu",
                             "price": "Rp 55.000",
-                            "description": "Ramen kuah pedas gurih dengan topping dada ayam tepung"
+                            "description": "Ramen kuah pedas gurih dengan topping dada ayam tepung",
+                            "category": "Dry Ramen"
                         },
                         {
                             "name": "Spicy Cheese",
                             "price": "Rp 55.000",
-                            "description": "Ramen kuah keju sedikit pedas dengan toping ayam"
+                            "description": "Ramen kuah keju sedikit pedas dengan toping ayam",
+                            "category": "Dry Ramen"
                         },
                         {
                             "name": "Dry Minced Tofu",
                             "price": "Rp 45.000",
-                            "description": "Ramen kering dengan topping daging cincang dan tofu"
+                            "description": "Ramen kering dengan topping daging cincang dan tofu",
+                            "category": "Dry Ramen"
                         }
                     ]
                 },
@@ -156,17 +169,20 @@
                         {
                             "name": "Salmon Belly Don",
                             "price": "Rp 65.000",
-                            "description": "Perut salmon dengan tobiko dan beras Jepang"
+                            "description": "Perut salmon dengan tobiko dan beras Jepang",
+                            "category": "Donburi"
                         },
                         {
                             "name": "Wagyu Don",
                             "price": "Rp 68.000",
-                            "description": "Wagyu dengan telur omega 3 dan beras Jepang"
+                            "description": "Wagyu dengan telur omega 3 dan beras Jepang",
+                            "category": "Donburi"
                         },
                         {
                             "name": "Saikoro Don",
                             "price": "Rp 68.000",
-                            "description": "Wagyu saikoro dengan telur omega 3 dan beras Jepang"
+                            "description": "Wagyu saikoro dengan telur omega 3 dan beras Jepang",
+                            "category": "Donburi"
                         }
                     ]
                 },
@@ -177,17 +193,20 @@
                         {
                             "name": "Beef Teppanyaki",
                             "price": "Rp 185.000",
-                            "description": "Daging sapi premium yang dimasak langsung di atas pelat besi panas oleh chef ahli, hidangan ini menawarkan rasa gurih dan juicy yang memikat."
+                            "description": "Daging sapi premium yang dimasak langsung di atas pelat besi panas oleh chef ahli, hidangan ini menawarkan rasa gurih dan juicy yang memikat.",
+                            "category": "Special Menu"
                         },
                         {
                             "name": "Salmon Head",
                             "price": "Rp 68.000",
-                            "description": "Kepala salmon yang di masak garlic butter dan irisan daging ham sapi + nasi putih"
+                            "description": "Kepala salmon yang di masak garlic butter dan irisan daging ham sapi + nasi putih",
+                            "category": "Special Menu"
                         },
                         {
                             "name": "Salmon Teppanyaki",
                             "price": "Rp 160.000",
-                            "description": "Fillet salmon segar yang dimasak langsung di atas pelat besi panas oleh chef ahli, hidangan ini menawarkan rasa gurih dan juicy yang memikat."
+                            "description": "Fillet salmon segar yang dimasak langsung di atas pelat besi panas oleh chef ahli, hidangan ini menawarkan rasa gurih dan juicy yang memikat.",
+                            "category": "Special Menu"
                         }
                     ]
                 },
@@ -198,12 +217,14 @@
                         {
                             "name": "Kids Meal A",
                             "price": "Rp 60.000",
-                            "description": "Nasi goreng salmon, nitamago, ebi tempura, acar"
+                            "description": "Nasi goreng salmon, nitamago, ebi tempura, acar",
+                            "category": "Kids Meal"
                         },
                         {
                             "name": "Kids Meal B",
                             "price": "Rp 65.000",
-                            "description": "Nasi putih Jepang, beef teriyaki, ebi tempura, acar"
+                            "description": "Nasi putih Jepang, beef teriyaki, ebi tempura, acar",
+                            "category": "Kids Meal"
                         }
                     ]
                 },
@@ -214,17 +235,20 @@
                         {
                             "name": "Salmon Fried Rice",
                             "price": "Rp 65.000",
-                            "description": "Nasi goreng salmon & telur"
+                            "description": "Nasi goreng salmon & telur",
+                            "category": "Special Fried Rice"
                         },
                         {
                             "name": "Beef Fried Rice",
                             "price": "Rp 65.000",
-                            "description": "Nasi goreng daging & telur"
+                            "description": "Nasi goreng daging & telur",
+                            "category": "Special Fried Rice"
                         },
                         {
                             "name": "Chicken Fried Rice",
                             "price": "Rp 65.000",
-                            "description": "Nasi goreng ayam & telur"
+                            "description": "Nasi goreng ayam & telur",
+                            "category": "Special Fried Rice"
                         }
                     ]
                 },
@@ -235,37 +259,44 @@
                         {
                             "name": "Salmon Truffle",
                             "price": "Rp 58.000",
-                            "description": "Potongan salmon yang disajikan dengan minyak truffle sebagai saus"
+                            "description": "Potongan salmon yang disajikan dengan minyak truffle sebagai saus",
+                            "category": "Snack"
                         },
                         {
                             "name": "Nori Tempura",
                             "price": "Rp 25.000",
-                            "description": "Rumput laut goreng dilapisi tempura khas Okiru"
+                            "description": "Rumput laut goreng dilapisi tempura khas Okiru",
+                            "category": "Snack"
                         },
                         {
                             "name": "Ebi Tempura",
                             "price": "Rp 35.000",
-                            "description": "Udang yang dilapisi dengan adonan tempura digoreng renyah"
+                            "description": "Udang yang dilapisi dengan adonan tempura digoreng renyah",
+                            "category": "Snack"
                         },
                         {
                             "name": "Ika Karage",
                             "price": "Rp 30.000",
-                            "description": "Potongan cumi-cumi yang digoreng dengan tepung hingga renyah di luar dan lembut di dalam"
+                            "description": "Potongan cumi-cumi yang digoreng dengan tepung hingga renyah di luar dan lembut di dalam",
+                            "category": "Snack"
                         },
                         {
                             "name": "Chicken Karage",
                             "price": "Rp 30.000",
-                            "description": "Potongan ayam yang digoreng tepung mempunyai rasa renyah di luar dan juicy di dalam"
+                            "description": "Potongan ayam yang digoreng tepung mempunyai rasa renyah di luar dan juicy di dalam",
+                            "category": "Snack"
                         },
                         {
                             "name": "Salmon Skin",
                             "price": "Rp 40.000",
-                            "description": "Kulit salmon di goreng tepung, mempunyai rasa renyah diluar juicy di dalam"
+                            "description": "Kulit salmon di goreng tepung, mempunyai rasa renyah diluar juicy di dalam",
+                            "category": "Snack"
                         },
                         {
                             "name": "Gyoza",
                             "price": "Rp 35.000",
-                            "description": "Pangsit Jepang yang diisi dengan daging ayam dan daun kucai"
+                            "description": "Pangsit Jepang yang diisi dengan daging ayam dan daun kucai",
+                            "category": "Snack"
                         }
                     ]
                 },
@@ -276,34 +307,41 @@
                         {
                             "name": "Unagi Roll",
                             "price": "Rp 40.000",
-                            "description": "Nori, beras sushi, kanimayo kyuri dan unagi"
+                            "description": "Nori, beras sushi, kanimayo kyuri dan unagi",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Aburi Salmon Roll",
                             "price": "Rp 38.000",
-                            "description": "Nori, beras sushi, kanimayo, salmon, saus mentai dan tobiko"
+                            "description": "Nori, beras sushi, kanimayo, salmon, saus mentai dan tobiko",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Spicy Tuna Roll",
                             "price": "Rp 30.000",
-                            "description": "Nori, beras sushi, kanimayo timun dan tuna tar tar"
+                            "description": "Nori, beras sushi, kanimayo timun dan tuna tar tar",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Spicy Salmon Roll",
                             "price": "Rp 35.000",
-                            "description": "Nori, beras sushi, kanimayo kyuri, tobiko dan spicy salmon"
+                            "description": "Nori, beras sushi, kanimayo kyuri, tobiko dan spicy salmon",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Chesse Cake Green Tea",
-                            "price": "Rp 58.000"
+                            "price": "Rp 58.000",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Chocolate Roulade",
-                            "price": "Rp 45.000"
+                            "price": "Rp 45.000",
+                            "category": "Shusi and Desert"
                         },
                         {
                             "name": "Milk Puding",
-                            "price": "Rp 40.000"
+                            "price": "Rp 40.000",
+                            "category": "Shusi and Desert"
                         }
                     ]
                 },
@@ -314,22 +352,26 @@
                         {
                             "name": "Nami Flower",
                             "price": "Rp 35.000",
-                            "description": "Sakura syrup, jasmine tea, lime juice, passion fruit syrup."
+                            "description": "Sakura syrup, jasmine tea, lime juice, passion fruit syrup.",
+                            "category": "Signature Okiru"
                         },
                         {
                             "name": "Yukari",
                             "price": "Rp 35.000",
-                            "description": "Fresh milk, strawberry syrup, lavender syrup, orange juice"
+                            "description": "Fresh milk, strawberry syrup, lavender syrup, orange juice",
+                            "category": "Signature Okiru"
                         },
                         {
                             "name": "Izumi",
                             "price": "Rp 35.000",
-                            "description": "Orange juice, almond syrup, rosemerry, cotton candy"
+                            "description": "Orange juice, almond syrup, rosemerry, cotton candy",
+                            "category": "Signature Okiru"
                         },
                         {
                             "name": "Amai Ryokucha",
                             "price": "Rp 35.000",
-                            "description": "Matcha powder, freshmilk, earlgrey foam."
+                            "description": "Matcha powder, freshmilk, earlgrey foam.",
+                            "category": "Signature Okiru"
                         }
                     ]
                 },
@@ -339,27 +381,33 @@
                     "items": [
                         {
                             "name": "Watermelon Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         },
                         {
                             "name": "Melon Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         },
                         {
                             "name": "Apple Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         },
                         {
                             "name": "Strawberry Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         },
                         {
                             "name": "Orange Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         },
                         {
                             "name": "Banana Juice",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Juice"
                         }
                     ]
                 },
@@ -369,19 +417,23 @@
                     "items": [
                         {
                             "name": "Tea (C/H)",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Tea"
                         },
                         {
                             "name": "Lychee Tea",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Tea"
                         },
                         {
                             "name": "Lemon Tea",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Tea"
                         },
                         {
                             "name": "Ocha (C/H)",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Tea"
                         }
                     ]
                 },
@@ -391,31 +443,38 @@
                     "items": [
                         {
                             "name": "Americano (C/H)",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Coffee Latte",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Cappucino",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Vanila",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Hazelnut",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Caramel",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Affogato",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Coffee"
                         }
                     ]
                 },
@@ -425,19 +484,23 @@
                     "items": [
                         {
                             "name": "Mineral",
-                            "price": "Rp 15.000"
+                            "price": "Rp 15.000",
+                            "category": "Soda & Mineral"
                         },
                         {
                             "name": "Cola",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Soda & Mineral"
                         },
                         {
                             "name": "Sprite",
-                            "price": "Rp 20.000"
+                            "price": "Rp 20.000",
+                            "category": "Soda & Mineral"
                         },
                         {
                             "name": "Sparkling Water",
-                            "price": "Rp 25.000"
+                            "price": "Rp 25.000",
+                            "category": "Soda & Mineral"
                         }
                     ]
                 },
@@ -447,23 +510,28 @@
                     "items": [
                         {
                             "name": "Upgrade Wagyu MB5",
-                            "price": "+ Rp 40.000"
+                            "price": "+ Rp 40.000",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Upgrade Wagyu MB5 (Beef Teppanyaki)",
-                            "price": "+ Rp 60.000"
+                            "price": "+ Rp 60.000",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Nitamago (Telur Omega 3)",
-                            "price": "+ Rp 10.000"
+                            "price": "+ Rp 10.000",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Shitake (Jamur Rebus)",
-                            "price": "+ Rp 10.000"
+                            "price": "+ Rp 10.000",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Gohan (Nasi Putih dengan Beras Jepang)",
-                            "price": "+ Rp 10.000"
+                            "price": "+ Rp 10.000",
+                            "category": "Upgrade & Add-On"
                         }
                     ]
                 },
@@ -474,17 +542,18 @@
                         {
                             "name": "Unagi Butter Rice",
                             "price": "Rp 175.000 (excl. tax & service)",
-                            "description": "Unagi Butter Rice has finally landed at Okiru. Comforting, rich, and ready to be enjoyed. (Excluding tax and service)"
+                            "description": "Unagi Butter Rice has finally landed at Okiru. Comforting, rich, and ready to be enjoyed. (Excluding tax and service)",
+                            "category": "Promo Menu"
                         },
                         {
                             "name": "Unagi Butter Rice (Add on Beef Wagyu MB5)",
                             "price": "Rp 275.000 (excl. tax & service)",
-                            "description": "Our Unagi Butter Rice now comes with a premium upgrade add Wagyu MB5 beef on top for the ultimate flavor boost (Excluding tax and service)"
+                            "description": "Our Unagi Butter Rice now comes with a premium upgrade add Wagyu MB5 beef on top for the ultimate flavor boost (Excluding tax and service)",
+                            "category": "Promo Menu"
                         }
                     ]
                 }
-            ],
-            "open_now": false
+            ]
         },
         {
             "id": "burger-king-ijen-besar-malang",
@@ -510,6 +579,7 @@
                 "Saturday": "00:00 ÔÇô 24:00",
                 "Sunday": "00:00 ÔÇô 24:00"
             },
+            "open_now": true,
             "reservation_enabled": false,
             "gallery": [
                 {
@@ -553,8 +623,7 @@
                     "label": "Instagram Resmi",
                     "url": "https://www.instagram.com/burgerking.id/"
                 }
-            ],
-            "open_now": true
+            ]
         },
         {
             "id": "dialogi-signature-malang",
@@ -580,6 +649,7 @@
                 "Saturday": "10:00 ÔÇô 23:00",
                 "Sunday": "10:00 ÔÇô 23:00"
             },
+            "open_now": false,
             "reservation_enabled": true,
             "gallery": [
                 {
@@ -615,27 +685,32 @@
                         {
                             "name": "Roti Goreng Udang",
                             "price": "Rp 50.000",
-                            "description": "Deep fried prawn toast, sesame seed, fish roe, mentai mayo"
+                            "description": "Deep fried prawn toast, sesame seed, fish roe, mentai mayo",
+                            "category": "Finger Licking Bites"
                         },
                         {
                             "name": "Handcut cheese fries",
                             "price": "Rp 50.000",
-                            "description": "Local 'kawi' potato fries, scallion, parmesan cheese and tartar mayo"
+                            "description": "Local 'kawi' potato fries, scallion, parmesan cheese and tartar mayo",
+                            "category": "Finger Licking Bites"
                         },
                         {
                             "name": "Truffle fries",
                             "price": "Rp 50.000",
-                            "description": "Straight cut fries tossed with truffle oil served with tartar mayo"
+                            "description": "Straight cut fries tossed with truffle oil served with tartar mayo",
+                            "category": "Finger Licking Bites"
                         },
                         {
                             "name": "Pangsit Goreng Sapi",
                             "price": "Rp 50.000",
-                            "description": "Fried dumplings filled with aromatic stir fried minced beef, served with mentai sauce"
+                            "description": "Fried dumplings filled with aromatic stir fried minced beef, served with mentai sauce",
+                            "category": "Finger Licking Bites"
                         },
                         {
                             "name": "Fish n chips",
                             "price": "Rp 74.000",
-                            "description": "Deep fried fish with fries and tartar sauce"
+                            "description": "Deep fried fish with fries and tartar sauce",
+                            "category": "Finger Licking Bites"
                         }
                     ]
                 },
@@ -646,17 +721,20 @@
                         {
                             "name": "Caesar Salad",
                             "price": "Rp 55.000",
-                            "description": "Romaine lettuce, caesar dressing, chicken fajita, onsen egg, shaved parmesan and grated cured egg"
+                            "description": "Romaine lettuce, caesar dressing, chicken fajita, onsen egg, shaved parmesan and grated cured egg",
+                            "category": "Salad"
                         },
                         {
                             "name": "Salmon Salad",
                             "price": "Rp 65.000",
-                            "description": "Salmon fillet, mixed greens, kyuri & rice paper, drizzled with zesty citrus dressing & hint of spice"
+                            "description": "Salmon fillet, mixed greens, kyuri & rice paper, drizzled with zesty citrus dressing & hint of spice",
+                            "category": "Salad"
                         },
                         {
                             "name": "Vietnam Beef Salad",
                             "price": "Rp 68.000",
-                            "description": "Grilled beef with asian spice, peanut crumble, noodles, kyuri, carrot, tomato, coriander leaf and sweet spice tamarind dressing"
+                            "description": "Grilled beef with asian spice, peanut crumble, noodles, kyuri, carrot, tomato, coriander leaf and sweet spice tamarind dressing",
+                            "category": "Salad"
                         }
                     ]
                 },
@@ -667,12 +745,14 @@
                         {
                             "name": "Buntut Kuah Mesanten",
                             "price": "Rp 95.000",
-                            "description": "Cooked beef oxtail with kuah kuning mesanten, eggplant, daun kelor, sweet corn served with steam rice and sambal"
+                            "description": "Cooked beef oxtail with kuah kuning mesanten, eggplant, daun kelor, sweet corn served with steam rice and sambal",
+                            "category": "Soup"
                         },
                         {
                             "name": "Iga Garang Asem \"Bali\"",
                             "price": "Rp 93.000",
-                            "description": "Braised beef ribs balinese style with belimbing wuluh, tomato served with steam rice and sambal"
+                            "description": "Braised beef ribs balinese style with belimbing wuluh, tomato served with steam rice and sambal",
+                            "category": "Soup"
                         }
                     ]
                 },
@@ -683,37 +763,44 @@
                         {
                             "name": "Ayam Bakar Plecing",
                             "price": "Rp 90.000",
-                            "description": "Half spring chicken grilled with buleleng plecing sauce served with aromatic rice, beberuk tauge & umami spice broth"
+                            "description": "Half spring chicken grilled with buleleng plecing sauce served with aromatic rice, beberuk tauge & umami spice broth",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "Steam Roast Chicken Betutu",
                             "price": "Rp 90.000",
-                            "description": "Balinese steam roast chicken with rice, jukut kalas, and trio of sambals"
+                            "description": "Balinese steam roast chicken with rice, jukut kalas, and trio of sambals",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "Nasi Bebek Jukut Kalas",
                             "price": "Rp 85.000",
-                            "description": "Tender fried duck served with rempah butter rice, jukut kalas, lalapan, and a trio sambal"
+                            "description": "Tender fried duck served with rempah butter rice, jukut kalas, lalapan, and a trio sambal",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "Rolade Ala Mama",
                             "price": "Rp 78.000",
-                            "description": "Chicken roulade, fries, mama bistik sauce, cucumber coconut salad"
+                            "description": "Chicken roulade, fries, mama bistik sauce, cucumber coconut salad",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "Klodjen Chicken bowl",
                             "price": "Rp 78.000",
-                            "description": "Nori butter rice, chicken satay yakitori, edamame, sweet corn, fresh tomato, lokal tempe chips, onsen egg, scallion and grated parmesan cheese"
+                            "description": "Nori butter rice, chicken satay yakitori, edamame, sweet corn, fresh tomato, lokal tempe chips, onsen egg, scallion and grated parmesan cheese",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "Nasi Rames Ala Signature",
                             "price": "Rp 75.000",
-                            "description": "Nasi gurih tempe, ayam pelalah, sambal ijo, sambal matah, mustopa potato, jukut kalas"
+                            "description": "Nasi gurih tempe, ayam pelalah, sambal ijo, sambal matah, mustopa potato, jukut kalas",
+                            "category": "Main Course Chicken"
                         },
                         {
                             "name": "\"Ayam Kukus\" inspired from ayam pop west sumatra",
                             "price": "Rp 75.000",
-                            "description": "Steam chicken leg with coconut milk, smashed baby potatoes, served with trio sambal and steam rice"
+                            "description": "Steam chicken leg with coconut milk, smashed baby potatoes, served with trio sambal and steam rice",
+                            "category": "Main Course Chicken"
                         }
                     ]
                 },
@@ -724,32 +811,38 @@
                         {
                             "name": "Tenderloin With Mango Salad",
                             "price": "Rp 235.000",
-                            "description": "Sous vide Tenderloin steak, mango salad, nanjim, coriander leaf, mint leaf served with corn aromatic rice"
+                            "description": "Sous vide Tenderloin steak, mango salad, nanjim, coriander leaf, mint leaf served with corn aromatic rice",
+                            "category": "Main Course Beef"
                         },
                         {
                             "name": "Kalio Iga Sapi",
                             "price": "Rp 125.000",
-                            "description": "Grilled beef ribs, dan ubi tumbuk, kalio sauce, potato chips, dabu dabu served with steam rice"
+                            "description": "Grilled beef ribs, dan ubi tumbuk, kalio sauce, potato chips, dabu dabu served with steam rice",
+                            "category": "Main Course Beef"
                         },
                         {
                             "name": "Iga Bakar Rempah",
                             "price": "Rp 125.000",
-                            "description": "Iga bakar serundeng, salsa dabu-dabu, aromatic steamed rice, sambal terasi, & chips"
+                            "description": "Iga bakar serundeng, salsa dabu-dabu, aromatic steamed rice, sambal terasi, & chips",
+                            "category": "Main Course Beef"
                         },
                         {
                             "name": "Daging Bakar Meltique Bumbu Kluwek",
                             "price": "Rp 125.000",
-                            "description": "Grill meltique beef, perkedel mashed potatoes, tempe crumble, onion texture, coconut srundeng"
+                            "description": "Grill meltique beef, perkedel mashed potatoes, tempe crumble, onion texture, coconut srundeng",
+                            "category": "Main Course Beef"
                         },
                         {
                             "name": "Ribs Burger",
                             "price": "Rp 125.000",
-                            "description": "Homemade brioche bun, grilled beef ribs, iceberg lettuce, red onion pickles, american mayo, kemangi aioli, served with handcut kawi fries"
+                            "description": "Homemade brioche bun, grilled beef ribs, iceberg lettuce, red onion pickles, american mayo, kemangi aioli, served with handcut kawi fries",
+                            "category": "Main Course Beef"
                         },
                         {
                             "name": "Sate Manis Saikoro",
                             "price": "Rp 95.000",
-                            "description": "150 gr saikoro meltique beef satay, maranggi sauce, peanut crumble, pickles, dabu dabu served with steamed rice"
+                            "description": "150 gr saikoro meltique beef satay, maranggi sauce, peanut crumble, pickles, dabu dabu served with steamed rice",
+                            "category": "Main Course Beef"
                         }
                     ]
                 },
@@ -760,12 +853,14 @@
                         {
                             "name": "Salmon Gulai Aceh",
                             "price": "Rp 148.000",
-                            "description": "Skin on salmon fillet, gulai aceh sauce, curry leaf, baked eggplant, rambak crackers served with steamed rice"
+                            "description": "Skin on salmon fillet, gulai aceh sauce, curry leaf, baked eggplant, rambak crackers served with steamed rice",
+                            "category": "Main Course Fish"
                         },
                         {
                             "name": "Salmon Teriyaki",
                             "price": "Rp 148.000",
-                            "description": "Salmon fillet glazed with teriyaki sauce, served with seasonal vegetables, and mashed potato"
+                            "description": "Salmon fillet glazed with teriyaki sauce, served with seasonal vegetables, and mashed potato",
+                            "category": "Main Course Fish"
                         }
                     ]
                 },
@@ -776,17 +871,20 @@
                         {
                             "name": "Balacan Seafood Noodles",
                             "price": "Rp 85.000",
-                            "description": "Stir-fried kwetiau rice noodles, bumbu balacan, prawn, calamary, fish balls, vegetables"
+                            "description": "Stir-fried kwetiau rice noodles, bumbu balacan, prawn, calamary, fish balls, vegetables",
+                            "category": "Pasta"
                         },
                         {
                             "name": "Fettucine Kemangi Sauce",
                             "price": "Rp 70.000",
-                            "description": "Fettucine pasta, creamy kemangi sauce, pan seared chicken breast"
+                            "description": "Fettucine pasta, creamy kemangi sauce, pan seared chicken breast",
+                            "category": "Pasta"
                         },
                         {
                             "name": "Rigatoni With Creamy Korean Sauce",
                             "price": "Rp 70.000",
-                            "description": "Rigatoni pasta, gochujang, cheese, pan seared chicken breast"
+                            "description": "Rigatoni pasta, gochujang, cheese, pan seared chicken breast",
+                            "category": "Pasta"
                         }
                     ]
                 },
@@ -797,22 +895,26 @@
                         {
                             "name": "Nasi Goreng Sapi Balado",
                             "price": "Rp 80.000",
-                            "description": "X.O fried rice, sapi balado, potato chips and lalapan"
+                            "description": "X.O fried rice, sapi balado, potato chips and lalapan",
+                            "category": "Fried Rice"
                         },
                         {
                             "name": "Nasi Goreng Rempah Sapi",
                             "price": "Rp 80.000",
-                            "description": "Spiced fried rice with beef, egg, crackers, and pickles"
+                            "description": "Spiced fried rice with beef, egg, crackers, and pickles",
+                            "category": "Fried Rice"
                         },
                         {
                             "name": "Legit Beef Fried Rice",
                             "price": "Rp 75.000",
-                            "description": "Fried rice with soy wagyu beef ragout"
+                            "description": "Fried rice with soy wagyu beef ragout",
+                            "category": "Fried Rice"
                         },
                         {
                             "name": "Butter Rice (Chicken/Beef)",
                             "price": "Rp 75.000",
-                            "description": "Fried rice with herb garlic butter & almond crumble"
+                            "description": "Fried rice with herb garlic butter & almond crumble",
+                            "category": "Fried Rice"
                         }
                     ]
                 },
@@ -823,22 +925,26 @@
                         {
                             "name": "Lemon Truffle Cremeux",
                             "price": "Rp 47.000",
-                            "description": "Creamy cheese cremeux and infused lemon served with berry compote"
+                            "description": "Creamy cheese cremeux and infused lemon served with berry compote",
+                            "category": "Dessert"
                         },
                         {
                             "name": "Raspberry Roses",
                             "price": "Rp 47.000",
-                            "description": "Raspberry confit, vanilla mousse, & berry sauce"
+                            "description": "Raspberry confit, vanilla mousse, & berry sauce",
+                            "category": "Dessert"
                         },
                         {
                             "name": "Basque Burnt Cheese Cake",
                             "price": "Rp 47.000",
-                            "description": "Burnt cheese cake served with vanilla ice cream"
+                            "description": "Burnt cheese cake served with vanilla ice cream",
+                            "category": "Dessert"
                         },
                         {
                             "name": "Klappertart",
                             "price": "Rp 45.000",
-                            "description": "Coconut kue, raisin, almond, aren butter sauce"
+                            "description": "Coconut kue, raisin, almond, aren butter sauce",
+                            "category": "Dessert"
                         }
                     ]
                 },
@@ -848,27 +954,33 @@
                     "items": [
                         {
                             "name": "Raspberry Apple Puff",
-                            "price": "Rp 38.000"
+                            "price": "Rp 38.000",
+                            "category": "Patisserie"
                         },
                         {
                             "name": "Almond Croissant",
-                            "price": "Rp 38.000"
+                            "price": "Rp 38.000",
+                            "category": "Patisserie"
                         },
                         {
                             "name": "Danish Strawberry",
-                            "price": "Rp 38.000"
+                            "price": "Rp 38.000",
+                            "category": "Patisserie"
                         },
                         {
                             "name": "Danish Cheese",
-                            "price": "Rp 38.000"
+                            "price": "Rp 38.000",
+                            "category": "Patisserie"
                         },
                         {
                             "name": "Soussie vaniglie Chocolalt",
-                            "price": "Rp 38.000"
+                            "price": "Rp 38.000",
+                            "category": "Patisserie"
                         },
                         {
                             "name": "Croissant Butter",
-                            "price": "Rp 30.000"
+                            "price": "Rp 30.000",
+                            "category": "Patisserie"
                         }
                     ]
                 },
@@ -879,37 +991,44 @@
                         {
                             "name": "Yellow Sunset",
                             "price": "Rp 47.000",
-                            "description": "Fresh pineapple, sunkist orange, cranberry juice, orange juice"
+                            "description": "Fresh pineapple, sunkist orange, cranberry juice, orange juice",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Apple Fruvella",
                             "price": "Rp 47.000",
-                            "description": "Green apple, Dragon Fruit"
+                            "description": "Green apple, Dragon Fruit",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Troppical Juice",
                             "price": "Rp 47.000",
-                            "description": "Fresh Strawberry, pineapple, Sunkist orange, cranberry juice"
+                            "description": "Fresh Strawberry, pineapple, Sunkist orange, cranberry juice",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Bumi",
                             "price": "Rp 47.000",
-                            "description": "Fresh Hydroponic pokcoy, green apple, mixed with aromatic celery"
+                            "description": "Fresh Hydroponic pokcoy, green apple, mixed with aromatic celery",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Rona",
                             "price": "Rp 47.000",
-                            "description": "Watermelon, fresh Strawberry, mixed with lychee"
+                            "description": "Watermelon, fresh Strawberry, mixed with lychee",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Green Kyuri Refresh",
                             "price": "Rp 47.000",
-                            "description": "Fresh kyuri mixed with apple juice"
+                            "description": "Fresh kyuri mixed with apple juice",
+                            "category": "Healthy Juice"
                         },
                         {
                             "name": "Atma",
                             "price": "Rp 47.000",
-                            "description": "Fresh melon, Kyuri, mixied with apple juice"
+                            "description": "Fresh melon, Kyuri, mixied with apple juice",
+                            "category": "Healthy Juice"
                         }
                     ]
                 },
@@ -920,32 +1039,38 @@
                         {
                             "name": "Lemongrass Fizz",
                             "price": "Rp 49.000",
-                            "description": "Aromatic mocktail with fragrant lemongrass, and lime, perfectly balanced with the sweetness of lychee flavour and apple juice"
+                            "description": "Aromatic mocktail with fragrant lemongrass, and lime, perfectly balanced with the sweetness of lychee flavour and apple juice",
+                            "category": "Mocktails & Smoothies"
                         },
                         {
                             "name": "Sunkist Presso",
                             "price": "Rp 55.000",
-                            "description": "Fresh orange, vanilla syrup, orange juice & espresso"
+                            "description": "Fresh orange, vanilla syrup, orange juice & espresso",
+                            "category": "Mocktails & Smoothies"
                         },
                         {
                             "name": "Berry Luxe",
                             "price": "Rp 50.000",
-                            "description": "Fresh strawberry, cranberry juice, mixed with fresh lemon, & coconut syrup"
+                            "description": "Fresh strawberry, cranberry juice, mixed with fresh lemon, & coconut syrup",
+                            "category": "Mocktails & Smoothies"
                         },
                         {
                             "name": "Senandung",
                             "price": "Rp 49.000",
-                            "description": "A sophisticated and refreshing fusion of calming chamomile tea and sweet cookie syrup"
+                            "description": "A sophisticated and refreshing fusion of calming chamomile tea and sweet cookie syrup",
+                            "category": "Mocktails & Smoothies"
                         },
                         {
                             "name": "Pisang Rai",
                             "price": "Rp 45.000",
-                            "description": "Air tajin, pineapple juice, pandan, coconut milk, gula aren"
+                            "description": "Air tajin, pineapple juice, pandan, coconut milk, gula aren",
+                            "category": "Mocktails & Smoothies"
                         },
                         {
                             "name": "Create Your Smoothies",
                             "price": "Rp 40.000",
-                            "description": "Banana, Dragon Fruit, Strawberry, Local Murbei Berry, Yogurt with fresh milk, honey, topped with Granola"
+                            "description": "Banana, Dragon Fruit, Strawberry, Local Murbei Berry, Yogurt with fresh milk, honey, topped with Granola",
+                            "category": "Mocktails & Smoothies"
                         }
                     ]
                 },
@@ -956,49 +1081,59 @@
                         {
                             "name": "Kopi Berdialoogi",
                             "price": "Rp 45.000 (Ice)",
-                            "description": "Signature Coffee Bottle of Dialoogi"
+                            "description": "Signature Coffee Bottle of Dialoogi",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Mochaccino",
                             "price": "Rp 35.000 (Hot) / Rp 42.000 (Ice)",
-                            "description": "Espresso shoot mixed with chocolate & fresh milk"
+                            "description": "Espresso shoot mixed with chocolate & fresh milk",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Caramel Macchiato",
                             "price": "Rp 42.000 (Ice)",
-                            "description": "Vanilla latte topped with caramel sauce & espresso"
+                            "description": "Vanilla latte topped with caramel sauce & espresso",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Aren Latte",
                             "price": "Rp 40.000 (Ice)",
-                            "description": "Cafe latte with palm sugar syrup"
+                            "description": "Cafe latte with palm sugar syrup",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Cinnamon Dolce",
                             "price": "Rp 40.000 (Ice)",
-                            "description": "Cafe Latte with creamer & cinnamon"
+                            "description": "Cafe Latte with creamer & cinnamon",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Caffe Latte",
                             "price": "Rp 35.000 (Hot) / Rp 39.000 (Ice)",
-                            "description": "Classic combination of fresh milk & espresso"
+                            "description": "Classic combination of fresh milk & espresso",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Cappuccino",
                             "price": "Rp 35.000 (Hot)",
-                            "description": "Espresso shoot topped with steamed milk"
+                            "description": "Espresso shoot topped with steamed milk",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Americano",
-                            "price": "Rp 30.000 (Hot) / Rp 32.000 (Ice)"
+                            "price": "Rp 30.000 (Hot) / Rp 32.000 (Ice)",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Longblack",
-                            "price": "Rp 30.000 (Hot) / Rp 34.000 (Ice)"
+                            "price": "Rp 30.000 (Hot) / Rp 34.000 (Ice)",
+                            "category": "Coffee"
                         },
                         {
                             "name": "Espresso",
-                            "price": "Rp 28.000 (Hot)"
+                            "price": "Rp 28.000 (Hot)",
+                            "category": "Coffee"
                         }
                     ]
                 },
@@ -1008,31 +1143,38 @@
                     "items": [
                         {
                             "name": "Lychee Tea",
-                            "price": "Rp 37.000 (Ice)"
+                            "price": "Rp 37.000 (Ice)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Peach Tea",
-                            "price": "Rp 37.000 (Ice)"
+                            "price": "Rp 37.000 (Ice)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Chamomile Tea",
-                            "price": "Rp 33.000 (Hot)"
+                            "price": "Rp 33.000 (Hot)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Peppermint Tea",
-                            "price": "Rp 33.000 (Hot)"
+                            "price": "Rp 33.000 (Hot)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Lemon Tea",
-                            "price": "Rp 33.000 (Hot) / Rp 35.000 (Ice)"
+                            "price": "Rp 33.000 (Hot) / Rp 35.000 (Ice)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Black Tea",
-                            "price": "Rp 27.000 (Hot) / Rp 29.000 (Ice)"
+                            "price": "Rp 27.000 (Hot) / Rp 29.000 (Ice)",
+                            "category": "Tea & Other"
                         },
                         {
                             "name": "Mineral Water (750ml)",
-                            "price": "Rp 30.000"
+                            "price": "Rp 30.000",
+                            "category": "Tea & Other"
                         }
                     ]
                 },
@@ -1043,26 +1185,31 @@
                         {
                             "name": "Nasi Sela Ungu",
                             "price": "+ Rp 17.500",
-                            "description": "Inspired from karangasem bali mix rice with ubi sela ungu"
+                            "description": "Inspired from karangasem bali mix rice with ubi sela ungu",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Nasi Daun Jeruk",
                             "price": "+ Rp 17.500",
-                            "description": "Aromatic steam rice mix with kaffir lime leaf"
+                            "description": "Aromatic steam rice mix with kaffir lime leaf",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Nasi Gurih Tempe",
                             "price": "+ Rp 17.500",
-                            "description": "Special chef creation mix local tempe with rice and lime leaf"
+                            "description": "Special chef creation mix local tempe with rice and lime leaf",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Rempah Butter Rice",
                             "price": "+ Rp 17.500",
-                            "description": "Coconut butter stirred fried rice with local aromatic n spice"
+                            "description": "Coconut butter stirred fried rice with local aromatic n spice",
+                            "category": "Upgrade & Add-On"
                         },
                         {
                             "name": "Aromatic Steamed Rice",
-                            "price": "+ Rp 17.500"
+                            "price": "+ Rp 17.500",
+                            "category": "Upgrade & Add-On"
                         }
                     ]
                 }
@@ -1082,8 +1229,170 @@
                     "label": "Instagram Resmi",
                     "url": "https://www.instagram.com/dialoogi.signature/"
                 }
+            ]
+        }
+    ],
+    "quests": [
+        {
+            "id": "quest-malang-scout",
+            "title": "Malang Culinary Scout",
+            "description": "Inspect all 3 verified Malang culinary landmarks on the interactive map or restaurant detail pages.",
+            "category": "Exploration",
+            "difficulty": "Starter",
+            "required_level": 1,
+            "min_xp": 0,
+            "xp_reward": 150,
+            "total_possible_xp": 225,
+            "verification_note": "Self-reported / demo exploration progress (browser localStorage)",
+            "target_restaurants": [
+                "okiru-ramen",
+                "dialogi-signature-malang",
+                "burger-king-ijen-besar-malang"
             ],
-            "open_now": false
+            "badge": {
+                "id": "badge-malang-scout",
+                "name": "Malang Scout",
+                "icon": "­ƒº¡",
+                "description": "Explored all 3 verified culinary landmarks across Lowokwaru and Klojen."
+            },
+            "objectives": [
+                {
+                    "id": "visit:okiru-ramen",
+                    "label": "Inspect Okiru Ramen (Soekarno Hatta)",
+                    "restaurant_id": "okiru-ramen",
+                    "action_type": "visit",
+                    "step_xp": 25
+                },
+                {
+                    "id": "visit:dialogi-signature-malang",
+                    "label": "Inspect Dialoogi Signature (Jl. Bandung)",
+                    "restaurant_id": "dialogi-signature-malang",
+                    "action_type": "visit",
+                    "step_xp": 25
+                },
+                {
+                    "id": "visit:burger-king-ijen-besar-malang",
+                    "label": "Inspect Burger King (Ijen Boulevard)",
+                    "restaurant_id": "burger-king-ijen-besar-malang",
+                    "action_type": "visit",
+                    "step_xp": 25
+                }
+            ],
+            "objective_count": 3
+        },
+        {
+            "id": "quest-noodle-connoisseur",
+            "title": "Ramen & Broth Connoisseur",
+            "description": "Dive into LowokwaruÔÇÖs halal Japanese ramen bar by inspecting Okiru RamenÔÇÖs menu and logging a tasting check-in.",
+            "category": "Asian Food",
+            "difficulty": "Easy",
+            "required_level": 1,
+            "min_xp": 0,
+            "xp_reward": 120,
+            "total_possible_xp": 170,
+            "verification_note": "Self-reported / demo check-in progress (browser localStorage)",
+            "target_restaurants": [
+                "okiru-ramen"
+            ],
+            "badge": {
+                "id": "badge-broth-master",
+                "name": "Broth Master",
+                "icon": "­ƒì£",
+                "description": "Completed the Okiru Ramen Paitan & Chintan menu exploration quest."
+            },
+            "objectives": [
+                {
+                    "id": "visit:okiru-ramen",
+                    "label": "Inspect Okiru Ramen detail or map marker",
+                    "restaurant_id": "okiru-ramen",
+                    "action_type": "visit",
+                    "step_xp": 25
+                },
+                {
+                    "id": "checkin:okiru-ramen",
+                    "label": "Log a self-reported tasting check-in at Okiru Ramen",
+                    "restaurant_id": "okiru-ramen",
+                    "action_type": "checkin",
+                    "step_xp": 25
+                }
+            ],
+            "objective_count": 2
+        },
+        {
+            "id": "quest-bandung-artisan",
+            "title": "Bandung Street Artisan",
+            "description": "Bookmark Dialoogi Signature on Jl. Bandung No. 40 to your Favorites and record a demo dining check-in.",
+            "category": "Restaurant",
+            "difficulty": "Medium",
+            "required_level": 1,
+            "min_xp": 0,
+            "xp_reward": 130,
+            "total_possible_xp": 180,
+            "verification_note": "Self-reported / demo favorite & check-in progress (browser localStorage)",
+            "target_restaurants": [
+                "dialogi-signature-malang"
+            ],
+            "badge": {
+                "id": "badge-artisan-explorer",
+                "name": "Artisan Explorer",
+                "icon": "Ôÿò",
+                "description": "Saved and checked in at Dialoogi Signature on Jl. Bandung."
+            },
+            "objectives": [
+                {
+                    "id": "fav:dialogi-signature-malang",
+                    "label": "Save Dialoogi Signature to Favorites (ÔÖÑ)",
+                    "restaurant_id": "dialogi-signature-malang",
+                    "action_type": "favorite",
+                    "step_xp": 25
+                },
+                {
+                    "id": "checkin:dialogi-signature-malang",
+                    "label": "Log a self-reported check-in at Dialoogi Signature",
+                    "restaurant_id": "dialogi-signature-malang",
+                    "action_type": "checkin",
+                    "step_xp": 25
+                }
+            ],
+            "objective_count": 2
+        },
+        {
+            "id": "quest-midnight-ijen",
+            "title": "Ijen 24-Hour Night Owl",
+            "description": "Reach Level 2 (150+ XP) to unlock this quest, then inspect and check in at Burger King Ijen Boulevard (Open 24 Hours).",
+            "category": "Fast Food",
+            "difficulty": "Advanced",
+            "required_level": 2,
+            "min_xp": 150,
+            "xp_reward": 200,
+            "total_possible_xp": 250,
+            "verification_note": "Unlocks at Level 2 (150 XP) ÔÇó Self-reported / demo progress",
+            "target_restaurants": [
+                "burger-king-ijen-besar-malang"
+            ],
+            "badge": {
+                "id": "badge-night-owl",
+                "name": "Ijen Night Owl",
+                "icon": "­ƒªë",
+                "description": "Reached Level 2 and completed the 24-hour Ijen Boulevard quest."
+            },
+            "objectives": [
+                {
+                    "id": "visit:burger-king-ijen-besar-malang",
+                    "label": "Inspect Burger King Ijen (24-Hour Landmark)",
+                    "restaurant_id": "burger-king-ijen-besar-malang",
+                    "action_type": "visit",
+                    "step_xp": 25
+                },
+                {
+                    "id": "checkin:burger-king-ijen-besar-malang",
+                    "label": "Log a self-reported 24h check-in at Burger King Ijen",
+                    "restaurant_id": "burger-king-ijen-besar-malang",
+                    "action_type": "checkin",
+                    "step_xp": 25
+                }
+            ],
+            "objective_count": 2
         }
     ]
 }
