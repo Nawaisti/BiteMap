@@ -20,8 +20,8 @@ class HomeController
      */
     public function index(): void
     {
-        $pageTitle = 'BiteMap — Culinary Quest | Map-First Malang Food Discovery';
-        $pageDescription = 'BiteMap — Culinary Quest. Explore Malang restaurants on an interactive map, complete culinary quests, earn XP, and unlock badges.';
+        $pageTitle = 'BiteMap — Culinary Adventure | Explore Malang, One Bite at a Time';
+        $pageDescription = 'BiteMap — Culinary Adventure. Explore Malang\'s culinary landscape on an interactive atlas, follow curated culinary trails, earn XP, and collect passport stamps.';
         $basePath = '';
         $currentPage = 'home';
 

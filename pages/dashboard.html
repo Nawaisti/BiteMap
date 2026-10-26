@@ -20,9 +20,9 @@
   <!-- ===== SITE HEADER ===== -->
   <header class="site-header sticky top-0 z-40 h-16 bg-cream/95 backdrop-blur-sm border-b border-dark/10">
     <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-3 md:gap-6" aria-label="Primary navigation">
-      <a href="../index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Quest home">
+      <a href="../index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Adventure home">
         <span class="logo-text text-lg sm:text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
-        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Quest</span>
+        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Adventure</span>
       </a>
 
       <div class="flex items-center gap-3 md:gap-6">
@@ -77,27 +77,27 @@
         <h1 id="dashboard-heading" class="text-2xl sm:text-3xl font-bold tracking-tight text-dark leading-tight">Explorer Profile</h1>
         <p class="text-sm text-dark/60 mt-1">Manage your quest progress, saved restaurants, and table reservations.</p>
 
-        <!-- Compact Player Progress & Badges Card -->
-        <div class="mt-5 bg-white rounded-2xl border border-dark/10 p-5" id="dashboard-quest-progress">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-dark/8">
+        <!-- Compact Player Progress & Badges Card (Explorer Passport Panel) -->
+        <div class="mt-5 bg-[#24211D] text-cream rounded-2xl border border-dark/20 p-5 shadow-sm" id="dashboard-quest-progress">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-cream/10">
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 text-sm">
-                <span class="font-semibold text-dark" data-hud="rank-title">Novice Taster</span>
-                <span class="text-dark/30" aria-hidden="true">&middot;</span>
-                <span class="text-xs text-dark/65"><strong class="font-semibold text-dark" data-hud="quests-count">0/4</strong> quests completed</span>
+                <span class="font-semibold text-cream" data-hud="rank-title">Novice Taster</span>
+                <span class="text-cream/30" aria-hidden="true">&middot;</span>
+                <span class="text-xs text-cream/75"><strong class="font-semibold text-cream" data-hud="quests-count">0/4</strong> quests completed</span>
               </div>
-              <p class="text-xs text-dark/55 mt-0.5 mb-0" data-hud="next-level-text">150 XP needed for Level 2</p>
-              <div class="w-full max-w-xs h-1.5 rounded-full bg-dark/8 overflow-hidden mt-2">
+              <p class="text-xs text-cream/60 mt-0.5 mb-0" data-hud="next-level-text">150 XP needed for Level 2</p>
+              <div class="w-full max-w-xs h-1.5 rounded-full bg-cream/10 overflow-hidden mt-2">
                 <div class="h-full bg-terracotta transition-all duration-300 rounded-full" style="width: 0%;" data-hud="xp-bar"></div>
               </div>
             </div>
             <div class="flex items-center gap-2.5 shrink-0">
-              <a href="explore.php" class="px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium no-underline transition-colors">
-                Open Map
+              <a href="explore.php" class="px-3.5 py-1.5 rounded-full bg-terracotta hover:bg-[#B25132] text-white text-xs font-semibold no-underline transition-colors">
+                Open Atlas
               </a>
               <button
                 type="button"
-                class="btn-reset-quest-progress text-xs font-medium text-dark/50 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors"
+                class="btn-reset-quest-progress text-xs font-medium text-cream/50 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors"
               >
                 Reset
               </button>
@@ -106,10 +106,10 @@
 
           <div class="pt-4">
             <div class="flex items-baseline justify-between gap-2 mb-3">
-              <h2 class="text-xs font-semibold text-dark/70">
-                Achievement Badges (<span data-hud="badges-count">0/4</span>)
+              <h2 class="text-xs font-semibold text-cream/80">
+                Passport Stamps &middot; Badges (<span data-hud="badges-count">0/4</span>)
               </h2>
-              <span class="text-[11px] text-dark/45">Self-reported demo progress</span>
+              <span class="text-[11px] text-cream/50">Self-reported demo progress</span>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="dashboard-badges-grid">
               <!-- Populated dynamically by initCulinaryQuestSystem() in js/main.js -->

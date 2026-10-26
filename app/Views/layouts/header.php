@@ -15,8 +15,8 @@ declare(strict_types=1);
 
 $basePath = $basePath ?? '';
 $currentPage = $currentPage ?? '';
-$pageTitle = $pageTitle ?? 'BiteMap — Culinary Quest | Map-First Malang Food Discovery';
-$pageDescription = $pageDescription ?? 'BiteMap — Culinary Quest. Explore Malang restaurants on an interactive map, complete culinary quests, earn XP, and unlock badges.';
+$pageTitle = $pageTitle ?? 'BiteMap — Culinary Adventure | Explore Malang, One Bite at a Time';
+$pageDescription = $pageDescription ?? 'BiteMap — Culinary Adventure. Explore Malang\'s culinary landscape on an interactive atlas, follow curated culinary trails, earn XP, and collect passport stamps.';
 ?>
 <!DOCTYPE html>
 <html lang="en" data-runtime="php">
@@ -41,9 +41,9 @@ $pageDescription = $pageDescription ?? 'BiteMap — Culinary Quest. Explore Mala
   <!-- ===== SITE HEADER ===== -->
   <header class="site-header sticky top-0 z-40 h-16 bg-cream/95 backdrop-blur-sm border-b border-dark/10">
     <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-3 md:gap-6" aria-label="Primary navigation">
-      <a href="<?= e($basePath) ?>index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Quest home">
+      <a href="<?= e($basePath) ?>index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Adventure home">
         <span class="logo-text text-lg sm:text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
-        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Quest</span>
+        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Adventure</span>
       </a>
 
       <div class="flex items-center gap-3 md:gap-6">

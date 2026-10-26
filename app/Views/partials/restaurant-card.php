@@ -55,6 +55,9 @@ $favPressed = $isFav ? 'true' : 'false';
         <span class="w-1.5 h-1.5 rounded-full <?= $cardStatus['is_open'] ? 'bg-[#6F8064]' : 'bg-dark/40' ?>"></span>
         <?= e($cardStatus['label']) ?>
       </span>
+      <span class="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-dark/90 backdrop-blur-xs text-white uppercase shadow-2xs">
+        <?= e($restaurant->getAtlasStopCode()) ?>
+      </span>
     </div>
 
     <div class="restaurant-card-content">

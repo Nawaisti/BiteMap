@@ -22,7 +22,7 @@ $basePath = $basePath ?? '';
           <a href="<?= e($basePath) ?>index.php" class="footer-logo inline-block mb-3" aria-label="BiteMap home">
             <span class="logo-text text-xl font-bold tracking-[0.08em] text-cream">BITEMAP</span>
           </a>
-          <p class="text-sm leading-relaxed text-cream/60 max-w-[24ch]">Find your next favorite place.</p>
+          <p class="text-sm leading-relaxed text-cream/60 max-w-[28ch]">Explore Malang, One Bite at a Time.</p>
         </div>
 
         <!-- Discover navigation group -->

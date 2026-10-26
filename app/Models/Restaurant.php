@@ -392,6 +392,50 @@ class Restaurant implements \ArrayAccess, \JsonSerializable
         return $this->location;
     }
 
+    /**
+     * Extracts the Malang administrative district (e.g. Klojen) from the location string.
+     * Pure string helper — zero HTML markup (Week 7 MVC separation).
+     */
+    public function getDistrict(): string
+    {
+        if (preg_match('/Kec\.\s*([^,]+)/i', $this->location, $matches)) {
+            return trim($matches[1]);
+        }
+        return 'Klojen';
+    }
+
+    /**
+     * Returns the 1-based canonical atlas stop index for this destination.
+     * Pure integer helper — zero HTML markup (Week 7 MVC separation).
+     */
+    public function getAtlasStopNumber(): int
+    {
+        return match ($this->id) {
+            'okiru-ramen' => 1,
+            'dialogi-signature-malang' => 2,
+            'burger-king-ijen-besar-malang' => 3,
+            default => 1,
+        };
+    }
+
+    /**
+     * Returns the two-digit atlas stop code (e.g. 'STOP 01').
+     * Pure string helper — zero HTML markup (Week 7 MVC separation).
+     */
+    public function getAtlasStopCode(): string
+    {
+        return sprintf('STOP %02d', $this->getAtlasStopNumber());
+    }
+
+    /**
+     * Returns the full uppercase atlas label (e.g. 'STOP 01 · KLOJEN').
+     * Pure string helper — zero HTML markup (Week 7 MVC separation).
+     */
+    public function getAtlasLabel(): string
+    {
+        return sprintf('%s · %s', $this->getAtlasStopCode(), strtoupper($this->getDistrict()));
+    }
+
     public function getLatitude(): float
     {
         return $this->latitude;

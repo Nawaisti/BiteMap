@@ -27,7 +27,7 @@ $questLinkPrefix = 'pages/';
   <!-- ===== MAIN CONTENT ===== -->
   <main id="main-content">
 
-    <!-- 1: MAP-FIRST DISCOVERY HERO -->
+    <!-- 1: MAP-FIRST DISCOVERY HERO (CULINARY ATLAS) -->
     <section class="hero relative pt-5 pb-4 md:pt-8 md:pb-6" aria-labelledby="hero-heading">
       <div class="container hero-inner max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
@@ -35,12 +35,14 @@ $questLinkPrefix = 'pages/';
           <!-- Left Column (5 cols): Headline, Search, Filters, Compact Quest Progress -->
           <div class="hero-content lg:col-span-5 flex flex-col items-start text-left">
 
-            <h1 id="hero-heading" class="text-2xl sm:text-3xl lg:text-[34px] font-bold tracking-tight text-dark leading-[1.2] mb-2">
-              Discover Malang's Culinary Spots
+            <span class="inline-block text-[11px] font-bold text-terracotta tracking-[0.14em] uppercase mb-1.5">Malang Culinary Atlas</span>
+
+            <h1 id="hero-heading" class="text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-dark leading-[1.15] mb-2.5">
+              Explore Malang, One Bite at a Time.
             </h1>
 
-            <p class="hero-subtitle text-dark/65 text-sm leading-relaxed mb-4">
-              Explore verified local restaurants on the interactive map, browse menus, and complete culinary quests around the city.
+            <p class="hero-subtitle text-dark/70 text-sm leading-relaxed mb-4">
+              Discover Malang's Culinary Spots across an interactive map atlas. Follow curated tasting trails, explore legendary eateries, and collect passport stamps along your journey.
             </p>
 
             <!-- Search Form -->
@@ -57,7 +59,7 @@ $questLinkPrefix = 'pages/';
               </div>
               <input type="hidden" name="loc" value="Malang" />
               <button type="submit" class="btn btn-primary inline-flex items-center justify-center py-2 px-5 rounded-lg sm:rounded-full text-xs sm:text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] transition-colors whitespace-nowrap cursor-pointer shrink-0 w-full sm:w-auto">
-                Search Map
+                Search Atlas
               </button>
             </form>
 
@@ -94,7 +96,7 @@ $questLinkPrefix = 'pages/';
 
               <div class="flex items-center justify-between gap-2 text-[11px] text-dark/55">
                 <span data-hud="next-level-text">150 XP needed for Level 2 (Street Scout)</span>
-                <a href="#quests-section" class="font-medium text-terracotta hover:underline no-underline shrink-0">View quests &darr;</a>
+                <a href="#quests-section" class="font-medium text-terracotta hover:underline no-underline shrink-0">View trails &darr;</a>
               </div>
             </div>
 
@@ -102,21 +104,24 @@ $questLinkPrefix = 'pages/';
 
           <!-- Right Column (7 cols): Primary Interactive Restaurant Map & Selected Inspector -->
           <div class="hero-visual lg:col-span-7 w-full">
-            <div class="bg-white rounded-2xl border border-dark/12 shadow-sm overflow-hidden">
+            <div class="bg-[#24211D] rounded-2xl border border-dark/20 shadow-md overflow-hidden text-cream">
 
-              <!-- Minimal Map Header Bar -->
-              <div class="px-4 py-2.5 border-b border-dark/8 flex items-center justify-between gap-2">
-                <span class="text-xs font-medium text-dark/70">Malang Discovery Map</span>
+              <!-- Atlas Board Header Bar -->
+              <div class="px-4 py-2.5 bg-[#24211D] border-b border-cream/10 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-terracotta" aria-hidden="true"></span>
+                  <span class="text-xs font-semibold tracking-wider uppercase text-cream/80">The Culinary Atlas &middot; Klojen</span>
+                </div>
                 <div class="flex items-center gap-3">
                   <button
                     type="button"
                     id="btn-home-reset-map"
-                    class="text-xs font-medium text-dark/65 hover:text-dark bg-transparent border-0 p-0 cursor-pointer transition-colors"
+                    class="text-xs font-medium text-cream/65 hover:text-cream bg-transparent border-0 p-0 cursor-pointer transition-colors"
                   >
                     Reset View
                   </button>
                   <a href="pages/explore.php" class="text-xs font-semibold text-terracotta hover:underline no-underline">
-                    Full Map &rarr;
+                    Full Atlas &rarr;
                   </a>
                 </div>
               </div>
@@ -127,27 +132,28 @@ $questLinkPrefix = 'pages/';
                 class="w-full h-[260px] sm:h-[360px] lg:h-[400px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
                 aria-label="Interactive Malang Restaurant Map"
               >
-                <span class="text-xs text-dark/55 font-medium">Loading interactive map...</span>
+                <span class="text-xs text-dark/55 font-medium">Loading interactive atlas...</span>
               </div>
 
-              <!-- Selected Restaurant Inspector Bar -->
+              <!-- Selected Restaurant Inspector Bar (Dark Docked Atlas Panel) -->
               <div
                 id="home-selected-inspector"
-                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                class="px-4 py-3.5 bg-[#24211D] border-t border-cream/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-cream"
                 aria-live="polite"
               >
                 <div class="min-w-0">
-                  <p class="text-[11px] font-medium text-dark/45 mb-0.5">Selected on Map</p>
-                  <div class="flex items-center gap-2">
-                    <h3 class="text-sm font-semibold text-dark leading-snug" data-inspector="name">Okiru Ramen</h3>
-                    <span class="text-[11px] text-dark/50 shrink-0" data-inspector="quest-tag"></span>
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="text-[10px] font-bold text-terracotta uppercase tracking-wider" data-inspector="stop-label">STOP 01 &middot; KLOJEN</span>
+                    <span class="text-[10px] text-cream/40" aria-hidden="true">&bull;</span>
+                    <span class="text-[11px] text-cream/50" data-inspector="quest-tag"></span>
                   </div>
-                  <p class="text-xs text-dark/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
+                  <h3 class="text-base font-semibold text-cream leading-snug" data-inspector="name">Okiru Ramen</h3>
+                  <p class="text-xs text-cream/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Bandung No. 5, Klojen</p>
                 </div>
                 <div class="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
                   <button
                     type="button"
-                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
+                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-cream/10 hover:bg-terracotta text-cream text-xs font-medium transition-colors cursor-pointer border border-cream/15 hover:border-terracotta"
                     data-inspector="checkin-btn"
                     data-checkin-restaurant="okiru-ramen"
                   >
@@ -155,11 +161,20 @@ $questLinkPrefix = 'pages/';
                   </button>
                   <a
                     href="pages/restaurant.php?id=okiru-ramen"
-                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
+                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-terracotta hover:bg-[#B25132] text-white text-xs font-semibold transition-colors no-underline"
                     data-inspector="detail-link"
                   >
                     View Details
                   </a>
+                  <button
+                    type="button"
+                    id="btn-inspector-next"
+                    data-inspector="next-stop-btn"
+                    class="col-span-2 sm:col-auto inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-cream/10 hover:bg-cream/20 text-cream text-xs font-medium transition-colors cursor-pointer border border-cream/15"
+                    title="Focus next stop along the trail"
+                  >
+                    Next Stop &rarr;
+                  </button>
                 </div>
               </div>
 
@@ -188,13 +203,14 @@ $questLinkPrefix = 'pages/';
       </div>
     </section>
 
-    <!-- 3: CULINARY QUESTS -->
-    <section id="quests-section" class="py-8 md:py-10 bg-white/50 border-b border-dark/10" aria-labelledby="quests-heading">
+    <!-- 3: CULINARY TRAILS & QUESTS (Dark Section) -->
+    <section id="quests-section" class="py-10 md:py-14 bg-[#24211D] text-cream border-b border-dark/20" aria-labelledby="quests-heading">
       <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
-        <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-5">
+        <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-6">
           <div>
-            <h2 id="quests-heading" class="text-lg sm:text-xl font-semibold text-dark">Culinary Quests</h2>
-            <p class="text-xs text-dark/60 mt-0.5">
+            <span class="inline-block text-[11px] font-bold text-terracotta tracking-[0.14em] uppercase mb-1">Curated Trails</span>
+            <h2 id="quests-heading" class="text-xl sm:text-2xl font-bold text-cream">Culinary Quests</h2>
+            <p class="text-xs text-cream/65 mt-1 max-w-[65ch]">
               Complete exploration objectives around Malang to earn XP and unlock badges. Progress is self-reported and stored locally for this demo.
             </p>
           </div>
@@ -208,12 +224,13 @@ $questLinkPrefix = 'pages/';
       </div>
     </section>
 
-    <!-- 4: ACHIEVEMENT BADGES (Supporting Section) -->
-    <section id="badges-section" class="py-8 md:py-10" aria-labelledby="badges-heading">
+    <!-- 4: ACHIEVEMENT BADGES (Explorer Passport Stamps) -->
+    <section id="badges-section" class="py-10 md:py-12 bg-cream" aria-labelledby="badges-heading">
       <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
-        <header class="flex items-baseline justify-between gap-3 mb-4">
+        <header class="flex items-baseline justify-between gap-3 mb-5">
           <div>
-            <h2 id="badges-heading" class="text-lg sm:text-xl font-semibold text-dark">Achievement Badges</h2>
+            <span class="inline-block text-[11px] font-bold text-terracotta tracking-[0.14em] uppercase mb-1">Traveler Passport</span>
+            <h2 id="badges-heading" class="text-lg sm:text-xl font-bold text-dark">Achievement Badges</h2>
             <p class="text-xs text-dark/60">Earned by completing culinary quests.</p>
           </div>
           <span class="text-xs font-medium text-dark/60 shrink-0">
@@ -228,7 +245,7 @@ $questLinkPrefix = 'pages/';
               class="badge-showcase-card bg-white rounded-xl border border-dark/10 p-3.5 flex items-start gap-3 opacity-80 transition-opacity duration-200"
               data-badge-card="<?= e($badge['id']) ?>"
             >
-              <div class="w-10 h-10 rounded-lg bg-cream/80 border border-dark/8 flex items-center justify-center text-lg shrink-0">
+              <div class="w-11 h-11 rounded-full border-2 border-dashed border-dark/25 bg-cream/80 flex items-center justify-center text-lg shrink-0 shadow-2xs" data-badge-icon-box="<?= e($badge['id']) ?>">
                 <?= e($badge['icon']) ?>
               </div>
               <div class="min-w-0 flex-1">

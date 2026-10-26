@@ -33,12 +33,12 @@ return [
             'id' => 'badge-malang-scout',
             'name' => 'Malang Scout',
             'icon' => '🧭',
-            'description' => 'Explored all 3 verified culinary landmarks across Lowokwaru and Klojen.',
+            'description' => 'Explored all 3 verified culinary landmarks in Klojen.',
         ],
         'objectives' => [
             [
                 'id' => 'visit:okiru-ramen',
-                'label' => 'Inspect Okiru Ramen (Soekarno Hatta)',
+                'label' => 'Inspect Okiru Ramen (Jl. Bandung)',
                 'restaurant_id' => 'okiru-ramen',
                 'action_type' => 'visit',
                 'step_xp' => 25,
@@ -62,7 +62,7 @@ return [
     [
         'id' => 'quest-noodle-connoisseur',
         'title' => 'Ramen & Broth Connoisseur',
-        'description' => 'Dive into Lowokwaru’s halal Japanese ramen bar by inspecting Okiru Ramen’s menu and logging a tasting check-in.',
+        'description' => 'Dive into Klojen’s Japanese ramen bar on Jl. Bandung by inspecting Okiru Ramen’s menu and logging a tasting check-in.',
         'category' => 'Asian Food',
         'difficulty' => 'Easy',
         'required_level' => 1,

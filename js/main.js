@@ -6166,10 +6166,10 @@ const CULINARY_QUESTS = [
             id: 'badge-malang-scout',
             name: 'Malang Scout',
             icon: '🧭',
-            description: 'Explored all 3 verified culinary landmarks across Lowokwaru and Klojen.'
+            description: 'Explored all 3 verified culinary landmarks in Klojen.'
         },
         objectives: [
-            { id: 'visit:okiru-ramen', label: 'Inspect Okiru Ramen (Soekarno Hatta)', restaurant_id: 'okiru-ramen', action_type: 'visit', step_xp: 25 },
+            { id: 'visit:okiru-ramen', label: 'Inspect Okiru Ramen (Jl. Bandung)', restaurant_id: 'okiru-ramen', action_type: 'visit', step_xp: 25 },
             { id: 'visit:dialogi-signature-malang', label: 'Inspect Dialoogi Signature (Jl. Bandung)', restaurant_id: 'dialogi-signature-malang', action_type: 'visit', step_xp: 25 },
             { id: 'visit:burger-king-ijen-besar-malang', label: 'Inspect Burger King (Ijen Boulevard)', restaurant_id: 'burger-king-ijen-besar-malang', action_type: 'visit', step_xp: 25 }
         ]
@@ -6177,7 +6177,7 @@ const CULINARY_QUESTS = [
     {
         id: 'quest-noodle-connoisseur',
         title: 'Ramen & Broth Connoisseur',
-        description: 'Dive into Lowokwaru’s halal Japanese ramen bar by inspecting Okiru Ramen’s menu and logging a tasting check-in.',
+        description: 'Dive into Klojen’s Japanese ramen bar on Jl. Bandung by inspecting Okiru Ramen’s menu and logging a tasting check-in.',
         category: 'Asian Food',
         required_level: 1,
         min_xp: 0,
@@ -6374,14 +6374,15 @@ function showQuestToast(message, variant = 'success') {
 
     const toast = document.createElement('div');
     const bgClass = variant === 'quest-complete'
-        ? 'bg-dark text-white border-dark'
-        : (variant === 'info' ? 'bg-white text-dark border-dark/15' : 'bg-white text-dark border-dark/15');
-    toast.className = `pointer-events-auto px-3.5 py-2.5 rounded-xl border shadow-md text-xs font-medium flex items-center justify-between gap-2 transition-opacity duration-300 ${bgClass}`;
+        ? 'bg-[#24211D] text-cream border-[#C85C3A]/50 shadow-lg'
+        : (variant === 'info' ? 'bg-[#24211D] text-cream border-cream/15' : 'bg-white text-dark border-dark/15');
+    toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-md text-xs font-medium flex items-center justify-between gap-2 transition-all duration-300 ${bgClass}`;
     toast.innerHTML = `<div class="leading-snug">${message}</div>`;
     container.appendChild(toast);
 
     setTimeout(() => {
         toast.style.opacity = '0';
+        toast.style.transform = 'translateY(6px)';
         setTimeout(() => toast.remove(), 300);
     }, 3200);
 }
@@ -6413,14 +6414,23 @@ function recordQuestAction(actionId, label = '', silentIfDuplicate = false) {
     const stats = calculatePlayerStats(state);
     renderQuestUI(stats);
 
+    // Micro-interaction: brief pulse on header player HUD
+    const navHud = document.getElementById('nav-player-hud');
+    if (navHud && !(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+        navHud.classList.remove('pulse-reward');
+        void navHud.offsetWidth; // trigger reflow
+        navHud.classList.add('pulse-reward');
+        setTimeout(() => navHud.classList.remove('pulse-reward'), 400);
+    }
+
     if (label) {
-        showQuestToast(`+${stepXp} XP &middot; ${label}`);
+        showQuestToast(`+${stepXp} XP &middot; ${label} <span class="text-[10px] opacity-75">(Self-reported)</span>`);
     }
 
     if (stats.newlyCompletedQuests.length > 0) {
         stats.newlyCompletedQuests.forEach(q => {
             showQuestToast(
-                `Quest Completed: <strong>${q.title}</strong> (+${q.xp_reward} XP &middot; ${q.badge.name} unlocked)`,
+                `Trail Completed: <strong>${q.title}</strong> (+${q.xp_reward} XP &middot; ${q.badge.name} unlocked)`,
                 'quest-complete'
             );
         });
@@ -6623,17 +6633,34 @@ function getPrimaryQuestForRestaurant(restaurantId) {
         || CULINARY_QUESTS[0];
 }
 
+function getAtlasStopCode(restaurant) {
+    if (!restaurant) return 'STOP 01';
+    if (restaurant.id === 'okiru-ramen') return 'STOP 01';
+    if (restaurant.id === 'dialogi-signature-malang') return 'STOP 02';
+    if (restaurant.id === 'burger-king-ijen-besar-malang') return 'STOP 03';
+    return 'STOP 01';
+}
+
+function getDistrictName(restaurant) {
+    if (restaurant && restaurant.location && restaurant.location.includes('Klojen')) return 'KLOJEN';
+    return 'KLOJEN';
+}
+
 function updateSelectedInspector(inspectorEl, restaurant, isHome = false) {
     if (!inspectorEl || !restaurant) return;
+    const stopEl = inspectorEl.querySelector('[data-inspector="stop-label"]');
     const nameEl = inspectorEl.querySelector('[data-inspector="name"]');
     const metaEl = inspectorEl.querySelector('[data-inspector="meta"]');
     const questEl = inspectorEl.querySelector('[data-inspector="quest-tag"]');
     const checkinBtn = inspectorEl.querySelector('[data-inspector="checkin-btn"]');
     const detailLink = inspectorEl.querySelector('[data-inspector="detail-link"]');
 
+    if (stopEl) {
+        stopEl.textContent = `${getAtlasStopCode(restaurant)} \u00b7 ${getDistrictName(restaurant)}`;
+    }
     if (nameEl) nameEl.textContent = restaurant.name;
     if (metaEl) {
-        metaEl.textContent = `${restaurant.category}${restaurant.cuisine ? ' · ' + restaurant.cuisine : ''} · ${restaurant.location || 'Malang'}`;
+        metaEl.textContent = `${restaurant.category}${restaurant.cuisine ? ' \u00b7 ' + restaurant.cuisine : ''} \u00b7 ${restaurant.location || 'Malang'}`;
     }
     if (questEl) {
         questEl.textContent = '';
@@ -6687,13 +6714,23 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
     let currentSelectedId = restaurants[0] ? restaurants[0].id : null;
 
     function createPinIcon(restaurant, isSelected) {
-        const bg = isSelected ? '#C85C3A' : '#24211D';
+        const stopCode = getAtlasStopCode(restaurant);
+        const stopNum = stopCode.replace('STOP ', '');
+        if (isSelected) {
+            return L.divIcon({
+                className: 'bitemap-quest-pin bitemap-quest-pin--selected',
+                html: `<div style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:#C85C3A;color:#fff;font-weight:600;font-size:11px;box-shadow:0 3px 12px rgba(200,92,58,0.4);border:2px solid #fff;white-space:nowrap;"><span style="display:inline-block;padding:1px 5px;background:rgba(0,0,0,0.22);border-radius:999px;font-size:9px;font-weight:700;letter-spacing:0.04em;">${stopCode}</span><span>${restaurant.name}</span></div>`,
+                iconSize: [120, 28],
+                iconAnchor: [60, 14],
+                popupAnchor: [0, -16]
+            });
+        }
         return L.divIcon({
             className: 'bitemap-quest-pin',
-            html: `<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:${bg};color:#fff;font-weight:600;font-size:11px;box-shadow:0 2px 8px rgba(36,33,29,0.22);border:1.5px solid #fff;white-space:nowrap;"><span>${restaurant.name}</span></div>`,
-            iconSize: [110, 26],
-            iconAnchor: [55, 13],
-            popupAnchor: [0, -14]
+            html: `<div style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:#24211D;color:#fff;font-weight:700;font-size:11px;letter-spacing:0.02em;box-shadow:0 2px 8px rgba(36,33,29,0.3);border:2px solid #fff;"><span>${stopNum}</span></div>`,
+            iconSize: [28, 28],
+            iconAnchor: [14, 14],
+            popupAnchor: [0, -16]
         });
     }
 
@@ -6702,7 +6739,7 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
         currentSelectedId = restaurant.id;
         updateSelectedInspector(inspectorEl, restaurant, isHome);
 
-        // Update marker colors so active marker is highlighted cleanly
+        // Update marker icons so active marker is highlighted cleanly
         markersById.forEach((entry, id) => {
             entry.marker.setIcon(createPinIcon(entry.restaurant, id === currentSelectedId));
         });
@@ -6730,6 +6767,20 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
         }
     }
 
+    // Bind "Next Stop" button if present in the inspector
+    const nextBtn = inspectorEl ? inspectorEl.querySelector('[data-inspector="next-stop-btn"]') : null;
+    if (nextBtn && !nextBtn.dataset.boundNext) {
+        nextBtn.dataset.boundNext = 'true';
+        nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const allActive = Array.from(markersById.values()).map(entry => entry.restaurant);
+            if (allActive.length === 0) return;
+            const currentIdx = allActive.findIndex(r => r.id === currentSelectedId);
+            const nextIdx = (currentIdx + 1) % allActive.length;
+            selectRestaurantOnMap(allActive[nextIdx], true, true);
+        });
+    }
+
     function renderMarkers(list) {
         markerLayer.clearLayers();
         markersById.clear();
@@ -6740,15 +6791,17 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
             const ext = getPageExtension();
             const detailHref = `${isHome ? 'pages/' : ''}restaurant${ext}?id=${encodeURIComponent(r.id)}`;
             const isSelected = currentSelectedId ? (r.id === currentSelectedId) : (idx === 0);
+            const stopCode = getAtlasStopCode(r);
 
             const marker = L.marker([r.latitude, r.longitude], {
                 icon: createPinIcon(r, isSelected),
                 title: r.name
             });
 
-            // Minimal popup: restaurant name, category, and one primary action
+            // Minimal popup: stop code, restaurant name, category, and one primary action
             marker.bindPopup(`
-                <div style="min-width:165px;font-family:'Poppins',sans-serif;padding:2px 0;">
+                <div style="min-width:175px;font-family:'Poppins',sans-serif;padding:3px 0;">
+                    <div style="font-size:10px;font-weight:700;letter-spacing:0.08em;color:#C85C3A;text-transform:uppercase;margin-bottom:2px;">${stopCode} &middot; ${getDistrictName(r)}</div>
                     <div style="font-size:13px;font-weight:600;color:#24211D;line-height:1.3;">${r.name}</div>
                     <div style="font-size:11px;color:rgba(36,33,29,0.65);margin:2px 0 8px;">${r.category}</div>
                     <a href="${detailHref}" style="display:inline-block;font-size:11px;font-weight:600;color:#C85C3A;text-decoration:none;">View Details &rarr;</a>

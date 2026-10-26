@@ -185,15 +185,18 @@ $categoryBadges = [
 
           <!-- PRIMARY SURFACE (Right on Desktop / Top on Mobile): Interactive Map & Selected Restaurant -->
           <div class="lg:col-span-7 lg:order-2 lg:sticky lg:top-[80px]">
-            <div class="bg-white rounded-2xl border border-dark/12 shadow-sm overflow-hidden">
+            <div class="bg-[#24211D] rounded-2xl border border-dark/20 shadow-md overflow-hidden text-cream">
 
-              <!-- Minimal Map Toolbar -->
-              <div class="px-4 py-2.5 border-b border-dark/8 flex items-center justify-between gap-2">
-                <span class="text-xs font-medium text-dark/70">Malang Map</span>
+              <!-- Atlas Toolbar -->
+              <div class="px-4 py-2.5 bg-[#24211D] border-b border-cream/10 flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-terracotta" aria-hidden="true"></span>
+                  <span class="text-xs font-semibold tracking-wider uppercase text-cream/80">Malang Map &middot; Klojen</span>
+                </div>
                 <button
                   type="button"
                   id="btn-reset-map-bounds"
-                  class="text-xs font-medium text-dark/65 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors"
+                  class="text-xs font-medium text-cream/65 hover:text-cream bg-transparent border-0 p-0 cursor-pointer transition-colors"
                 >
                   Reset View
                 </button>
@@ -205,27 +208,28 @@ $categoryBadges = [
                 class="w-full h-[260px] sm:h-[380px] lg:h-[450px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
                 aria-label="Interactive Malang restaurant discovery map"
               >
-                <span class="text-xs text-dark/55 font-medium">Loading interactive map...</span>
+                <span class="text-xs text-dark/55 font-medium">Loading interactive atlas...</span>
               </div>
 
-              <!-- Concise Selected Restaurant Summary -->
+              <!-- Concise Selected Restaurant Summary (Dark Docked Atlas Panel) -->
               <div
                 id="selected-marker-inspector"
-                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                class="px-4 py-3.5 bg-[#24211D] border-t border-cream/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-cream"
                 aria-live="polite"
               >
                 <div class="min-w-0">
-                  <p class="text-[11px] font-medium text-dark/45 mb-0.5">Selected on Map</p>
-                  <div class="flex items-center gap-2">
-                    <h3 class="text-sm font-semibold text-dark leading-snug" data-inspector="name">Okiru Ramen</h3>
-                    <span class="text-[11px] text-dark/50 shrink-0" data-inspector="quest-tag"></span>
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="text-[10px] font-bold text-terracotta uppercase tracking-wider" data-inspector="stop-label">STOP 01 &middot; KLOJEN</span>
+                    <span class="text-[10px] text-cream/40" aria-hidden="true">&bull;</span>
+                    <span class="text-[11px] text-cream/50" data-inspector="quest-tag"></span>
                   </div>
-                  <p class="text-xs text-dark/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
+                  <h3 class="text-base font-semibold text-cream leading-snug" data-inspector="name">Okiru Ramen</h3>
+                  <p class="text-xs text-cream/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Bandung No. 5, Klojen</p>
                 </div>
                 <div class="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
                   <button
                     type="button"
-                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
+                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-cream/10 hover:bg-terracotta text-cream text-xs font-medium transition-colors cursor-pointer border border-cream/15 hover:border-terracotta"
                     data-inspector="checkin-btn"
                     data-checkin-restaurant="okiru-ramen"
                   >
@@ -233,11 +237,20 @@ $categoryBadges = [
                   </button>
                   <a
                     href="restaurant.php?id=okiru-ramen"
-                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
+                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-terracotta hover:bg-[#B25132] text-white text-xs font-semibold transition-colors no-underline"
                     data-inspector="detail-link"
                   >
                     View Details
                   </a>
+                  <button
+                    type="button"
+                    id="btn-inspector-next"
+                    data-inspector="next-stop-btn"
+                    class="col-span-2 sm:col-auto inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-cream/10 hover:bg-cream/20 text-cream text-xs font-medium transition-colors cursor-pointer border border-cream/15"
+                    title="Focus next stop along the trail"
+                  >
+                    Next Stop &rarr;
+                  </button>
                 </div>
               </div>
 
@@ -284,17 +297,18 @@ $categoryBadges = [
       </div>
     </section>
 
-    <!-- 4: TERTIARY SURFACE: CULINARY QUESTS -->
-    <section id="explore-quests-board" class="py-8 md:py-10 border-t border-dark/10 bg-white/40" aria-labelledby="explore-quests-heading">
+    <!-- 4: TERTIARY SURFACE: CULINARY QUESTS & TRAILS -->
+    <section id="explore-quests-board" class="py-10 md:py-12 border-t border-dark/20 bg-[#24211D] text-cream" aria-labelledby="explore-quests-heading">
       <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
         <div class="flex items-baseline justify-between gap-3 mb-5">
           <div>
-            <h2 id="explore-quests-heading" class="text-lg sm:text-xl font-semibold text-dark">Culinary Quests</h2>
-            <p class="text-xs text-dark/60 mt-0.5">Complete exploration objectives to earn XP and unlock badges.</p>
+            <span class="inline-block text-[11px] font-bold text-terracotta tracking-[0.14em] uppercase mb-1">Curated Trails</span>
+            <h2 id="explore-quests-heading" class="text-lg sm:text-xl font-bold text-cream">Culinary Quests</h2>
+            <p class="text-xs text-cream/65 mt-0.5">Complete exploration objectives to earn XP and unlock badges.</p>
           </div>
           <button
             type="button"
-            class="btn-reset-quest-progress text-xs font-medium text-dark/50 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors shrink-0"
+            class="btn-reset-quest-progress text-xs font-medium text-cream/50 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors shrink-0"
           >
             Reset progress
           </button>
@@ -307,6 +321,14 @@ $categoryBadges = [
         </div>
       </div>
     </section>
+
+    <!-- Quiet REST API & Architecture Status -->
+    <div class="py-3.5 border-t border-dark/10 bg-cream text-center text-xs text-dark/50">
+      <div class="container max-w-[1280px] mx-auto px-4 flex items-center justify-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#6F8064]" aria-hidden="true"></span>
+        <span>REST API active &middot; Pure vanilla PHP MVC &middot; Leaflet &amp; OpenStreetMap</span>
+      </div>
+    </div>
 
   </main>
 

@@ -43,6 +43,10 @@ $todayName = (string) ($todayStatus['day'] ?? 'Monday');
 
         <header class="restaurant-header flex flex-col md:flex-row justify-between items-start gap-4 flex-wrap">
           <div class="restaurant-info">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-[11px] font-bold tracking-wider bg-dark text-white uppercase"><?= e($restaurant->getAtlasStopCode()) ?> &middot; <?= e($restaurant->getDistrict()) ?></span>
+              <span class="text-xs text-dark/45 font-mono">LAT <?= number_format($restaurant->getLatitude(), 4) ?>, LON <?= number_format($restaurant->getLongitude(), 4) ?></span>
+            </div>
             <h1 id="restaurant-name" class="text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-dark leading-tight" data-detail="name"><?= e($restaurant->getName()) ?></h1>
             <p class="text-lead text-muted text-lg sm:text-xl text-dark/65 mb-2 mt-1" data-detail="category">
               <?= e($restaurant->getCategory()) ?>
