@@ -471,10 +471,18 @@ textarea.is-error,
   }
 
   /*
-   * Mobile Restaurant Card Refinements on Grid Feed (Task 07 Step 03 - <= 639px)
+   * Mobile Restaurant Card Refinements on Grid Feed (Task 07 Step 03 - <= 767px)
    * Moderates card image dominance from 16:10 to 16:9 on single-column feed,
-   * and elevates restaurant name to 20px (1.25rem) for confident editorial hierarchy.
+   * removes forced 2-line min-height on single-column mobile cards,
+   * and sets restaurant name to 1.125rem (18px) for clean hierarchy.
    */
+  @media (max-width: 767px) {
+    .restaurant-card-content h3,
+    .restaurant-card-content .text-lead {
+      min-height: 0;
+    }
+  }
+
   @media (max-width: 639px) {
     .restaurant-grid .restaurant-card-image {
       aspect-ratio: 16 / 9;
@@ -482,8 +490,9 @@ textarea.is-error,
 
     .restaurant-grid .restaurant-card-content h3,
     .restaurant-grid .restaurant-card-content .text-lead {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       line-height: 1.35;
+      min-height: 0;
     }
   }
 }

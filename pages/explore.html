@@ -85,15 +85,12 @@
             </p>
           </div>
 
-          <!-- Compact Player Progress Indicator -->
-          <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-white border border-dark/10 text-xs self-start sm:self-auto shrink-0" id="explore-player-hud">
-            <span class="font-semibold text-dark">Lv. <span data-hud="level-num">1</span></span>
-            <span class="text-dark/65" data-hud="rank-title">Novice Taster</span>
+          <!-- Non-Redundant Quest Progress Indicator (Complements Header Lv./XP Pill) -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-dark/10 text-xs self-start sm:self-auto shrink-0" id="explore-player-hud">
+            <span class="font-medium text-dark" data-hud="rank-title">Novice Taster</span>
             <span class="text-dark/25" aria-hidden="true">&middot;</span>
-            <span class="font-semibold text-terracotta" data-hud="xp-text">0 XP</span>
-            <span class="text-dark/25" aria-hidden="true">&middot;</span>
-            <a href="#explore-quests-board" class="text-dark/70 hover:text-terracotta font-medium no-underline">
-              <span data-hud="quests-count">0/4</span> quests
+            <a href="#explore-quests-board" class="text-terracotta hover:underline font-medium no-underline">
+              <span data-hud="quests-count">0/4</span> quests completed
             </a>
           </div>
         </div>
@@ -223,7 +220,7 @@
               <!-- Leaflet Map Canvas -->
               <div
                 id="explore-discovery-map"
-                class="w-full h-[280px] sm:h-[380px] lg:h-[450px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
+                class="w-full h-[260px] sm:h-[380px] lg:h-[450px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
                 aria-label="Interactive Malang restaurant discovery map"
               >
                 <span class="text-xs text-dark/55 font-medium">Loading interactive map...</span>
@@ -232,20 +229,21 @@
               <!-- Concise Selected Restaurant Summary -->
               <div
                 id="selected-marker-inspector"
-                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 aria-live="polite"
               >
                 <div class="min-w-0">
+                  <p class="text-[11px] font-medium text-dark/45 mb-0.5">Selected on Map</p>
                   <div class="flex items-center gap-2">
-                    <h3 class="text-sm font-semibold text-dark truncate" data-inspector="name">Okiru Ramen</h3>
+                    <h3 class="text-sm font-semibold text-dark leading-snug" data-inspector="name">Okiru Ramen</h3>
                     <span class="text-[11px] text-dark/50 shrink-0" data-inspector="quest-tag"></span>
                   </div>
-                  <p class="text-xs text-dark/60 truncate" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
+                  <p class="text-xs text-dark/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
                   <button
                     type="button"
-                    class="btn-quest-checkin px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
+                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
                     data-inspector="checkin-btn"
                     data-checkin-restaurant="okiru-ramen"
                   >
@@ -253,7 +251,7 @@
                   </button>
                   <a
                     href="restaurant.html?id=okiru-ramen"
-                    class="px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
+                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
                     data-inspector="detail-link"
                   >
                     View Details
@@ -525,17 +523,17 @@
     <!-- Compact Objective List -->
     <ul class="flex flex-col divide-y divide-dark/6 border-t border-dark/8 pt-1" role="list">
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="visit:okiru-ramen"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="visit:okiru-ramen"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen (Soekarno Hatta)</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen (Soekarno Hatta)</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <a
                 href="restaurant.html?id=okiru-ramen"
                 class="text-[11px] font-medium text-dark/65 hover:text-terracotta no-underline transition-colors"
@@ -543,17 +541,17 @@
                       </div>
         </li>
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="visit:dialogi-signature-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="visit:dialogi-signature-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="visit:dialogi-signature-malang">Inspect Dialoogi Signature (Jl. Bandung)</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="visit:dialogi-signature-malang">Inspect Dialoogi Signature (Jl. Bandung)</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <a
                 href="restaurant.html?id=dialogi-signature-malang"
                 class="text-[11px] font-medium text-dark/65 hover:text-terracotta no-underline transition-colors"
@@ -561,17 +559,17 @@
                       </div>
         </li>
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="visit:burger-king-ijen-besar-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="visit:burger-king-ijen-besar-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King (Ijen Boulevard)</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King (Ijen Boulevard)</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <a
                 href="restaurant.html?id=burger-king-ijen-besar-malang"
                 class="text-[11px] font-medium text-dark/65 hover:text-terracotta no-underline transition-colors"
@@ -625,17 +623,17 @@
     <!-- Compact Objective List -->
     <ul class="flex flex-col divide-y divide-dark/6 border-t border-dark/8 pt-1" role="list">
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="visit:okiru-ramen"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="visit:okiru-ramen"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen detail or map marker</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen detail or map marker</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <a
                 href="restaurant.html?id=okiru-ramen"
                 class="text-[11px] font-medium text-dark/65 hover:text-terracotta no-underline transition-colors"
@@ -643,17 +641,17 @@
                       </div>
         </li>
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="checkin:okiru-ramen"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="checkin:okiru-ramen"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="checkin:okiru-ramen">Log a self-reported tasting check-in at Okiru Ramen</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="checkin:okiru-ramen">Log a self-reported tasting check-in at Okiru Ramen</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <button
                 type="button"
                 class="btn-quest-checkin text-[11px] font-medium text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
@@ -708,17 +706,17 @@
     <!-- Compact Objective List -->
     <ul class="flex flex-col divide-y divide-dark/6 border-t border-dark/8 pt-1" role="list">
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="fav:dialogi-signature-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="fav:dialogi-signature-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="fav:dialogi-signature-malang">Save Dialoogi Signature to Favorites (♥)</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="fav:dialogi-signature-malang">Save Dialoogi Signature to Favorites (♥)</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <button
                 type="button"
                 class="btn-quest-fav text-[11px] font-medium text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
@@ -727,17 +725,17 @@
                       </div>
         </li>
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="checkin:dialogi-signature-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="checkin:dialogi-signature-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="checkin:dialogi-signature-malang">Log a self-reported check-in at Dialoogi Signature</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="checkin:dialogi-signature-malang">Log a self-reported check-in at Dialoogi Signature</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <button
                 type="button"
                 class="btn-quest-checkin text-[11px] font-medium text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
@@ -792,17 +790,17 @@
     <!-- Compact Objective List -->
     <ul class="flex flex-col divide-y divide-dark/6 border-t border-dark/8 pt-1" role="list">
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="visit:burger-king-ijen-besar-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="visit:burger-king-ijen-besar-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King Ijen (24-Hour Landmark)</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King Ijen (24-Hour Landmark)</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <a
                 href="restaurant.html?id=burger-king-ijen-besar-malang"
                 class="text-[11px] font-medium text-dark/65 hover:text-terracotta no-underline transition-colors"
@@ -810,17 +808,17 @@
                       </div>
         </li>
                       <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="checkin:burger-king-ijen-besar-malang"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="checkin:burger-king-ijen-besar-malang"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="checkin:burger-king-ijen-besar-malang">Log a self-reported 24h check-in at Burger King Ijen</span>
+            <span class="text-dark/85 leading-snug" data-objective-label="checkin:burger-king-ijen-besar-malang">Log a self-reported 24h check-in at Burger King Ijen</span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
                           <button
                 type="button"
                 class="btn-quest-checkin text-[11px] font-medium text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"

@@ -6525,10 +6525,10 @@ function renderQuestUI(precomputedStats = null) {
             const objDone = Boolean(state.completedActions[obj.id]);
             $$(`[data-objective-icon="${obj.id}"]`).forEach(iconEl => {
                 if (objDone) {
-                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full bg-[#6F8064] text-white flex items-center justify-center text-[10px] font-semibold shrink-0';
+                    iconEl.className = 'objective-status-icon w-4 h-4 mt-0.5 rounded-full bg-[#6F8064] text-white flex items-center justify-center text-[10px] font-semibold shrink-0';
                     iconEl.innerHTML = '&#10003;';
                 } else {
-                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0';
+                    iconEl.className = 'objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0';
                     iconEl.innerHTML = '&#9675;';
                 }
             });
@@ -6571,11 +6571,11 @@ function renderQuestUI(precomputedStats = null) {
         const isUnlocked = Boolean(state.unlockedBadges[badgeId]);
         $$(`[data-badge-card="${badgeId}"]`).forEach(cardEl => {
             if (isUnlocked) {
-                cardEl.classList.remove('opacity-60');
+                cardEl.classList.remove('opacity-80', 'opacity-60');
                 cardEl.classList.add('border-[#6F8064]/40');
             } else {
-                cardEl.classList.add('opacity-60');
-                cardEl.classList.remove('border-[#6F8064]/40');
+                cardEl.classList.remove('opacity-60', 'border-[#6F8064]/40');
+                cardEl.classList.add('opacity-80');
             }
         });
         $$(`[data-badge-status="${badgeId}"]`).forEach(statusEl => {
@@ -6583,7 +6583,7 @@ function renderQuestUI(precomputedStats = null) {
                 statusEl.className = 'text-[10px] font-semibold text-[#6F8064] shrink-0';
                 statusEl.textContent = 'Unlocked';
             } else {
-                statusEl.className = 'text-[10px] font-medium text-dark/50 shrink-0';
+                statusEl.className = 'text-[10px] font-medium text-dark/55 shrink-0';
                 statusEl.textContent = 'Locked';
             }
         });
@@ -6596,14 +6596,14 @@ function renderQuestUI(precomputedStats = null) {
             const b = quest.badge;
             const isUnlocked = Boolean(state.unlockedBadges[b.id]);
             return `
-                <div class="p-3.5 rounded-xl border ${isUnlocked ? 'bg-white border-[#6F8064]/40' : 'bg-cream/30 border-dark/10 opacity-60'} flex items-center gap-3">
+                <div class="p-3.5 rounded-xl border ${isUnlocked ? 'bg-white border-[#6F8064]/40' : 'bg-cream/30 border-dark/10 opacity-80'} flex items-start gap-3">
                     <div class="w-10 h-10 rounded-lg bg-cream/80 border border-dark/8 flex items-center justify-center text-lg shrink-0">${b.icon}</div>
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between gap-2">
-                            <h3 class="text-xs font-semibold text-dark truncate">${b.name}</h3>
-                            <span class="text-[10px] font-medium ${isUnlocked ? 'text-[#6F8064] font-semibold' : 'text-dark/50'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
+                            <h3 class="text-xs font-semibold text-dark leading-snug">${b.name}</h3>
+                            <span class="text-[10px] font-medium shrink-0 ${isUnlocked ? 'text-[#6F8064] font-semibold' : 'text-dark/55'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
                         </div>
-                        <p class="text-[11px] text-dark/60 truncate mt-0.5">${b.description}</p>
+                        <p class="text-xs text-dark/70 leading-snug mt-0.5">${b.description}</p>
                     </div>
                 </div>
             `;

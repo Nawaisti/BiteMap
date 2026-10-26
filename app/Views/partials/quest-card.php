@@ -67,17 +67,17 @@ $objCount = $quest->getObjectiveCount();
         $actionType = $obj['action_type'];
         ?>
         <li
-          class="quest-objective-item flex items-center justify-between gap-3 text-xs py-2"
+          class="quest-objective-item flex items-start justify-between gap-3 text-xs py-2"
           data-objective-item="<?= e($objId) ?>"
         >
-          <div class="flex items-center gap-2 min-w-0">
+          <div class="flex items-start gap-2 min-w-0">
             <span
-              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
+              class="objective-status-icon w-4 h-4 mt-0.5 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0"
               data-objective-icon="<?= e($objId) ?>"
             >&#9675;</span>
-            <span class="text-dark/85 truncate" data-objective-label="<?= e($objId) ?>"><?= e($obj['label']) ?></span>
+            <span class="text-dark/85 leading-snug" data-objective-label="<?= e($objId) ?>"><?= e($obj['label']) ?></span>
           </div>
-          <div class="shrink-0">
+          <div class="shrink-0 pt-0.5">
             <?php if ($actionType === 'checkin'): ?>
               <button
                 type="button"

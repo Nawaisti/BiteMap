@@ -67,15 +67,12 @@ $categoryBadges = [
             </p>
           </div>
 
-          <!-- Compact Player Progress Indicator -->
-          <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-white border border-dark/10 text-xs self-start sm:self-auto shrink-0" id="explore-player-hud">
-            <span class="font-semibold text-dark">Lv. <span data-hud="level-num">1</span></span>
-            <span class="text-dark/65" data-hud="rank-title">Novice Taster</span>
+          <!-- Non-Redundant Quest Progress Indicator (Complements Header Lv./XP Pill) -->
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-dark/10 text-xs self-start sm:self-auto shrink-0" id="explore-player-hud">
+            <span class="font-medium text-dark" data-hud="rank-title">Novice Taster</span>
             <span class="text-dark/25" aria-hidden="true">&middot;</span>
-            <span class="font-semibold text-terracotta" data-hud="xp-text">0 XP</span>
-            <span class="text-dark/25" aria-hidden="true">&middot;</span>
-            <a href="#explore-quests-board" class="text-dark/70 hover:text-terracotta font-medium no-underline">
-              <span data-hud="quests-count">0/4</span> quests
+            <a href="#explore-quests-board" class="text-terracotta hover:underline font-medium no-underline">
+              <span data-hud="quests-count">0/4</span> quests completed
             </a>
           </div>
         </div>
@@ -205,7 +202,7 @@ $categoryBadges = [
               <!-- Leaflet Map Canvas -->
               <div
                 id="explore-discovery-map"
-                class="w-full h-[280px] sm:h-[380px] lg:h-[450px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
+                class="w-full h-[260px] sm:h-[380px] lg:h-[450px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
                 aria-label="Interactive Malang restaurant discovery map"
               >
                 <span class="text-xs text-dark/55 font-medium">Loading interactive map...</span>
@@ -214,20 +211,21 @@ $categoryBadges = [
               <!-- Concise Selected Restaurant Summary -->
               <div
                 id="selected-marker-inspector"
-                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5"
+                class="px-4 py-3 bg-white border-t border-dark/8 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 aria-live="polite"
               >
                 <div class="min-w-0">
+                  <p class="text-[11px] font-medium text-dark/45 mb-0.5">Selected on Map</p>
                   <div class="flex items-center gap-2">
-                    <h3 class="text-sm font-semibold text-dark truncate" data-inspector="name">Okiru Ramen</h3>
+                    <h3 class="text-sm font-semibold text-dark leading-snug" data-inspector="name">Okiru Ramen</h3>
                     <span class="text-[11px] text-dark/50 shrink-0" data-inspector="quest-tag"></span>
                   </div>
-                  <p class="text-xs text-dark/60 truncate" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
+                  <p class="text-xs text-dark/65 leading-snug mt-0.5" data-inspector="meta">Asian Food &middot; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
                 </div>
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="grid grid-cols-2 sm:flex items-center gap-2 w-full sm:w-auto shrink-0">
                   <button
                     type="button"
-                    class="btn-quest-checkin px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
+                    class="btn-quest-checkin inline-flex items-center justify-center px-3 py-1.5 rounded-full bg-dark/[0.04] hover:bg-terracotta text-dark/80 hover:text-white text-xs font-medium transition-colors cursor-pointer border border-dark/12 hover:border-terracotta"
                     data-inspector="checkin-btn"
                     data-checkin-restaurant="okiru-ramen"
                   >
@@ -235,7 +233,7 @@ $categoryBadges = [
                   </button>
                   <a
                     href="restaurant.php?id=okiru-ramen"
-                    class="px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
+                    class="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium transition-colors no-underline"
                     data-inspector="detail-link"
                   >
                     View Details
