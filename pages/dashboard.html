@@ -18,80 +18,101 @@
   <a class="skip-to-content" href="#main-content">Skip to content</a>
 
   <!-- ===== SITE HEADER ===== -->
-  <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
-    <nav class="nav-primary flex items-center justify-between h-full max-w-[1200px] mx-auto px-4 md:px-6 xl:px-8 gap-6 md:gap-8" aria-label="Primary navigation">
-      <a href="../index.html" class="nav-logo shrink-0" aria-label="BiteMap home">
-        <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
+  <header class="site-header sticky top-0 z-40 h-16 bg-cream/95 backdrop-blur-sm border-b border-dark/10">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-3 md:gap-6" aria-label="Primary navigation">
+      <a href="../index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Quest home">
+        <span class="logo-text text-lg sm:text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
+        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Quest</span>
       </a>
-      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-8" id="nav-links" role="list">
-        <li class="w-full md:w-auto"><a href="explore.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explore</a></li>
-        <li class="w-full md:w-auto"><a href="dashboard.html" aria-current="page" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">My Account</a></li>
-        <li class="w-full md:w-auto"><a href="login.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Sign In</a></li>
-      </ul>
-      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
-      <button
-        type="button"
-        class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="nav-links"
-      >
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-opacity duration-250" aria-hidden="true"></span>
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
-      </button>
+
+      <div class="flex items-center gap-3 md:gap-6">
+        <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-16 max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/10 max-md:py-3 max-md:px-4 max-md:shadow-md max-md:z-40 md:flex md:items-center md:gap-6" id="nav-links" role="list">
+          <li class="w-full md:w-auto">
+            <a href="explore.php" class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Explore</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="../index.php#quests-section" class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Quests</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="dashboard.html" aria-current="page" class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark aria-[current=page]:text-terracotta aria-[current=page]:font-semibold transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Profile</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="login.html" class="block w-full py-2.5 text-sm text-dark/80 font-medium hover:text-dark transition-colors md:inline md:w-auto md:p-0">Sign In</a>
+          </li>
+        </ul>
+
+        <a
+          href="../index.php#quests-section"
+          id="nav-player-hud"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-dark/[0.04] border border-dark/10 text-xs font-medium text-dark/75 hover:text-dark hover:border-dark/25 transition-colors no-underline shrink-0"
+          title="View quest progress"
+        >
+          <span class="font-semibold text-dark" data-hud="level-badge">Lv. 1</span>
+          <span class="text-dark/30" aria-hidden="true">&middot;</span>
+          <span data-hud="xp-text">0 XP</span>
+        </a>
+
+        <button
+          type="button"
+          class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer shrink-0"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-transform duration-200" aria-hidden="true"></span>
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-opacity duration-200" aria-hidden="true"></span>
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-transform duration-200" aria-hidden="true"></span>
+        </button>
+      </div>
     </nav>
   </header>
 
   <!-- ===== MAIN CONTENT ===== -->
   <main id="main-content">
 
-    <div class="container dashboard-page-layout max-w-[1000px] mx-auto px-4 md:px-6 py-8 md:py-12 flex flex-col gap-12 md:gap-16">
+    <div class="container dashboard-page-layout max-w-[1000px] mx-auto px-4 md:px-6 py-8 md:py-10 flex flex-col gap-10 md:gap-12">
 
-      <!-- 2. Dashboard Header & Explorer Progress HUD (Phase D) -->
-      <section class="dashboard-header py-4 md:py-6" aria-labelledby="dashboard-heading">
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/10 text-terracotta text-xs font-bold uppercase tracking-wider mb-2">
-          <span>&#129517;</span> BiteMap — Culinary Quest Profile
-        </div>
-        <h1 id="dashboard-heading" class="text-3xl sm:text-4xl font-bold tracking-tight text-dark leading-tight">My Explorer Profile</h1>
-        <p class="text-lead text-muted text-base sm:text-lg text-dark/65 mt-1">Track your Culinary Quest XP, unlocked badges, saved landmarks, and table reservations.</p>
+      <!-- 2. Dashboard Header & Explorer Progress -->
+      <section class="dashboard-header py-2" aria-labelledby="dashboard-heading">
+        <h1 id="dashboard-heading" class="text-2xl sm:text-3xl font-bold tracking-tight text-dark leading-tight">Explorer Profile</h1>
+        <p class="text-sm text-dark/60 mt-1">Manage your quest progress, saved restaurants, and table reservations.</p>
 
-        <!-- Player Progress & Badges Card -->
-        <div class="mt-6 bg-white rounded-3xl border border-dark/12 p-6 shadow-xs" id="dashboard-quest-progress">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-dark/10">
-            <div class="flex items-center gap-4">
-              <div class="w-14 h-14 rounded-2xl bg-terracotta text-white flex flex-col items-center justify-center font-bold leading-none shadow-sm shrink-0">
-                <span class="text-[10px] uppercase opacity-80">Level</span>
-                <span class="text-2xl" data-hud="level-num">1</span>
+        <!-- Compact Player Progress & Badges Card -->
+        <div class="mt-5 bg-white rounded-2xl border border-dark/10 p-5" id="dashboard-quest-progress">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-dark/8">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 text-sm">
+                <span class="font-semibold text-dark">Level <span data-hud="level-num">1</span></span>
+                <span class="text-dark/30" aria-hidden="true">&middot;</span>
+                <span class="text-dark/75 font-medium" data-hud="rank-title">Novice Taster</span>
+                <span class="text-dark/30" aria-hidden="true">&middot;</span>
+                <span class="font-semibold text-terracotta" data-hud="xp-text">0 XP</span>
               </div>
-              <div>
-                <div class="flex items-center gap-2 flex-wrap">
-                  <h2 class="text-lg font-bold text-dark" data-hud="rank-title">Novice Taster</h2>
-                  <span class="px-2.5 py-0.5 rounded-full bg-[#6F8064]/15 text-[#6F8064] text-xs font-bold" data-hud="xp-text">0 XP</span>
-                </div>
-                <p class="text-xs text-dark/65 mt-0.5" data-hud="next-level-text">150 XP needed for Level 2</p>
-                <div class="w-48 sm:w-64 h-2.5 rounded-full bg-dark/10 overflow-hidden mt-2">
-                  <div class="h-full bg-terracotta transition-all duration-300 rounded-full" style="width: 0%;" data-hud="xp-bar"></div>
-                </div>
+              <p class="text-xs text-dark/55 mt-0.5" data-hud="next-level-text">150 XP needed for Level 2</p>
+              <div class="w-full max-w-xs h-1.5 rounded-full bg-dark/8 overflow-hidden mt-2">
+                <div class="h-full bg-terracotta transition-all duration-300 rounded-full" style="width: 0%;" data-hud="xp-bar"></div>
               </div>
             </div>
-            <div class="flex items-center gap-2">
-              <a href="explore.php" class="px-4 py-2 rounded-full bg-terracotta hover:bg-[#B25132] text-white text-xs font-semibold no-underline transition-colors">
-                &#128506; Open Quest Map
+            <div class="flex items-center gap-2.5 shrink-0">
+              <a href="explore.php" class="px-3.5 py-1.5 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-medium no-underline transition-colors">
+                Open Map
               </a>
               <button
                 type="button"
-                class="btn-reset-quest-progress px-3 py-2 rounded-full border border-dark/20 hover:border-terracotta text-xs font-semibold text-dark/70 hover:text-terracotta bg-cream/40 cursor-pointer transition-colors"
+                class="btn-reset-quest-progress text-xs font-medium text-dark/50 hover:text-terracotta bg-transparent border-0 p-0 cursor-pointer transition-colors"
               >
-                &#8635; Reset XP
+                Reset
               </button>
             </div>
           </div>
 
-          <div class="pt-5">
-            <h3 class="text-xs font-bold uppercase tracking-wider text-dark/60 mb-3">
-              Achievement Badges (<span data-hud="badges-count">0/4</span> Unlocked) &bull; <span class="font-normal">Self-reported / demo progress</span>
-            </h3>
+          <div class="pt-4">
+            <div class="flex items-baseline justify-between gap-2 mb-3">
+              <h2 class="text-xs font-semibold text-dark/70">
+                Achievement Badges (<span data-hud="badges-count">0/4</span>)
+              </h2>
+              <span class="text-[11px] text-dark/45">Self-reported demo progress</span>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="dashboard-badges-grid">
               <!-- Populated dynamically by initCulinaryQuestSystem() in js/main.js -->
             </div>

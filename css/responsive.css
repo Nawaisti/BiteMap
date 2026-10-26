@@ -172,8 +172,14 @@
   }
 }
 
-/* Small Mobile (=479px) */
+/* Small Mobile (<=479px — includes Samsung Galaxy A55 360x800 CSS viewport) */
 @media (max-width: 479px) {
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   .search-bar {
     flex-direction: column;
   }
@@ -186,6 +192,23 @@
   }
   .restaurant-actions .btn {
     width: 100%;
+  }
+
+  .location-hours-grid,
+  .restaurant-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .filter-group-ui {
+    width: 100%;
+  }
+
+  .filter-group-ui select {
+    max-width: 100%;
+  }
+
+  .leaflet-popup-content-wrapper {
+    max-width: 240px;
   }
 }
 

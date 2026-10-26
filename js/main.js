@@ -1419,20 +1419,20 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
     }
     const href = linkBase + '?id=' + encodeURIComponent(restaurant.id);
     const article = document.createElement('article');
-    article.className = 'restaurant-card';
+    article.className = 'restaurant-card group transition-all duration-200';
     article.dataset.id = restaurant.id;
     article.dataset.restaurantId = restaurant.id;
 
     const ratingHtml = typeof restaurant.rating === 'number'
-        ? `<span class="rating-icon" aria-hidden="true">&#9733;</span> ${restaurant.rating.toFixed(1)} <span class="text-[10px] opacity-75">(Demo)</span>`
-        : '<span>Verified Menu</span>';
+        ? `<span aria-hidden="true">&#9733;</span> ${restaurant.rating.toFixed(1)}`
+        : '<span>Verified menu</span>';
 
     let distanceText = null;
     if (customDistance != null) {
         distanceText = formatDistance(customDistance) || null;
     } else if (restaurant.distance != null) {
         distanceText = typeof restaurant.distance === 'number'
-            ? restaurant.distance.toFixed(1) + ' km (Est.)'
+            ? restaurant.distance.toFixed(1) + ' km'
             : (String(restaurant.distance).trim() || null);
     }
 
@@ -1440,7 +1440,10 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
     if (distanceText) {
         metaParts.push(distanceText);
     }
-    const metaHtml = metaParts.join(' &bull; ');
+    if (typeof restaurant.rating === 'number' || distanceText) {
+        metaParts.push('<span class="text-[11px] text-dark/45">Demo/Est.</span>');
+    }
+    const metaHtml = metaParts.join(' &middot; ');
 
     const isFav = (typeof isActiveFavorite === 'boolean') ? isActiveFavorite : isFavorite(restaurant.id);
     const favClass = isFav ? 'btn-favorite is-active' : 'btn-favorite';
@@ -1454,21 +1457,23 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
     article.dataset.name = restaurant.name || '';
     article.dataset.category = restaurant.category || '';
 
+    const catText = restaurant.cuisine ? `${restaurant.category} &middot; ${restaurant.cuisine}` : restaurant.category;
+
     article.innerHTML = `<button type="button" class="${favClass}" aria-label="${favLabel}" aria-pressed="${favPressed}"><span aria-hidden="true">&hearts;</span></button>
       <a href="${href}" class="card-link-wrapper" aria-label="View ${restaurant.name}">
         <div class="restaurant-card-image relative" aria-hidden="true"${imgStyle}></div>
         <div class="restaurant-card-content">
           <h3 class="text-lead">${restaurant.name}</h3>
-          <p class="text-small text-muted" style="margin-bottom: var(--space-1);">${restaurant.category}</p>
+          <p class="text-xs text-dark/65 mb-1">${catText}</p>
           <p class="text-meta text-muted">${metaHtml}</p>
         </div>
       </a>
-      <div class="px-4 pb-3.5 pt-2 border-t border-dark/8 flex items-center justify-between gap-2 bg-cream/35">
-        <button type="button" class="btn-focus-map inline-flex items-center gap-1 text-xs font-semibold text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0" data-focus-restaurant="${restaurant.id}" aria-label="Locate ${restaurant.name} on map">
-          <span aria-hidden="true">&#128205;</span> Focus on Map
+      <div class="px-4 py-2.5 border-t border-dark/8 flex items-center justify-between gap-2">
+        <button type="button" class="btn-focus-map text-xs font-medium text-dark/70 hover:text-terracotta transition-colors cursor-pointer bg-transparent border-0 p-0" data-focus-restaurant="${restaurant.id}" aria-label="Locate ${restaurant.name} on map">
+          Focus on Map
         </button>
-        <button type="button" class="btn-quest-checkin inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terracotta/10 hover:bg-terracotta hover:text-white text-terracotta text-[11px] font-semibold transition-colors cursor-pointer border border-terracotta/20" data-checkin-restaurant="${restaurant.id}" data-restaurant-name="${restaurant.name}">
-          <span>&#10003; Check In (+25 XP)</span>
+        <button type="button" class="btn-quest-checkin inline-flex items-center px-2.5 py-1 rounded-full bg-dark/[0.04] hover:bg-terracotta hover:text-white hover:border-terracotta text-dark/80 text-[11px] font-medium transition-colors cursor-pointer border border-dark/12" data-checkin-restaurant="${restaurant.id}" data-restaurant-name="${restaurant.name}">
+          <span>Check In &middot; +25 XP</span>
         </button>
       </div>`;
 
@@ -3548,37 +3553,38 @@ function initExploreFilters() {
 
     if (resultsSection && restaurantGrid) {
         let apiBar = document.getElementById('api-status-bar');
-        if (!apiBar && resultsHeader) {
+        if (!apiBar && restaurantGrid.parentNode) {
             apiBar = document.createElement('div');
             apiBar.id = 'api-status-bar';
-            apiBar.className = 'flex flex-wrap items-center gap-2 text-xs';
+            apiBar.className = 'mt-4 pt-3 border-t border-dark/8 flex flex-wrap items-center justify-between gap-2 text-[11px] text-dark/55';
             apiBar.innerHTML = `
-                <span id="api-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6F8064]/12 text-[#6F8064] font-semibold" role="status" aria-live="polite">
-                    <span class="w-1.5 h-1.5 rounded-full bg-current" aria-hidden="true"></span>
+                <span id="api-status-badge" class="inline-flex items-center gap-1.5 font-medium text-dark/60" role="status" aria-live="polite">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#6F8064]" aria-hidden="true"></span>
                     <span>API Ready</span>
                 </span>
-                <button type="button" id="btn-api-refresh" class="px-3 py-1 rounded-full border border-dark/15 bg-white hover:border-terracotta hover:text-terracotta text-dark/75 font-medium transition-colors cursor-pointer">
-                    Refresh via fetch()
-                </button>
-                <button type="button" id="btn-api-simulate-error" class="px-3 py-1 rounded-full border border-dark/15 bg-white hover:border-terracotta hover:text-terracotta text-dark/75 font-medium transition-colors cursor-pointer">
-                    Simulate API Error
-                </button>
+                <div class="inline-flex items-center gap-2">
+                    <button type="button" id="btn-api-refresh" class="hover:text-terracotta underline bg-transparent border-0 p-0 cursor-pointer text-[11px] text-dark/60">
+                        Refresh API
+                    </button>
+                    <span class="text-dark/25" aria-hidden="true">&middot;</span>
+                    <button type="button" id="btn-api-simulate-error" class="hover:text-terracotta underline bg-transparent border-0 p-0 cursor-pointer text-[11px] text-dark/60">
+                        Test Error State
+                    </button>
+                </div>
             `;
-            resultsHeader.appendChild(apiBar);
+            restaurantGrid.parentNode.appendChild(apiBar);
         }
 
         let apiLoadingEl = document.getElementById('api-loading-state');
         if (!apiLoadingEl) {
             apiLoadingEl = document.createElement('div');
             apiLoadingEl.id = 'api-loading-state';
-            apiLoadingEl.className = 'hidden py-8 px-4 mb-6 bg-white rounded-2xl border border-dark/10 text-center flex-col items-center justify-center gap-2 shadow-xs';
+            apiLoadingEl.className = 'hidden py-6 px-4 mb-4 bg-white rounded-xl border border-dark/10 text-center flex-col items-center justify-center gap-1.5';
             apiLoadingEl.style.display = 'none';
             apiLoadingEl.setAttribute('role', 'status');
             apiLoadingEl.setAttribute('aria-live', 'polite');
             apiLoadingEl.innerHTML = `
-                <span class="inline-block animate-spin text-terracotta text-xl" aria-hidden="true">&#9687;</span>
-                <p class="text-sm font-semibold text-dark m-0">Loading restaurants from REST API&hellip;</p>
-                <p class="text-xs text-dark/60 m-0">Executing asynchronous <code>fetch()</code> request to <code>api/restaurants.php</code></p>
+                <p class="text-xs font-medium text-dark m-0">Loading restaurants&hellip;</p>
             `;
             restaurantGrid.parentNode.insertBefore(apiLoadingEl, restaurantGrid);
         }
@@ -3587,15 +3593,15 @@ function initExploreFilters() {
         if (!apiErrorEl) {
             apiErrorEl = document.createElement('div');
             apiErrorEl.id = 'api-error-state';
-            apiErrorEl.className = 'hidden auth-status-banner mb-6 flex-col sm:flex-row items-start sm:items-center justify-between gap-4';
+            apiErrorEl.className = 'hidden auth-status-banner mb-4 flex-col sm:flex-row items-start sm:items-center justify-between gap-3';
             apiErrorEl.style.display = 'none';
             apiErrorEl.setAttribute('role', 'alert');
             apiErrorEl.innerHTML = `
                 <div>
-                    <div class="font-semibold text-terracotta mb-0.5">REST API Request Failed</div>
-                    <p id="api-error-message" class="text-sm text-dark/80 m-0">Unable to fetch live restaurant data. Showing cached local catalog as fallback.</p>
+                    <div class="font-semibold text-terracotta text-xs mb-0.5">API Request Failed</div>
+                    <p id="api-error-message" class="text-xs text-dark/75 m-0">Unable to fetch live restaurant data. Showing local catalog as fallback.</p>
                 </div>
-                <button type="button" id="btn-api-retry" class="btn btn-primary py-2 px-5 text-xs shrink-0">Retry Request</button>
+                <button type="button" id="btn-api-retry" class="btn btn-primary py-1.5 px-3.5 text-xs shrink-0">Retry</button>
             `;
             restaurantGrid.parentNode.insertBefore(apiErrorEl, restaurantGrid);
         }
@@ -3616,8 +3622,8 @@ function initExploreFilters() {
                 apiErrorEl.style.display = 'none';
             }
             if (statusBadge) {
-                statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark/8 text-dark/75 font-semibold';
-                statusBadge.innerHTML = '<span class="inline-block animate-spin" aria-hidden="true">&#9687;</span> <span>Fetching API&hellip;</span>';
+                statusBadge.className = 'inline-flex items-center gap-1.5 font-medium text-dark/60';
+                statusBadge.innerHTML = '<span>Fetching API&hellip;</span>';
             }
 
             const params = new URLSearchParams();
@@ -3684,8 +3690,8 @@ function initExploreFilters() {
                 performCanonicalFilters();
 
                 if (statusBadge) {
-                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6F8064]/12 text-[#6F8064] font-semibold';
-                    statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-current" aria-hidden="true"></span> <span>API Connected (200 OK) &bull; ${apiRestaurants.length} loaded via fetch()</span>`;
+                    statusBadge.className = 'inline-flex items-center gap-1.5 font-medium text-dark/60';
+                    statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#6F8064]" aria-hidden="true"></span> <span>API Connected (${apiRestaurants.length} loaded)</span>`;
                 }
             } catch (err) {
                 if (apiLoadingEl) {
@@ -3697,11 +3703,11 @@ function initExploreFilters() {
                     apiErrorEl.style.display = 'flex';
                 }
                 if (errorMsgEl) {
-                    errorMsgEl.textContent = (err && err.message ? err.message : 'Network error while contacting REST API.') + ' Showing local fallback catalog so you can continue browsing.';
+                    errorMsgEl.textContent = (err && err.message ? err.message : 'Network error while contacting REST API.') + ' Showing local fallback catalog.';
                 }
                 if (statusBadge) {
-                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/12 text-terracotta font-semibold';
-                    statusBadge.innerHTML = '<span aria-hidden="true">&#9888;</span> <span>API Error &bull; Fallback Active</span>';
+                    statusBadge.className = 'inline-flex items-center gap-1.5 font-medium text-terracotta';
+                    statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-terracotta" aria-hidden="true"></span> <span>API Fallback Active</span>';
                 }
                 // Progressive enhancement: ensure local cards remain visible and usable
                 performCanonicalFilters();
@@ -6361,26 +6367,23 @@ function showQuestToast(message, variant = 'success') {
     if (!container) {
         container = document.createElement('div');
         container.id = 'quest-toast-container';
-        container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-[340px] pointer-events-none';
+        container.className = 'fixed bottom-4 right-4 left-4 sm:left-auto z-50 flex flex-col gap-2 sm:max-w-[320px] pointer-events-none';
         container.setAttribute('aria-live', 'polite');
         document.body.appendChild(container);
     }
 
     const toast = document.createElement('div');
     const bgClass = variant === 'quest-complete'
-        ? 'bg-terracotta text-white border-terracotta'
-        : (variant === 'info' ? 'bg-dark text-cream border-dark' : 'bg-white text-dark border-terracotta/40');
-    toast.className = `pointer-events-auto px-4 py-3 rounded-2xl border shadow-lg text-xs font-semibold flex items-start gap-2.5 transition-all duration-300 ${bgClass}`;
-    toast.innerHTML = `
-        <span class="text-base leading-none shrink-0">${variant === 'quest-complete' ? '🏆' : (variant === 'info' ? 'ℹ️' : '✨')}</span>
-        <div class="leading-snug">${message}</div>
-    `;
+        ? 'bg-dark text-white border-dark'
+        : (variant === 'info' ? 'bg-white text-dark border-dark/15' : 'bg-white text-dark border-dark/15');
+    toast.className = `pointer-events-auto px-3.5 py-2.5 rounded-xl border shadow-md text-xs font-medium flex items-center justify-between gap-2 transition-opacity duration-300 ${bgClass}`;
+    toast.innerHTML = `<div class="leading-snug">${message}</div>`;
     container.appendChild(toast);
 
     setTimeout(() => {
         toast.style.opacity = '0';
         setTimeout(() => toast.remove(), 300);
-    }, 3600);
+    }, 3200);
 }
 
 /**
@@ -6397,7 +6400,7 @@ function recordQuestAction(actionId, label = '', silentIfDuplicate = false) {
     const state = loadQuestState();
     if (state.completedActions[actionId]) {
         if (!silentIfDuplicate) {
-            showQuestToast('Objective already completed — XP is awarded once per unique step.', 'info');
+            showQuestToast('Already completed — XP is awarded once per unique step.', 'info');
         }
         renderQuestUI();
         return false;
@@ -6411,13 +6414,13 @@ function recordQuestAction(actionId, label = '', silentIfDuplicate = false) {
     renderQuestUI(stats);
 
     if (label) {
-        showQuestToast(`+${stepXp} XP — ${label} (Demo Progress)`);
+        showQuestToast(`+${stepXp} XP &middot; ${label}`);
     }
 
     if (stats.newlyCompletedQuests.length > 0) {
         stats.newlyCompletedQuests.forEach(q => {
             showQuestToast(
-                `Quest Completed: <strong>${q.title}</strong>! +${q.xp_reward} XP &amp; ${q.badge.icon} ${q.badge.name} Badge Unlocked!`,
+                `Quest Completed: <strong>${q.title}</strong> (+${q.xp_reward} XP &middot; ${q.badge.name} unlocked)`,
                 'quest-complete'
             );
         });
@@ -6435,7 +6438,7 @@ function resetQuestProgress() {
     saveQuestState(emptyState);
     const stats = calculatePlayerStats(emptyState);
     renderQuestUI(stats);
-    showQuestToast('Demo quest progress, XP, and badges have been reset to Level 1 (0 XP).', 'info');
+    showQuestToast('Demo quest progress reset to Level 1 (0 XP).', 'info');
 }
 
 /**
@@ -6452,7 +6455,7 @@ function renderQuestUI(precomputedStats = null) {
     $$('[data-hud="level-num"]').forEach(el => { el.textContent = String(level); });
     $$('[data-hud="rank-title"]').forEach(el => { el.textContent = rankTitle; });
     $$('[data-hud="xp-text"]').forEach(el => { el.textContent = `${xp} XP`; });
-    $$('[data-hud="badges-text"]').forEach(el => { el.innerHTML = `&#127941; ${unlockedBadgesCount}/${totalQuests}`; });
+    $$('[data-hud="badges-text"]').forEach(el => { el.textContent = `${unlockedBadgesCount}/${totalQuests}`; });
     $$('[data-hud="quests-count"]').forEach(el => { el.textContent = `${completedQuestsCount}/${totalQuests}`; });
     $$('[data-hud="badges-count"]').forEach(el => { el.textContent = `${unlockedBadgesCount}/${totalQuests}`; });
     $$('[data-hud="xp-bar"]').forEach(el => { el.style.width = `${progressPercent}%`; });
@@ -6475,7 +6478,7 @@ function renderQuestUI(precomputedStats = null) {
         const pct = totalObj > 0 ? Math.round((doneCount / totalObj) * 100) : 0;
 
         $$(`[data-quest-progress-text="${quest.id}"]`).forEach(el => {
-            el.textContent = `${doneCount} / ${totalObj} completed`;
+            el.textContent = `${doneCount} / ${totalObj}`;
         });
         $$(`[data-quest-progress-bar="${quest.id}"]`).forEach(el => {
             el.style.width = `${pct}%`;
@@ -6490,25 +6493,30 @@ function renderQuestUI(precomputedStats = null) {
 
         $$(`[data-quest-state="${quest.id}"]`).forEach(badgeEl => {
             if (isCompleted) {
-                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#6F8064] text-white';
-                badgeEl.innerHTML = '&#10003; Completed';
+                badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#6F8064]/12 text-[#6F8064]';
+                badgeEl.textContent = 'Completed';
             } else if (isLocked) {
-                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-dark/10 text-dark/60';
-                badgeEl.innerHTML = `&#128274; Locked (Req. Lv. ${quest.required_level} / ${quest.min_xp} XP)`;
+                badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-dark/6 text-dark/55';
+                badgeEl.innerHTML = `Locked &middot; Lv. ${quest.required_level}`;
             } else if (doneCount > 0) {
-                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta text-white';
-                badgeEl.innerHTML = '&#9889; In Progress';
+                badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-terracotta/12 text-terracotta';
+                badgeEl.textContent = 'In Progress';
             } else {
-                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta/12 text-terracotta';
-                badgeEl.innerHTML = '&#9733; Available Quest';
+                badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-terracotta/10 text-terracotta';
+                badgeEl.textContent = 'Available';
             }
         });
 
         if (card) {
-            if (isLocked) {
-                card.classList.add('opacity-75');
+            if (isCompleted) {
+                card.classList.remove('bg-white', 'opacity-75');
+                card.classList.add('bg-cream/40', 'opacity-80');
+            } else if (isLocked) {
+                card.classList.add('bg-white', 'opacity-75');
+                card.classList.remove('bg-cream/40', 'opacity-80');
             } else {
-                card.classList.remove('opacity-75');
+                card.classList.add('bg-white');
+                card.classList.remove('bg-cream/40', 'opacity-80', 'opacity-75');
             }
         }
 
@@ -6517,18 +6525,18 @@ function renderQuestUI(precomputedStats = null) {
             const objDone = Boolean(state.completedActions[obj.id]);
             $$(`[data-objective-icon="${obj.id}"]`).forEach(iconEl => {
                 if (objDone) {
-                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full bg-[#6F8064] text-white flex items-center justify-center text-[10px] font-bold shrink-0';
+                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full bg-[#6F8064] text-white flex items-center justify-center text-[10px] font-semibold shrink-0';
                     iconEl.innerHTML = '&#10003;';
                 } else {
-                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0';
+                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-semibold text-dark/40 shrink-0';
                     iconEl.innerHTML = '&#9675;';
                 }
             });
             $$(`[data-objective-label="${obj.id}"]`).forEach(lblEl => {
                 if (objDone) {
-                    lblEl.classList.add('line-through', 'text-dark/50');
+                    lblEl.classList.add('line-through', 'text-dark/45');
                 } else {
-                    lblEl.classList.remove('line-through', 'text-dark/50');
+                    lblEl.classList.remove('line-through', 'text-dark/45');
                 }
             });
         });
@@ -6539,15 +6547,20 @@ function renderQuestUI(precomputedStats = null) {
         const restId = btn.getAttribute('data-checkin-restaurant');
         if (!restId) return;
         const isCheckedIn = Boolean(state.completedActions[`checkin:${restId}`]);
+        const isTextLink = btn.classList.contains('bg-transparent');
         if (isCheckedIn) {
-            btn.innerHTML = '<span>&#10003; Checked In (Earned)</span>';
-            btn.classList.add('bg-[#6F8064]', 'text-white', 'border-[#6F8064]');
-            btn.classList.remove('bg-terracotta/10', 'bg-terracotta/12', 'text-terracotta', 'bg-[#6F8064]/10', 'text-[#6F8064]');
+            btn.innerHTML = isTextLink ? 'Checked in' : '<span>Checked In</span>';
+            if (!isTextLink) {
+                btn.classList.add('bg-[#6F8064]/12', 'text-[#6F8064]', 'border-[#6F8064]/25');
+                btn.classList.remove('bg-dark/[0.04]', 'text-dark/80', 'border-dark/12');
+            }
             btn.setAttribute('aria-pressed', 'true');
         } else {
-            btn.innerHTML = '<span>&#10003; Check In (+25 XP)</span>';
-            btn.classList.remove('bg-[#6F8064]', 'text-white', 'border-[#6F8064]');
-            btn.classList.add('bg-terracotta/10', 'text-terracotta');
+            btn.innerHTML = isTextLink ? 'Check in' : '<span>Check In &middot; +25 XP</span>';
+            if (!isTextLink) {
+                btn.classList.remove('bg-[#6F8064]/12', 'text-[#6F8064]', 'border-[#6F8064]/25');
+                btn.classList.add('bg-dark/[0.04]', 'text-dark/80', 'border-dark/12');
+            }
             btn.setAttribute('aria-pressed', 'false');
         }
     });
@@ -6559,18 +6572,18 @@ function renderQuestUI(precomputedStats = null) {
         $$(`[data-badge-card="${badgeId}"]`).forEach(cardEl => {
             if (isUnlocked) {
                 cardEl.classList.remove('opacity-60');
-                cardEl.classList.add('border-[#6F8064]', 'shadow-sm');
+                cardEl.classList.add('border-[#6F8064]/40');
             } else {
                 cardEl.classList.add('opacity-60');
-                cardEl.classList.remove('border-[#6F8064]', 'shadow-sm');
+                cardEl.classList.remove('border-[#6F8064]/40');
             }
         });
         $$(`[data-badge-status="${badgeId}"]`).forEach(statusEl => {
             if (isUnlocked) {
-                statusEl.className = 'px-2 py-0.2 rounded-full bg-[#6F8064] text-white text-[10px] font-bold uppercase';
+                statusEl.className = 'text-[10px] font-semibold text-[#6F8064] shrink-0';
                 statusEl.textContent = 'Unlocked';
             } else {
-                statusEl.className = 'px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase';
+                statusEl.className = 'text-[10px] font-medium text-dark/50 shrink-0';
                 statusEl.textContent = 'Locked';
             }
         });
@@ -6583,14 +6596,14 @@ function renderQuestUI(precomputedStats = null) {
             const b = quest.badge;
             const isUnlocked = Boolean(state.unlockedBadges[b.id]);
             return `
-                <div class="p-3.5 rounded-2xl border ${isUnlocked ? 'bg-white border-[#6F8064]' : 'bg-cream/40 border-dark/10 opacity-65'} flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-white border border-dark/10 flex items-center justify-center text-xl shrink-0">${b.icon}</div>
+                <div class="p-3.5 rounded-xl border ${isUnlocked ? 'bg-white border-[#6F8064]/40' : 'bg-cream/30 border-dark/10 opacity-60'} flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-cream/80 border border-dark/8 flex items-center justify-center text-lg shrink-0">${b.icon}</div>
                     <div class="min-w-0 flex-1">
                         <div class="flex items-center justify-between gap-2">
-                            <h4 class="text-xs font-bold text-dark truncate">${b.name}</h4>
-                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${isUnlocked ? 'bg-[#6F8064] text-white' : 'bg-dark/10 text-dark/60'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
+                            <h3 class="text-xs font-semibold text-dark truncate">${b.name}</h3>
+                            <span class="text-[10px] font-medium ${isUnlocked ? 'text-[#6F8064] font-semibold' : 'text-dark/50'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
                         </div>
-                        <p class="text-[11px] text-dark/65 truncate">${b.description}</p>
+                        <p class="text-[11px] text-dark/60 truncate mt-0.5">${b.description}</p>
                     </div>
                 </div>
             `;
@@ -6604,14 +6617,6 @@ function renderQuestUI(precomputedStats = null) {
 
 let activeExploreDiscoveryMap = null;
 let activeHomeDiscoveryMap = null;
-
-function getCategoryEmoji(category) {
-    const c = (category || '').toLowerCase();
-    if (c.includes('asian')) return '🍜';
-    if (c.includes('fast')) return '🍔';
-    if (c.includes('cafe') || c.includes('coffee')) return '☕';
-    return '🍽️';
-}
 
 function getPrimaryQuestForRestaurant(restaurantId) {
     return CULINARY_QUESTS.find(q => q.id !== 'quest-malang-scout' && q.objectives.some(o => o.restaurant_id === restaurantId))
@@ -6628,11 +6633,10 @@ function updateSelectedInspector(inspectorEl, restaurant, isHome = false) {
 
     if (nameEl) nameEl.textContent = restaurant.name;
     if (metaEl) {
-        metaEl.textContent = `${restaurant.category}${restaurant.cuisine ? ' • ' + restaurant.cuisine : ''} • ${restaurant.location || 'Malang'}`;
+        metaEl.textContent = `${restaurant.category}${restaurant.cuisine ? ' · ' + restaurant.cuisine : ''} · ${restaurant.location || 'Malang'}`;
     }
-    const q = getPrimaryQuestForRestaurant(restaurant.id);
-    if (questEl && q) {
-        questEl.textContent = `${q.badge.icon} Quest: ${q.title} (+${q.xp_reward} XP)`;
+    if (questEl) {
+        questEl.textContent = '';
     }
     if (checkinBtn) {
         checkinBtn.setAttribute('data-checkin-restaurant', restaurant.id);
@@ -6651,7 +6655,7 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
     if (!container) return null;
 
     if (typeof window === 'undefined' || !window.L || typeof window.L.map !== 'function') {
-        container.innerHTML = '<div class="p-6 text-center text-xs text-dark/65">Interactive map requires Leaflet.js. Use the restaurant cards below to explore.</div>';
+        container.innerHTML = '<div class="p-6 text-center text-xs text-dark/60">Interactive map requires Leaflet.js. Use the restaurant cards below to explore.</div>';
         return null;
     }
 
@@ -6680,10 +6684,28 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
     const markersById = new Map();
     const markerLayer = L.layerGroup().addTo(map);
     const inspectorEl = document.getElementById(inspectorId);
+    let currentSelectedId = restaurants[0] ? restaurants[0].id : null;
+
+    function createPinIcon(restaurant, isSelected) {
+        const bg = isSelected ? '#C85C3A' : '#24211D';
+        return L.divIcon({
+            className: 'bitemap-quest-pin',
+            html: `<div style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;background:${bg};color:#fff;font-weight:600;font-size:11px;box-shadow:0 2px 8px rgba(36,33,29,0.22);border:1.5px solid #fff;white-space:nowrap;"><span>${restaurant.name}</span></div>`,
+            iconSize: [110, 26],
+            iconAnchor: [55, 13],
+            popupAnchor: [0, -14]
+        });
+    }
 
     function selectRestaurantOnMap(restaurant, shouldScrollCard = false, recordVisit = false) {
         if (!restaurant) return;
+        currentSelectedId = restaurant.id;
         updateSelectedInspector(inspectorEl, restaurant, isHome);
+
+        // Update marker colors so active marker is highlighted cleanly
+        markersById.forEach((entry, id) => {
+            entry.marker.setIcon(createPinIcon(entry.restaurant, id === currentSelectedId));
+        });
 
         // Highlight matching card in DOM
         $$('.restaurant-card').forEach(card => {
@@ -6697,14 +6719,14 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
             }
         });
 
-        const marker = markersById.get(restaurant.id);
-        if (marker) {
-            map.flyTo([restaurant.latitude, restaurant.longitude], 15, { duration: 0.6 });
-            marker.openPopup();
+        const entry = markersById.get(restaurant.id);
+        if (entry && entry.marker) {
+            map.flyTo([restaurant.latitude, restaurant.longitude], 15, { duration: 0.5 });
+            entry.marker.openPopup();
         }
 
         if (recordVisit) {
-            recordQuestAction(`visit:${restaurant.id}`, `Inspected ${restaurant.name} on Quest Map`, true);
+            recordQuestAction(`visit:${restaurant.id}`, `Inspected ${restaurant.name}`, true);
         }
     }
 
@@ -6713,31 +6735,23 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
         markersById.clear();
         const bounds = [];
 
-        list.forEach(r => {
+        list.forEach((r, idx) => {
             if (!isValidRestaurantCoordinate(r.latitude, r.longitude)) return;
-            const emoji = getCategoryEmoji(r.category);
-            const q = getPrimaryQuestForRestaurant(r.id);
             const ext = getPageExtension();
             const detailHref = `${isHome ? 'pages/' : ''}restaurant${ext}?id=${encodeURIComponent(r.id)}`;
+            const isSelected = currentSelectedId ? (r.id === currentSelectedId) : (idx === 0);
 
-            const icon = L.divIcon({
-                className: 'bitemap-quest-pin',
-                html: `<div style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;background:#C85C3A;color:#fff;font-weight:700;font-size:11px;box-shadow:0 4px 12px rgba(36,33,29,0.28);border:2px solid #fff;white-space:nowrap;"><span>${emoji}</span><span>${r.name}</span></div>`,
-                iconSize: [130, 32],
-                iconAnchor: [65, 16],
-                popupAnchor: [0, -16]
+            const marker = L.marker([r.latitude, r.longitude], {
+                icon: createPinIcon(r, isSelected),
+                title: r.name
             });
 
-            const marker = L.marker([r.latitude, r.longitude], { icon, title: r.name });
+            // Minimal popup: restaurant name, category, and one primary action
             marker.bindPopup(`
-                <div style="min-width:210px;font-family:'Poppins',sans-serif;">
-                    <div style="font-size:10px;font-weight:700;color:#C85C3A;text-transform:uppercase;margin-bottom:2px;">${emoji} ${r.category}</div>
-                    <div style="font-size:14px;font-weight:700;color:#24211D;margin-bottom:2px;">${r.name}</div>
-                    <div style="font-size:11px;color:#555;margin-bottom:6px;">${r.location || 'Malang'}</div>
-                    ${q ? `<div style="font-size:10px;font-weight:600;color:#6F8064;margin-bottom:8px;">${q.badge.icon} Quest: ${q.title}</div>` : ''}
-                    <div style="display:flex;gap:6px;align-items:center;">
-                        <a href="${detailHref}" style="display:inline-block;padding:4px 10px;border-radius:999px;background:#24211D;color:#fff;font-size:11px;font-weight:600;text-decoration:none;">Open Menu &rarr;</a>
-                    </div>
+                <div style="min-width:165px;font-family:'Poppins',sans-serif;padding:2px 0;">
+                    <div style="font-size:13px;font-weight:600;color:#24211D;line-height:1.3;">${r.name}</div>
+                    <div style="font-size:11px;color:rgba(36,33,29,0.65);margin:2px 0 8px;">${r.category}</div>
+                    <a href="${detailHref}" style="display:inline-block;font-size:11px;font-weight:600;color:#C85C3A;text-decoration:none;">View Details &rarr;</a>
                 </div>
             `);
 
@@ -6746,12 +6760,12 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
             });
 
             marker.addTo(markerLayer);
-            markersById.set(r.id, marker);
+            markersById.set(r.id, { marker, restaurant: r });
             bounds.push([r.latitude, r.longitude]);
         });
 
         if (bounds.length > 1) {
-            map.fitBounds(bounds, { padding: [45, 45], maxZoom: 15 });
+            map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 });
         } else if (bounds.length === 1) {
             map.setView(bounds[0], 15);
         }
@@ -6771,9 +6785,9 @@ function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
         renderMarkers,
         selectRestaurantOnMap,
         fitAll: () => {
-            const pts = Array.from(markersById.values()).map(m => m.getLatLng());
+            const pts = Array.from(markersById.values()).map(entry => entry.marker.getLatLng());
             if (pts.length > 1) {
-                map.fitBounds(L.latLngBounds(pts), { padding: [45, 45], maxZoom: 15 });
+                map.fitBounds(L.latLngBounds(pts), { padding: [40, 40], maxZoom: 15 });
             } else if (pts.length === 1) {
                 map.setView(pts[0], 15);
             }
@@ -6811,10 +6825,10 @@ function initDiscoveryMaps() {
             btn.addEventListener('click', () => {
                 const cat = btn.getAttribute('data-map-category') || 'all';
                 $$('.btn-home-map-filter').forEach(b => {
-                    b.classList.remove('bg-terracotta', 'text-white', 'border-terracotta', 'is-active');
+                    b.classList.remove('bg-dark', 'text-white', 'border-dark', 'is-active');
                     b.classList.add('bg-white', 'text-dark/75', 'border-dark/12');
                 });
-                btn.classList.add('bg-terracotta', 'text-white', 'border-terracotta', 'is-active');
+                btn.classList.add('bg-dark', 'text-white', 'border-dark', 'is-active');
                 btn.classList.remove('bg-white', 'text-dark/75', 'border-dark/12');
 
                 const all = getRestaurants();

@@ -61,41 +61,35 @@ $todayName = (string) ($todayStatus['day'] ?? 'Monday');
               <?php endif; ?>
             </p>
           </div>
-          <div class="restaurant-actions flex gap-3 flex-wrap w-full sm:w-auto">
+          <div class="restaurant-actions flex gap-2.5 flex-wrap w-full sm:w-auto">
             <button
               type="button"
-              class="btn-quest-checkin inline-flex items-center justify-center gap-2 py-3 px-5 border-2 border-[#6F8064] rounded-full text-sm font-semibold text-[#6F8064] bg-[#6F8064]/10 hover:bg-[#6F8064] hover:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial"
+              class="btn-quest-checkin inline-flex items-center justify-center gap-1.5 py-2.5 px-4 border border-dark/20 rounded-full text-sm font-medium text-dark bg-white hover:border-terracotta hover:text-terracotta transition-colors whitespace-nowrap cursor-pointer flex-1 sm:flex-initial"
               data-checkin-restaurant="<?= e($restaurant->getId()) ?>"
               data-restaurant-name="<?= e($restaurant->getName()) ?>"
             >
-              &#10003; Check In (+25 XP)
+              Check In &middot; +25 XP
             </button>
             <?php if ($restaurant->hasReservationCapability()): ?>
-              <a href="reservation.html?id=<?= urlencode($restaurant->getId()) ?>" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" data-detail="reserve-btn">Reserve a Table</a>
+              <a href="reservation.html?id=<?= urlencode($restaurant->getId()) ?>" class="btn btn-primary inline-flex items-center justify-center gap-2 py-2.5 px-5 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" data-detail="reserve-btn">Reserve a Table</a>
             <?php else: ?>
-              <button type="button" class="btn btn-secondary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark/20 rounded-full text-sm font-semibold text-dark/40 bg-dark/5 cursor-not-allowed flex-1 sm:flex-initial" disabled aria-disabled="true" data-detail="reserve-btn">Reservations Unavailable</button>
+              <button type="button" class="btn btn-secondary inline-flex items-center justify-center gap-2 py-2.5 px-5 border border-dark/15 rounded-full text-sm font-medium text-dark/45 bg-dark/5 cursor-not-allowed flex-1 sm:flex-initial" disabled aria-disabled="true" data-detail="reserve-btn">Reservations Unavailable</button>
             <?php endif; ?>
-            <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-dark rounded-full text-sm font-semibold text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" aria-label="Save to favorites" data-detail="save-btn">
+            <button type="button" class="btn btn-outline inline-flex items-center justify-center gap-2 py-2.5 px-5 border border-dark/25 rounded-full text-sm font-medium text-dark bg-transparent hover:bg-dark hover:text-white focus-visible:bg-dark focus-visible:text-white transition-colors whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" aria-label="Save to favorites" data-detail="save-btn">
               Save
             </button>
           </div>
         </header>
 
         <?php if (!empty($restaurantQuests)): ?>
-          <div class="mt-5 p-4 rounded-2xl bg-white border border-terracotta/25 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-detail="quest-banner">
-            <div class="flex items-start sm:items-center gap-3">
-              <span class="w-9 h-9 rounded-xl bg-terracotta/12 text-terracotta flex items-center justify-center text-lg shrink-0">&#129517;</span>
-              <div>
-                <p class="text-xs font-bold uppercase tracking-wider text-terracotta">Active Culinary Quest Landmark</p>
-                <p class="text-xs sm:text-sm text-dark/80">
-                  Featured in:
-                  <?php foreach ($restaurantQuests as $qIdx => $rq): ?>
-                    <?= $qIdx > 0 ? ' &bull; ' : '' ?><strong><?= e($rq->getBadgeIcon() . ' ' . $rq->getTitle()) ?> (+<?= e((string) $rq->getXpReward()) ?> XP)</strong>
-                  <?php endforeach; ?>
-                </p>
-              </div>
-            </div>
-            <a href="../index.php#quests-section" class="text-xs font-semibold text-terracotta hover:underline whitespace-nowrap">View Quest Progress &rarr;</a>
+          <div class="mt-4 px-3.5 py-2.5 rounded-xl bg-white/80 border border-dark/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs" data-detail="quest-banner">
+            <p class="text-dark/70">
+              <span class="font-semibold text-dark">Culinary Quests:</span>
+              <?php foreach ($restaurantQuests as $qIdx => $rq): ?>
+                <?= $qIdx > 0 ? ' &middot; ' : '' ?><?= e($rq->getTitle()) ?> (+<?= e((string) $rq->getXpReward()) ?> XP)
+              <?php endforeach; ?>
+            </p>
+            <a href="../index.php#quests-section" class="font-medium text-terracotta hover:underline whitespace-nowrap shrink-0">View quests &rarr;</a>
           </div>
         <?php endif; ?>
 

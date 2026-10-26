@@ -39,57 +39,53 @@ $pageDescription = $pageDescription ?? 'BiteMap — Culinary Quest. Explore Mala
   <a class="skip-to-content" href="#main-content">Skip to content</a>
 
   <!-- ===== SITE HEADER ===== -->
-  <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
-    <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-4 md:gap-6" aria-label="Primary navigation">
-      <a href="<?= e($basePath) ?>index.php" class="nav-logo shrink-0 inline-flex items-center gap-2.5 no-underline" aria-label="BiteMap Culinary Quest home">
-        <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
-        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-terracotta/12 border border-terracotta/25 text-terracotta text-[10px] font-bold uppercase tracking-wider">
-          <span>&#129517;</span> Culinary Quest
-        </span>
+  <header class="site-header sticky top-0 z-40 h-16 bg-cream/95 backdrop-blur-sm border-b border-dark/10">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-3 md:gap-6" aria-label="Primary navigation">
+      <a href="<?= e($basePath) ?>index.php" class="nav-logo shrink-0 inline-flex items-baseline gap-2 no-underline" aria-label="BiteMap Culinary Quest home">
+        <span class="logo-text text-lg sm:text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
+        <span class="text-[11px] font-medium text-dark/55 tracking-wide">Culinary Quest</span>
       </a>
 
-      <!-- Live Player Progress HUD Pill (Updated dynamically by js/main.js) -->
-      <a
-        href="<?= e($basePath) ?>index.php#quests-section"
-        id="nav-player-hud"
-        class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-dark/15 shadow-2xs text-xs font-semibold text-dark hover:border-terracotta transition-colors no-underline"
-        title="View your Culinary Quest XP, Level, and Badges"
-      >
-        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-terracotta text-white text-[10px] font-bold uppercase tracking-wider" data-hud="level-badge">Lv. 1</span>
-        <span class="text-dark font-semibold" data-hud="xp-text">0 XP</span>
-        <span class="text-dark/25" aria-hidden="true">|</span>
-        <span class="text-[#6F8064] font-semibold" data-hud="badges-text">&#127941; 0/4</span>
-      </a>
+      <div class="flex items-center gap-3 md:gap-6">
+        <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-16 max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/10 max-md:py-3 max-md:px-4 max-md:shadow-md max-md:z-40 md:flex md:items-center md:gap-6" id="nav-links" role="list">
+          <li class="w-full md:w-auto">
+            <a href="<?= e($basePath) ?>pages/explore.php" <?= $currentPage === 'explore' ? 'aria-current="page"' : '' ?> class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark aria-[current=page]:text-terracotta aria-[current=page]:font-semibold transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Explore</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="<?= e($basePath) ?>index.php#quests-section" class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Quests</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="<?= e($basePath) ?>pages/dashboard.html" <?= $currentPage === 'dashboard' ? 'aria-current="page"' : '' ?> class="block w-full py-2.5 text-sm text-dark/80 border-b border-dark/8 font-medium hover:text-dark aria-[current=page]:text-terracotta aria-[current=page]:font-semibold transition-colors md:inline md:w-auto md:p-0 md:border-b-0">Profile</a>
+          </li>
+          <li class="w-full md:w-auto">
+            <a href="<?= e($basePath) ?>pages/login.html" <?= $currentPage === 'login' ? 'aria-current="page"' : '' ?> class="block w-full py-2.5 text-sm text-dark/80 font-medium hover:text-dark aria-[current=page]:text-terracotta aria-[current=page]:font-semibold transition-colors md:inline md:w-auto md:p-0">Sign In</a>
+          </li>
+        </ul>
 
-      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-6" id="nav-links" role="list">
-        <li class="w-full md:w-auto">
-          <a href="<?= e($basePath) ?>pages/explore.php" <?= $currentPage === 'explore' ? 'aria-current="page"' : '' ?> class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">&#128506; Explore Map</a>
-        </li>
-        <li class="w-full md:w-auto">
-          <a href="<?= e($basePath) ?>index.php#quests-section" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">&#127942; Quests &amp; XP</a>
-        </li>
-        <li class="w-full md:w-auto">
-          <a href="<?= e($basePath) ?>pages/dashboard.html" <?= $currentPage === 'dashboard' ? 'aria-current="page"' : '' ?> class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explorer Profile</a>
-        </li>
-        <li class="w-full md:w-auto">
-          <a href="<?= e($basePath) ?>pages/login.html" <?= $currentPage === 'login' ? 'aria-current="page"' : '' ?> class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a>
-        </li>
-        <li class="w-full md:w-auto">
-          <a href="<?= e($basePath) ?>pages/register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-2.5 px-5 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Quest</a>
-        </li>
-      </ul>
+        <!-- Understated Player Progress Indicator (Updated dynamically by js/main.js) -->
+        <a
+          href="<?= e($basePath) ?>index.php#quests-section"
+          id="nav-player-hud"
+          class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-dark/[0.04] border border-dark/10 text-xs font-medium text-dark/75 hover:text-dark hover:border-dark/25 transition-colors no-underline shrink-0"
+          title="View quest progress"
+        >
+          <span class="font-semibold text-dark" data-hud="level-badge">Lv. 1</span>
+          <span class="text-dark/30" aria-hidden="true">&middot;</span>
+          <span data-hud="xp-text">0 XP</span>
+        </a>
 
-      <!-- Mobile menu toggle -->
-      <button
-        type="button"
-        class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="nav-links"
-      >
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-opacity duration-250" aria-hidden="true"></span>
-        <span class="block w-[22px] h-[2px] bg-dark rounded-full transition-transform duration-250" aria-hidden="true"></span>
-      </button>
+        <!-- Mobile menu toggle -->
+        <button
+          type="button"
+          class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer shrink-0"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-transform duration-200" aria-hidden="true"></span>
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-opacity duration-200" aria-hidden="true"></span>
+          <span class="block w-[20px] h-[2px] bg-dark rounded-full transition-transform duration-200" aria-hidden="true"></span>
+        </button>
+      </div>
     </nav>
   </header>
