@@ -16,8 +16,8 @@ const BITEMAP_RESTAURANTS = [
         name: 'Okiru Ramen',
         category: 'Asian Food',
         cuisine: 'Japanese • Ramen Bar',
-        rating: null,
-        distance: null,
+        rating: 4.8,
+        distance: 0.8,
         description: 'Bar ramen bernuansa Jepang di Jl. Bandung No. 5 Malang yang menyajikan ramen kaldu Paitan, Shoyu, Tantan, aneka hidangan pembuka, sushi roll, dan hidangan penutup khas.',
         location: 'Jl. Bandung No. 5, Penanggungan, Kec. Klojen, Kota Malang, Jawa Timur 65113',
         latitude: -7.9617932,
@@ -35,7 +35,7 @@ const BITEMAP_RESTAURANTS = [
             Saturday: '10:00 – 22:00',
             Sunday: '10:00 – 22:00',
         },
-        reservation_enabled: false,
+        reservation_enabled: true,
         gallery: [
             {
                 alt: 'Interior ruang makan bernuansa kayu Jepang dengan lampion chochin di Okiru Ramen',
@@ -488,12 +488,12 @@ const BITEMAP_RESTAURANTS = [
         name: 'Burger King Ijen Besar Malang',
         category: 'Fast Food',
         cuisine: 'American / Burger',
-        rating: null,
-        distance: null,
+        rating: 4.5,
+        distance: 1.4,
         description: 'Restoran cepat saji Burger King di kawasan Jl. Besar Ijen Malang yang menyajikan burger panggang khas, aneka paket ayam, kentang goreng, dan hidangan penutup dengan fasilitas 24 jam dan drive-thru.',
         location: 'Jl. Besar Ijen No. 84, Oro-oro Dowo, Kec. Klojen, Kota Malang, Jawa Timur 65119',
-        latitude: null,
-        longitude: null,
+        latitude: -7.96589,
+        longitude: 112.62495,
         phone: '0819-1708-1121',
         website: 'https://bkdelivery.co.id/',
         maps_url: 'https://www.google.com/maps/search/?api=1&query=Burger+King+Ijen+Besar+Malang',
@@ -557,12 +557,12 @@ const BITEMAP_RESTAURANTS = [
         name: 'Dialoogi Signature Restaurant Malang',
         category: 'Restaurant',
         cuisine: 'Asian Fusion',
-        rating: null,
-        distance: null,
+        rating: 4.7,
+        distance: 1.1,
         description: 'Restoran casual dining dan lounge di Jl. Bandung No. 40 Malang yang menyajikan hidangan Asian fusion, aneka hidangan utama ayam, daging sapi, hidangan laut, pasta, pastry artisan, dan minuman racikan khas.',
         location: 'Jl. Bandung No.40, Penanggungan, Kec. Klojen, Kota Malang, Jawa Timur 65113',
-        latitude: null,
-        longitude: null,
+        latitude: -7.95985,
+        longitude: 112.62214,
         phone: '0812-3438-0800',
         website: 'https://linktr.ee/dialoogi.signature',
         maps_url: 'https://www.google.com/maps/search/?api=1&query=Dialoogi+Signature+Restaurant+Malang',
@@ -578,7 +578,7 @@ const BITEMAP_RESTAURANTS = [
             Saturday: '10:00 – 23:00',
             Sunday: '10:00 – 23:00',
         },
-        reservation_enabled: false,
+        reservation_enabled: true,
         external_links: [
             {
                 label: 'Linktree Resmi',
@@ -1391,7 +1391,15 @@ function getAssetPath(relativePath) {
  */
 function getPageExtension() {
     const path = (typeof window !== 'undefined' && window.location && window.location.pathname) ? window.location.pathname.toLowerCase() : '';
-    return (path.endsWith('.php') || path.includes('.php')) ? '.php' : '.html';
+    if (path.endsWith('.php') || path.includes('.php')) return '.php';
+    if (typeof document !== 'undefined') {
+        if (document.documentElement && document.documentElement.dataset && document.documentElement.dataset.runtime === 'php') {
+            return '.php';
+        }
+        const logoLink = document.querySelector('.nav-logo[href*="index.php"]');
+        if (logoLink) return '.php';
+    }
+    return '.html';
 }
 
 // ==========================================
@@ -2691,6 +2699,12 @@ function renderHomepageRails() {
         const rail = section.querySelector('.content-rail');
         if (!rail) return;
 
+        // If PHP SSR already rendered restaurant cards in this rail, preserve them and bind favorites
+        if (rail.querySelectorAll('.restaurant-card').length > 0) {
+            initFavorites(rail);
+            return;
+        }
+
         let subset = filterFn ? all.filter(filterFn) : [...all];
         if (sortFn) subset = subset.sort(sortFn);
         subset = subset.slice(0, MAX);
@@ -3977,13 +3991,9 @@ function initRestaurantMap({ container, latitude, longitude, name, address } = {
         return null;
     }
 
-    // 4. Check API Key
+    // 4. Check API Key (use Geoapify tiles if configured, otherwise free OpenStreetMap tiles)
     const apiKey = (typeof window !== 'undefined' && (window.GEOAPIFY_API_KEY || (window.BITEMAP_CONFIG && window.BITEMAP_CONFIG.GEOAPIFY_API_KEY))) || GEOAPIFY_API_KEY;
-    if (!apiKey || apiKey === 'YOUR_API_KEY') {
-        lazyMapStatus = 'failed';
-        el.innerHTML = '<div class="map-fallback flex flex-col items-center justify-center h-full p-4 text-center"><p class="text-dark/65 text-sm">Map unavailable (API key required).</p></div>';
-        return null;
-    }
+    const hasGeoapifyKey = Boolean(apiKey && apiKey !== 'YOUR_API_KEY');
 
     // 5. Clear container contents
     el.innerHTML = '';
@@ -4001,11 +4011,17 @@ function initRestaurantMap({ container, latitude, longitude, name, address } = {
             attributionControl: true
         });
 
-        // Geoapify raster tile layer (osm-bright-smooth style)
-        const tileUrl = `https://maps.geoapify.com/v1/tile/osm-bright-smooth/{z}/{x}/{y}.png?apiKey=${apiKey}`;
+        // Use Geoapify raster tile layer when key is provided; otherwise free OpenStreetMap standard tiles
+        const tileUrl = hasGeoapifyKey
+            ? `https://maps.geoapify.com/v1/tile/osm-bright-smooth/{z}/{x}/{y}.png?apiKey=${apiKey}`
+            : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const tileAttribution = hasGeoapifyKey
+            ? 'Powered by <a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> | &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+            : '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors';
+
         const tileLayer = L.tileLayer(tileUrl, {
             maxZoom: 19,
-            attribution: 'Powered by <a href="https://www.geoapify.com/" target="_blank" rel="noopener noreferrer">Geoapify</a> | &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+            attribution: tileAttribution
         });
         tileLayer.addTo(map);
 
@@ -4650,7 +4666,15 @@ function initReservation() {
     // Populate initial restaurant context into summary
     if (summaryName) summaryName.textContent = restaurant.name;
     if (summaryRestaurant) summaryRestaurant.textContent = restaurant.name;
-    if (summaryImg) summaryImg.setAttribute('aria-label', restaurant.name + ' exterior');
+    if (summaryImg) {
+        summaryImg.setAttribute('aria-label', restaurant.name + ' exterior');
+        const imgPath = restaurant.hero_image || restaurant.image;
+        if (imgPath) {
+            summaryImg.style.backgroundImage = 'url("' + getAssetPath(imgPath) + '")';
+            summaryImg.style.backgroundSize = 'cover';
+            summaryImg.style.backgroundPosition = 'center';
+        }
+    }
 
     if (summaryCategory) {
         const parts = [restaurant.category];
@@ -4877,6 +4901,21 @@ function initReservation() {
         if (reservationState.guests) queryParts.push('guests=' + encodeURIComponent(reservationState.guests));
         if (reservationState.name) queryParts.push('name=' + encodeURIComponent(reservationState.name));
         if (reservationState.phone) queryParts.push('phone=' + encodeURIComponent(reservationState.phone));
+
+        // Save preview reservation in sessionStorage so Dashboard can display the active preview booking
+        try {
+            window.sessionStorage.setItem('bitemap_preview_reservation', JSON.stringify({
+                restaurantId: reservationState.restaurantId,
+                restaurantName: restaurant.name,
+                category: [restaurant.category, restaurant.cuisine].filter(Boolean).join(' · '),
+                date: reservationState.date,
+                time: reservationState.time,
+                guests: reservationState.guests,
+                name: reservationState.name,
+                phone: reservationState.phone,
+                notes: reservationState.notes
+            }));
+        } catch (_) {}
 
         // Frontend simulation: navigate to ticket page safely without backend submission or persistence
         window.location.href = 'reservation-ticket.html?' + queryParts.join('&');
@@ -5240,6 +5279,40 @@ function initRestaurantDetail() {
     // 1. Check if ID matches a canonical local restaurant
     const canonicalRestaurant = getRestaurantById(id);
     if (canonicalRestaurant) {
+        const isServerRendered = nameEl.textContent.trim() === canonicalRestaurant.name;
+        if (isServerRendered) {
+            const saveBtn = document.querySelector('[data-detail="save-btn"]');
+            if (saveBtn) {
+                saveBtn.dataset.restaurantId = canonicalRestaurant.id;
+                syncFavoriteButton(saveBtn, canonicalRestaurant);
+            }
+            initRestaurantGallery();
+            const locationMap = document.querySelector('[data-detail="location-map"]');
+            if (locationMap && isValidRestaurantCoordinate(canonicalRestaurant.latitude, canonicalRestaurant.longitude)) {
+                initLazyRestaurantMap({
+                    container: locationMap,
+                    latitude: canonicalRestaurant.latitude,
+                    longitude: canonicalRestaurant.longitude,
+                    name: canonicalRestaurant.name,
+                    address: getRestaurantLocation(canonicalRestaurant)
+                });
+            }
+            const pillsList = document.querySelector('[data-detail="menu-category-pills"]');
+            if (pillsList && !pillsList.dataset.ssrPillsBound) {
+                pillsList.dataset.ssrPillsBound = 'true';
+                pillsList.addEventListener('click', (e) => {
+                    const pill = e.target.closest('.menu-category-pill');
+                    if (!pill) return;
+                    pillsList.querySelectorAll('.menu-category-pill').forEach(p => {
+                        p.classList.remove('is-active');
+                        p.removeAttribute('aria-current');
+                    });
+                    pill.classList.add('is-active');
+                    pill.setAttribute('aria-current', 'location');
+                });
+            }
+            return;
+        }
         renderRestaurantContent(canonicalRestaurant, main);
         return;
     }
@@ -5463,6 +5536,133 @@ function initDashboard() {
     });
 
     // 4. Update section visibility & empty states based on actual DOM content
+    try {
+        const previewRaw = window.sessionStorage.getItem('bitemap_preview_reservation');
+        const upcomingEmpty = document.querySelector('[data-detail="upcoming-empty"]');
+        if (previewRaw && upcomingEmpty) {
+            const preview = JSON.parse(previewRaw);
+            const rest = preview && preview.restaurantId ? getRestaurantById(preview.restaurantId) : null;
+            if (rest) {
+                const section = upcomingEmpty.closest('.dashboard-section');
+                let previewCard = section ? section.querySelector('[data-detail="upcoming-card"]') : null;
+                if (section && !previewCard) {
+                    previewCard = document.createElement('article');
+                    previewCard.className = 'card upcoming-reservation-card p-6 bg-white rounded-2xl border border-dark/15 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4';
+                    previewCard.setAttribute('data-detail', 'upcoming-card');
+                    previewCard.setAttribute('data-restaurant-id', rest.id);
+                    const dateParts = (preview.date || '').split('-');
+                    const formattedDate = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : (preview.date || '—');
+                    const guestsLabel = preview.guests === '1' ? '1 Guest' : `${preview.guests || 2} Guests`;
+                    const ticketParams = new URLSearchParams({
+                        id: rest.id,
+                        date: preview.date || '',
+                        time: preview.time || '',
+                        guests: preview.guests || '',
+                        name: preview.name || ''
+                    });
+                    previewCard.innerHTML = `
+                        <div>
+                            <div class="inline-flex items-center gap-2 mb-2">
+                                <span class="badge badge-success">Confirmed (Preview)</span>
+                                <span class="text-xs text-dark/55">Client-side demonstration</span>
+                            </div>
+                            <h3 class="text-lead text-xl font-bold text-dark mb-1" data-detail="upcoming-name">${escapeMapHtml(rest.name)}</h3>
+                            <p class="text-small text-muted text-sm text-dark/65 mb-2" data-detail="upcoming-category">${escapeMapHtml([rest.category, rest.cuisine].filter(Boolean).join(' · '))}</p>
+                            <p class="text-sm font-medium text-dark">${escapeMapHtml(formattedDate)} &bull; ${escapeMapHtml(preview.time || '—')} &bull; ${escapeMapHtml(guestsLabel)}</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2.5 w-full sm:w-auto">
+                            <a href="reservation-ticket.html?${ticketParams.toString()}" class="btn btn-primary py-2.5 px-5 text-xs">View Ticket</a>
+                            <button type="button" class="btn btn-outline py-2.5 px-5 text-xs" data-action="cancel-preview-reservation">Cancel Preview</button>
+                        </div>
+                    `;
+                    section.insertBefore(previewCard, upcomingEmpty);
+                    const cancelBtn = previewCard.querySelector('[data-action="cancel-preview-reservation"]');
+                    if (cancelBtn) {
+                        cancelBtn.addEventListener('click', () => {
+                            try { window.sessionStorage.removeItem('bitemap_preview_reservation'); } catch (_) {}
+                            previewCard.remove();
+                            updateUpcomingReservationState();
+                        });
+                    }
+                }
+            }
+        }
+    } catch (_) {}
+
+    // 5. Wire interactive Edit Profile preview in Profile Summary card
+    const profileCard = document.querySelector('.profile-summary-card');
+    if (profileCard && !profileCard.dataset.profileBound) {
+        profileCard.dataset.profileBound = 'true';
+        const dds = profileCard.querySelectorAll('.summary-details dd');
+        const editBtn = profileCard.querySelector('button');
+
+        try {
+            const savedProfile = JSON.parse(window.sessionStorage.getItem('bitemap_preview_profile') || 'null');
+            if (savedProfile && dds.length >= 3) {
+                dds[0].textContent = savedProfile.name || 'Guest';
+                dds[1].textContent = savedProfile.email || '—';
+                dds[2].textContent = savedProfile.phone || '—';
+            }
+        } catch (_) {}
+
+        if (editBtn && dds.length >= 3) {
+            editBtn.addEventListener('click', () => {
+                let formEl = profileCard.querySelector('.profile-edit-preview-form');
+                if (formEl) {
+                    formEl.remove();
+                    editBtn.textContent = 'Edit Profile';
+                    return;
+                }
+                editBtn.textContent = 'Close Editor';
+                formEl = document.createElement('form');
+                formEl.className = 'profile-edit-preview-form mt-6 pt-6 border-t border-dark/10 flex flex-col gap-4';
+                formEl.noValidate = true;
+                const currentName = dds[0].textContent.trim() === 'Guest' ? '' : dds[0].textContent.trim();
+                const currentEmail = dds[1].textContent.trim() === '—' ? '' : dds[1].textContent.trim();
+                const currentPhone = dds[2].textContent.trim() === '—' ? '' : dds[2].textContent.trim();
+                formEl.innerHTML = `
+                    <div class="auth-status-banner">
+                        <strong class="font-semibold text-dark">Profile Preview Mode:</strong> Changes update your current session display immediately. Database profile persistence is scheduled for the post-UTS backend phase.
+                    </div>
+                    <div class="form-group flex flex-col gap-1.5">
+                        <label for="profile-preview-name" class="text-sm font-medium text-dark">Name</label>
+                        <input type="text" id="profile-preview-name" class="form-control" value="${escapeMapHtml(currentName)}" placeholder="Your display name" required />
+                    </div>
+                    <div class="form-group flex flex-col gap-1.5">
+                        <label for="profile-preview-email" class="text-sm font-medium text-dark">Email</label>
+                        <input type="email" id="profile-preview-email" class="form-control" value="${escapeMapHtml(currentEmail)}" placeholder="you@example.com" />
+                    </div>
+                    <div class="form-group flex flex-col gap-1.5">
+                        <label for="profile-preview-phone" class="text-sm font-medium text-dark">Phone</label>
+                        <input type="tel" id="profile-preview-phone" class="form-control" value="${escapeMapHtml(currentPhone)}" placeholder="+62 812..." />
+                    </div>
+                    <div class="flex gap-3">
+                        <button type="submit" class="btn btn-primary py-2.5 px-6 text-sm">Save Preview</button>
+                    </div>
+                `;
+                formEl.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const nameVal = (formEl.querySelector('#profile-preview-name')?.value || '').trim() || 'Guest';
+                    const emailVal = (formEl.querySelector('#profile-preview-email')?.value || '').trim() || '—';
+                    const phoneVal = (formEl.querySelector('#profile-preview-phone')?.value || '').trim() || '—';
+                    dds[0].textContent = nameVal;
+                    dds[1].textContent = emailVal;
+                    dds[2].textContent = phoneVal;
+                    try {
+                        window.sessionStorage.setItem('bitemap_preview_profile', JSON.stringify({
+                            name: nameVal,
+                            email: emailVal,
+                            phone: phoneVal
+                        }));
+                    } catch (_) {}
+                    formEl.remove();
+                    editBtn.textContent = 'Edit Profile';
+                });
+                profileCard.appendChild(formEl);
+            });
+        }
+    }
+
     updateUpcomingReservationState();
     updateReservationHistoryState();
     updateFavoritesState();
@@ -5672,10 +5872,10 @@ function initAdmin() {
 
 function initBiteMap() {
     initHeroSearch();
-    // Render dynamic cards on explore page only
+    // Render dynamic cards on explore page only if not already server-rendered by PHP
     const exploreSearch = $('#explore-search');
     const exploreGrid = $('.restaurant-grid');
-    if (exploreSearch && exploreGrid) {
+    if (exploreSearch && exploreGrid && exploreGrid.querySelectorAll('.restaurant-card').length === 0) {
         renderRestaurantCards(getRestaurants(), exploreGrid);
     }
     renderHomepageRails();

@@ -20,6 +20,7 @@
 @source "../pages/**/*.php";
 @source "../includes/**/*.php";
 @source "../classes/**/*.php";
+@source "../app/**/*.php";
 @source "../js/**/*.js";
 
 /* 
