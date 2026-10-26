@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-runtime="html">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="BiteMap — Find your next favorite place. Discover, explore, and reserve at the best restaurants near you." />
-  <title>BiteMap — Find your next favorite place.</title>
+  <meta name="description" content="BiteMap — Culinary Quest. Explore Malang restaurants on an interactive map, complete culinary quests, earn XP, and unlock badges." />
+  <title>BiteMap — Culinary Quest | Map-First Malang Food Discovery</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/output.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/responsive.css" />
-</head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" /></head>
 <body>
 
   <!-- Skip to main content — keyboard accessibility -->
@@ -19,18 +19,46 @@
 
   <!-- ===== SITE HEADER ===== -->
   <header class="site-header sticky top-0 z-40 h-[72px] bg-cream/95 backdrop-blur-sm border-b border-dark/15">
-    <nav class="nav-primary flex items-center justify-between h-full max-w-[1200px] mx-auto px-4 md:px-6 xl:px-8 gap-6 md:gap-8" aria-label="Primary navigation">
-      <a href="index.html" class="nav-logo shrink-0" aria-label="BiteMap home">
+    <nav class="nav-primary flex items-center justify-between h-full max-w-[1280px] mx-auto px-4 md:px-6 xl:px-8 gap-4 md:gap-6" aria-label="Primary navigation">
+      <a href="index.html" class="nav-logo shrink-0 inline-flex items-center gap-2.5 no-underline" aria-label="BiteMap Culinary Quest home">
         <span class="logo-text text-xl font-bold tracking-[0.08em] text-dark">BITEMAP</span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-terracotta/12 border border-terracotta/25 text-terracotta text-[10px] font-bold uppercase tracking-wider">
+          <span>&#129517;</span> Culinary Quest
+        </span>
       </a>
 
-      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-8" id="nav-links" role="list">
-        <li class="w-full md:w-auto"><a href="pages/explore.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explore</a></li>
-        <li class="w-full md:w-auto"><a href="pages/login.html" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a></li>
-        <li class="w-full md:w-auto"><a href="pages/register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Free</a></li>
+      <!-- Live Player Progress HUD Pill (Updated dynamically by js/main.js) -->
+      <a
+        href="index.html#quests-section"
+        id="nav-player-hud"
+        class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-dark/15 shadow-2xs text-xs font-semibold text-dark hover:border-terracotta transition-colors no-underline"
+        title="View your Culinary Quest XP, Level, and Badges"
+      >
+        <span class="inline-flex items-center justify-center px-2 py-0.5 rounded-full bg-terracotta text-white text-[10px] font-bold uppercase tracking-wider" data-hud="level-badge">Lv. 1</span>
+        <span class="text-dark font-semibold" data-hud="xp-text">0 XP</span>
+        <span class="text-dark/25" aria-hidden="true">|</span>
+        <span class="text-[#6F8064] font-semibold" data-hud="badges-text">&#127941; 0/4</span>
+      </a>
+
+      <ul class="nav-links hidden max-md:[&.nav-open]:flex max-md:absolute max-md:top-[72px] max-md:left-0 max-md:right-0 max-md:flex-col max-md:items-start max-md:gap-0 max-md:bg-cream max-md:border-b max-md:border-dark/15 max-md:py-4 max-md:px-4 md:px-6 max-md:z-40 md:flex md:items-center md:gap-6" id="nav-links" role="list">
+        <li class="w-full md:w-auto">
+          <a href="pages/explore.html"  class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">&#128506; Explore Map</a>
+        </li>
+        <li class="w-full md:w-auto">
+          <a href="index.html#quests-section" class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">&#127942; Quests &amp; XP</a>
+        </li>
+        <li class="w-full md:w-auto">
+          <a href="pages/dashboard.html"  class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Explorer Profile</a>
+        </li>
+        <li class="w-full md:w-auto">
+          <a href="pages/login.html"  class="block w-full py-3 text-base text-dark border-b border-dark/15 font-medium hover:text-terracotta aria-[current=page]:text-terracotta transition-colors duration-150 md:inline md:w-auto md:p-0 md:text-sm md:border-b-0">Sign In</a>
+        </li>
+        <li class="w-full md:w-auto">
+          <a href="pages/register.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-2.5 px-5 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer w-full mt-3 md:w-auto md:mt-0">Join Quest</a>
+        </li>
       </ul>
 
-      <!-- Mobile menu toggle — JS behavior wired in Phase 02 -->
+      <!-- Mobile menu toggle -->
       <button
         type="button"
         class="nav-toggle flex md:hidden flex-col gap-[5px] p-2 bg-transparent border-0 cursor-pointer"
@@ -46,144 +74,171 @@
   </header>
 
   <!-- ===== MAIN CONTENT ===== -->
-          <main id="main-content">
+  <main id="main-content">
 
-    <!-- 1 & 2: HERO -->
-    <section class="hero relative py-5 md:py-8 lg:py-10 overflow-hidden" aria-labelledby="hero-heading">
-      <div class="container hero-inner max-w-[1200px] mx-auto px-4 md:px-6">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6 lg:gap-10 xl:gap-12 items-center">
+    <!-- 1: MAP-FIRST CULINARY QUEST HERO & PLAYER HUD -->
+    <section class="hero relative py-5 md:py-8 lg:py-10 overflow-hidden border-b border-dark/10" aria-labelledby="hero-heading">
+      <div class="container hero-inner max-w-[1280px] mx-auto px-4 md:px-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
 
-          <!-- Left Column: Copy, Search, Craving Chips -->
-          <div class="hero-content md:col-span-7 flex flex-col items-start text-left">
+          <!-- Left Column (5 cols): Brand Pitch, Live Player XP Card, Search -->
+          <div class="hero-content lg:col-span-5 flex flex-col items-start text-left">
 
             <!-- Eyebrow Pill -->
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/8 border border-terracotta/15 text-terracotta text-[11px] font-semibold uppercase tracking-wider mb-2.5">
-              <span class="w-1.5 h-1.5 rounded-full bg-terracotta" aria-hidden="true"></span>
-              Malang Culinary Discovery
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/10 border border-terracotta/20 text-terracotta text-[11px] font-bold uppercase tracking-wider mb-2.5">
+              <span>&#129517;</span> Map-First Culinary Discovery &bull; Malang
             </div>
 
             <!-- Headline -->
-            <h1 id="hero-heading" class="text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] xl:text-[40px] font-bold tracking-tight text-dark leading-[1.22] max-w-[540px] mb-2 sm:mb-2.5">
-              Find your next <span class="text-terracotta">favorite place</span> in Malang.
+            <h1 id="hero-heading" class="text-2xl sm:text-3xl lg:text-[36px] font-bold tracking-tight text-dark leading-[1.2] mb-2.5">
+              Explore Malang on the map. <span class="text-terracotta">Complete Culinary Quests.</span>
             </h1>
 
             <!-- Subtitle -->
-            <p class="hero-subtitle text-dark/70 text-sm sm:text-base leading-relaxed max-w-[480px] mb-4 sm:mb-5">
-              Discover authentic ramen bars, artisan coffee roasteries, and late-night cravings &mdash; verified with official menus, real operating hours, and seamless table reservations.
+            <p class="hero-subtitle text-dark/70 text-xs sm:text-sm leading-relaxed mb-4">
+              Click interactive restaurant markers across Lowokwaru, Jl. Bandung, and Ijen Boulevard to inspect verified menus, log tasting check-ins, earn XP, and unlock Malang Explorer badges.
             </p>
 
+            <!-- Live Player Progress HUD Card (Phase D) -->
+            <div class="w-full bg-white rounded-2xl border border-dark/12 p-4 shadow-[0_6px_24px_rgba(36,33,29,0.06)] mb-4" id="home-player-hud">
+              <div class="flex items-center justify-between gap-3 mb-2.5">
+                <div class="flex items-center gap-3">
+                  <div class="w-11 h-11 rounded-2xl bg-terracotta text-white flex flex-col items-center justify-center font-bold leading-none shadow-xs">
+                    <span class="text-[9px] uppercase opacity-85">Level</span>
+                    <span class="text-lg" data-hud="level-num">1</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h2 class="text-sm font-bold text-dark" data-hud="rank-title">Novice Taster</h2>
+                      <span class="px-2 py-0.5 rounded-full bg-[#6F8064]/12 text-[#6F8064] text-[10px] font-bold" data-hud="xp-text">0 XP</span>
+                    </div>
+                    <p class="text-[11px] text-dark/60" data-hud="next-level-text">150 XP needed for Level 2 (Street Scout)</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="btn-reset-quest-progress px-2.5 py-1 rounded-full border border-dark/15 hover:border-terracotta text-[10px] font-semibold text-dark/60 hover:text-terracotta bg-cream/50 cursor-pointer transition-colors"
+                  title="Reset demo XP, quests, and badges to 0"
+                >
+                  &#8635; Reset
+                </button>
+              </div>
+
+              <!-- XP Progress Bar -->
+              <div class="w-full h-2.5 rounded-full bg-dark/8 overflow-hidden mb-3">
+                <div class="h-full bg-terracotta transition-all duration-300 rounded-full" style="width: 0%;" data-hud="xp-bar"></div>
+              </div>
+
+              <!-- Quick Stats Strip -->
+              <div class="grid grid-cols-3 gap-2 pt-2.5 border-t border-dark/8 text-center">
+                <a href="#quests-section" class="p-1.5 rounded-xl bg-cream/60 hover:bg-cream no-underline transition-colors">
+                  <p class="text-xs font-bold text-dark" data-hud="quests-count">0/4</p>
+                  <p class="text-[10px] text-dark/60">Quests Done</p>
+                </a>
+                <a href="#badges-section" class="p-1.5 rounded-xl bg-cream/60 hover:bg-cream no-underline transition-colors">
+                  <p class="text-xs font-bold text-[#6F8064]" data-hud="badges-count">0/4</p>
+                  <p class="text-[10px] text-dark/60">Badges Earned</p>
+                </a>
+                <a href="pages/explore.html" class="p-1.5 rounded-xl bg-cream/60 hover:bg-cream no-underline transition-colors">
+                  <p class="text-xs font-bold text-terracotta">3 Spots</p>
+                  <p class="text-[10px] text-dark/60">On Quest Map</p>
+                </a>
+              </div>
+            </div>
+
             <!-- Search Form -->
-            <form action="pages/explore.html" class="hero-search-wrapper w-full max-w-[540px] bg-white rounded-2xl sm:rounded-full border border-dark/12 shadow-[0_4px_20px_rgba(36,33,29,0.06)] p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-1 sm:gap-1.5 transition-all focus-within:border-terracotta/40 focus-within:shadow-[0_8px_24px_rgba(200,92,58,0.10)]" role="search" aria-label="Restaurant discovery search">
-              <div class="flex-1 min-w-0 flex items-center gap-2.5 px-3 py-1.5">
+            <form action="pages/explore.html" method="GET" class="hero-search-wrapper w-full bg-white rounded-2xl sm:rounded-full border border-dark/12 shadow-[0_4px_20px_rgba(36,33,29,0.06)] p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center gap-1 sm:gap-1.5 transition-all focus-within:border-terracotta/40" role="search" aria-label="Restaurant discovery search">
+              <div class="flex-1 min-w-0 flex items-center gap-2 px-3 py-1.5">
                 <span class="text-dark/35 text-sm shrink-0" aria-hidden="true">&#128269;</span>
-                <label for="hero-search" class="visually-hidden">What are you craving?</label>
+                <label for="hero-search" class="visually-hidden">Search Malang landmarks or dishes</label>
                 <input
                   type="search"
                   id="hero-search"
                   name="q"
                   class="w-full bg-transparent text-sm text-dark placeholder:text-dark/45 focus:outline-none"
-                  placeholder="Sushi, coffee, burger..."
+                  placeholder="Ramen, truffle, burger, coffee..."
                 />
               </div>
-
-              <div class="hidden sm:block w-px h-5 bg-dark/10 shrink-0" aria-hidden="true"></div>
-
-              <div class="flex-none sm:w-28 flex items-center gap-1.5 px-3 py-1.5">
-                <span class="text-terracotta text-sm shrink-0" aria-hidden="true">&#128205;</span>
-                <label for="hero-location" class="visually-hidden">Location</label>
-                <input
-                  type="text"
-                  id="hero-location"
-                  name="loc"
-                  value="Malang"
-                  class="w-full bg-transparent text-sm font-medium text-dark placeholder:text-dark/45 focus:outline-none"
-                  placeholder="Malang"
-                />
-              </div>
-
-              <button type="submit" class="btn btn-primary inline-flex items-center justify-center py-2 px-5 rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] transition-colors duration-200 whitespace-nowrap cursor-pointer shadow-none shrink-0 w-full sm:w-auto">
-                Discover
+              <input type="hidden" name="loc" value="Malang" />
+              <button type="submit" class="btn btn-primary inline-flex items-center justify-center py-2 px-5 rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] transition-colors whitespace-nowrap cursor-pointer shrink-0 w-full sm:w-auto">
+                Open Map &rarr;
               </button>
             </form>
 
-            <!-- Quick Craving Chips -->
+            <!-- Quick Filter & Quest Chips -->
             <div class="hero-quick-tags flex flex-wrap items-center gap-1.5 mt-3 text-xs">
-              <span class="text-dark/45 font-medium mr-0.5">Popular:</span>
-              <a href="pages/explore.html?q=Ramen" class="px-2.5 py-1 rounded-full bg-white border border-dark/10 hover:border-terracotta hover:text-terracotta text-dark/70 transition-colors font-medium shadow-2xs">&#127836; Ramen Bar</a>
-              <a href="pages/explore.html?category=Restaurant" class="px-2.5 py-1 rounded-full bg-white border border-dark/10 hover:border-terracotta hover:text-terracotta text-dark/70 transition-colors font-medium shadow-2xs">&#10024; Asian Fusion</a>
-              <a href="pages/explore.html?category=Fast%20Food" class="px-2.5 py-1 rounded-full bg-white border border-dark/10 hover:border-terracotta hover:text-terracotta text-dark/70 transition-colors font-medium shadow-2xs">&#127828; 24h Dining</a>
-            </div>
-
-            <!-- Trust Bar -->
-            <div class="hero-trust-bar flex flex-wrap items-center gap-x-4 gap-y-1.5 mt-3.5 pt-2.5 border-t border-dark/8 text-[11px] sm:text-xs text-dark/60">
-              <div class="inline-flex items-center gap-1.5 shrink-0">
-                <span class="w-3.5 h-3.5 rounded-full bg-[#6F8064]/15 text-[#6F8064] flex items-center justify-center font-bold text-[9px]">&#10003;</span>
-                <span>100% Verified Menus</span>
-              </div>
-              <div class="inline-flex items-center gap-1.5 shrink-0">
-                <span class="w-3.5 h-3.5 rounded-full bg-[#6F8064]/15 text-[#6F8064] flex items-center justify-center font-bold text-[9px]">&#10003;</span>
-                <span>Real Operating Hours</span>
-              </div>
-              <div class="inline-flex items-center gap-1.5 shrink-0">
-                <span class="w-3.5 h-3.5 rounded-full bg-[#6F8064]/15 text-[#6F8064] flex items-center justify-center font-bold text-[9px]">&#10003;</span>
-                <span>Direct Restaurant Contact</span>
-              </div>
+              <span class="text-dark/50 font-semibold mr-0.5">Filter Map:</span>
+              <button type="button" class="btn-home-map-filter is-active px-2.5 py-1 rounded-full bg-terracotta text-white border border-terracotta text-xs font-semibold cursor-pointer transition-colors" data-map-category="all">All (3)</button>
+              <button type="button" class="btn-home-map-filter px-2.5 py-1 rounded-full bg-white hover:border-terracotta text-dark/75 border border-dark/12 text-xs font-medium cursor-pointer transition-colors" data-map-category="Asian Food">&#127836; Ramen Bar</button>
+              <button type="button" class="btn-home-map-filter px-2.5 py-1 rounded-full bg-white hover:border-terracotta text-dark/75 border border-dark/12 text-xs font-medium cursor-pointer transition-colors" data-map-category="Restaurant">&#9749; Asian Fusion</button>
+              <button type="button" class="btn-home-map-filter px-2.5 py-1 rounded-full bg-white hover:border-terracotta text-dark/75 border border-dark/12 text-xs font-medium cursor-pointer transition-colors" data-map-category="Fast Food">&#127828; 24h Ijen</button>
             </div>
 
           </div>
 
-          <!-- Right Column: Warm Editorial Showcase Card -->
-          <div class="hero-visual md:col-span-5 relative mt-4 md:mt-0 max-w-[420px] mx-auto md:max-w-none w-full md:pr-1 lg:pr-2">
-            <div class="relative mx-auto">
-              <!-- Decorative warm glow -->
-              <div class="absolute -top-6 -right-6 w-52 h-52 bg-terracotta/8 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
-              <div class="absolute -bottom-6 -left-6 w-44 h-44 bg-[#6F8064]/8 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+          <!-- Right Column (7 cols): Interactive Malang Culinary Quest Map Surface -->
+          <div class="hero-visual lg:col-span-7 w-full">
+            <div class="bg-white rounded-3xl border border-dark/12 shadow-[0_14px_40px_rgba(36,33,29,0.08)] overflow-hidden">
 
-              <!-- Primary Hero Card (Dialoogi Signature) -->
-              <div class="relative bg-white rounded-2xl sm:rounded-3xl p-2.5 sm:p-3 border border-dark/10 shadow-[0_12px_36px_rgba(36,33,29,0.07)] overflow-hidden transition-transform duration-300 hover:-translate-y-0.5">
-                <a href="pages/restaurant.html?id=dialogi-signature-malang" class="block group text-inherit no-underline">
-                  <div class="relative aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-[#EDE6D8]">
-                    <img
-                      src="assets/restaurants/dialogi-signature-malang/food/Food6.jpg"
-                      alt="Dialoogi Signature Restaurant Malang signature dishes"
-                      class="w-full h-full object-cover group-hover:scale-104 transition-transform duration-500 ease-out"
-                      loading="eager"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-dark/85 via-dark/25 to-transparent"></div>
-
-                    <!-- Floating badge top-left -->
-                    <div class="absolute top-2.5 left-2.5 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/92 backdrop-blur-md text-[11px] font-semibold text-dark shadow-xs">
-                      <span class="text-terracotta text-xs">&#9733;</span> Curated Spotlight
-                    </div>
-
-                    <!-- Bottom caption inside image -->
-                    <div class="absolute bottom-2.5 left-3 right-3 text-white">
-                      <p class="text-[11px] font-medium text-white/80">Asian Fusion &bull; Jl. Bandung No. 40</p>
-                      <h2 class="text-base sm:text-lg font-bold leading-tight drop-shadow-xs">Dialoogi Signature</h2>
-                    </div>
-                  </div>
-                </a>
-
-                <!-- Mini meta strip inside the card -->
-                <div class="flex items-center justify-between px-2.5 py-2 mt-0.5 text-xs">
-                  <span class="text-dark/60 font-medium text-[11px]">&#128337; 09:00 - 23:00 WIB</span>
-                  <a href="pages/restaurant.html?id=dialogi-signature-malang" class="text-terracotta font-semibold hover:underline inline-flex items-center gap-1 text-[11px]">
-                    View Menu &rarr;
+              <!-- Map Header Strip -->
+              <div class="px-4 py-3 border-b border-dark/10 flex flex-wrap items-center justify-between gap-2 bg-cream/40">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-terracotta animate-pulse" aria-hidden="true"></span>
+                  <span class="text-xs font-bold text-dark uppercase tracking-wider">Live Malang Culinary Quest Map</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    id="btn-home-reset-map"
+                    class="px-2.5 py-1 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark text-[11px] font-semibold cursor-pointer transition-colors"
+                  >
+                    Fit All Pins
+                  </button>
+                  <a href="pages/explore.html" class="px-3 py-1 rounded-full bg-dark hover:bg-terracotta text-white text-[11px] font-semibold no-underline transition-colors">
+                    Full Map Explorer &rarr;
                   </a>
                 </div>
               </div>
 
-              <!-- Secondary Floating Badge Card (Okiru Ramen) - Clean positioning staying within container -->
-              <div class="hidden sm:flex absolute -top-3 right-1 sm:-top-3.5 sm:right-2 bg-white/95 backdrop-blur-md rounded-xl p-2 sm:p-2.5 border border-dark/10 shadow-[0_8px_24px_rgba(36,33,29,0.10)] items-center gap-2.5 max-w-[200px] transition-transform duration-300 hover:scale-104">
-                <img
-                  src="assets/restaurants/okiru-ramen/source/Screenshot%202026-10-12%20234210.png"
-                  alt="Okiru Ramen Salmon Truffle"
-                  class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg object-cover shrink-0 border border-dark/5"
-                />
+              <!-- Interactive Leaflet Map Container -->
+              <div
+                id="home-discovery-map"
+                class="w-full h-[320px] sm:h-[380px] lg:h-[400px] bg-[#EDE6D8] relative z-10 flex items-center justify-center"
+                aria-label="Interactive Malang Culinary Quest Map"
+              >
+                <span class="text-sm text-dark/60 font-medium">Loading interactive Malang Quest Map...</span>
+              </div>
+
+              <!-- Selected Map Landmark Inspector Bar -->
+              <div
+                id="home-selected-inspector"
+                class="p-4 bg-white border-t border-dark/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                aria-live="polite"
+              >
                 <div class="min-w-0">
-                  <span class="inline-block px-1.5 py-0.2 rounded bg-[#6F8064]/12 text-[#6F8064] text-[9px] font-bold uppercase tracking-wider">Top Rated</span>
-                  <p class="text-[11px] font-bold text-dark truncate leading-snug">Okiru Ramen</p>
-                  <p class="text-[10px] text-dark/55 truncate">Japanese Ramen Bar</p>
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="px-2 py-0.5 rounded-full bg-terracotta/12 text-terracotta text-[10px] font-bold uppercase tracking-wider" data-inspector="badge">Active Landmark</span>
+                    <span class="text-[11px] font-semibold text-[#6F8064]" data-inspector="quest-tag">&#129517; Quest Target</span>
+                  </div>
+                  <h3 class="text-base font-bold text-dark truncate" data-inspector="name">Okiru Ramen</h3>
+                  <p class="text-xs text-dark/65 truncate" data-inspector="meta">Asian Food &bull; Jl. Soekarno Hatta No.DR 17, Lowokwaru</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    class="btn-quest-checkin px-3 py-2 rounded-full bg-terracotta/12 hover:bg-terracotta text-terracotta hover:text-white text-xs font-semibold transition-colors cursor-pointer border border-terracotta/25"
+                    data-inspector="checkin-btn"
+                    data-checkin-restaurant="okiru-ramen"
+                  >
+                    &#10003; Check In (+25 XP)
+                  </button>
+                  <a
+                    href="pages/restaurant.html?id=okiru-ramen"
+                    class="px-4 py-2 rounded-full bg-dark hover:bg-terracotta text-white text-xs font-semibold transition-colors no-underline"
+                    data-inspector="detail-link"
+                  >
+                    Inspect Menu &rarr;
+                  </a>
                 </div>
               </div>
 
@@ -194,89 +249,720 @@
       </div>
     </section>
 
-    <!-- 3: DISCOVERY CATEGORIES -->
-    <section class="discovery-categories py-3 md:py-4" aria-label="Browse by category">
-      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xs font-semibold uppercase tracking-wider text-dark/50">Explore by Category</h2>
-          <a href="pages/explore.html" class="text-xs font-medium text-terracotta hover:underline">All categories &rarr;</a>
-        </div>
-        <div class="content-rail flex gap-2.5 sm:gap-3 overflow-x-auto pb-2 min-h-auto">
-          <a href="pages/explore.html?category=Asian%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127836;</span> Asian Food</a>
-          <a href="pages/explore.html?category=Restaurant" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127869;</span> Restaurant</a>
-          <a href="pages/explore.html?category=Fast%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127828;</span> Fast Food</a>
-          <a href="pages/explore.html?category=Cafe%20%26%20Coffee" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#9749;</span> Cafe &amp; Coffee</a>
-          <a href="pages/explore.html?category=Local%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127835;</span> Local Food</a>
-          <a href="pages/explore.html?category=Jajanan" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127854;</span> Jajanan</a>
-          <a href="pages/explore.html?category=Drinks" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127865;</span> Drinks</a>
-          <a href="pages/explore.html?category=Dessert%20%26%20Bakery" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#127856;</span> Dessert &amp; Bakery</a>
-          <a href="pages/explore.html?category=Healthy%20Food" class="badge badge-neutral badge-category shrink-0"><span class="category-icon" aria-hidden="true">&#129367;</span> Healthy Food</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4: FEATURED IN MALANG -->
-    <section class="section-rail py-6 md:py-8" aria-labelledby="popular-heading">
-      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
-        <header class="section-header flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-          <div class="flex items-start justify-between gap-2 w-full sm:w-auto">
-            <div>
-              <h2 id="popular-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Featured in Malang</h2>
-              <p id="popular-subtitle" class="text-xs sm:text-sm text-dark/65">Hand-picked spots with verified menus, artisan flavors, and top guest ratings.</p>
+    <!-- 2: CULINARY QUESTS BOARD (Phase C) -->
+    <section id="quests-section" class="py-8 md:py-12 bg-white/55 border-b border-dark/10" aria-labelledby="quests-heading">
+      <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
+        <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-terracotta/10 text-terracotta text-[11px] font-bold uppercase tracking-wider mb-1">
+              <span>&#127942;</span> Culinary Quest MVP &bull; Self-Reported / Demo Progress
             </div>
-            <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150 sm:hidden">Lihat semua &rarr;</a>
+            <h2 id="quests-heading" class="text-2xl sm:text-3xl font-bold text-dark">Active Malang Culinary Quests</h2>
+            <p class="text-xs sm:text-sm text-dark/65 max-w-[680px] mt-1">
+              Complete unique exploration steps (+25 XP each) and full quest objectives (+120 to +200 XP bonus) to level up and unlock achievement badges. Duplicate clicks on completed steps do not farm extra XP.
+            </p>
           </div>
-          <div class="section-actions flex items-center justify-between sm:justify-start gap-4">
-            <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150 hidden sm:inline-block">Lihat semua &rarr;</a>
+          <div class="flex items-center gap-2 shrink-0">
+            <a href="pages/explore.html" class="px-4 py-2 rounded-full bg-terracotta hover:bg-[#B25132] text-white text-xs font-semibold no-underline transition-colors">
+              Open Split Map Explorer &rarr;
+            </a>
           </div>
         </header>
-        <div class="content-rail flex gap-4 overflow-x-auto min-h-12 pb-2">
-          <!-- Cards injected by js/main.js renderHomepageRails() -->
-        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <article
+  class="quest-card bg-white rounded-2xl border border-dark/12 p-5 shadow-[0_6px_24px_rgba(36,33,29,0.05)] flex flex-col justify-between gap-4 transition-all duration-200 hover:border-terracotta/40"
+  data-quest-card="quest-malang-scout"
+  data-quest-min-xp="0"
+  data-quest-req-level="1"
+  data-quest-xp-reward="150"
+  data-quest-badge-id="badge-malang-scout"
+>
+  <div>
+    <!-- Top Meta Row: State Badge & XP Reward -->
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <span
+        class="quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta/12 text-terracotta"
+        data-quest-state="quest-malang-scout"
+      >
+        &#9733; Available Quest      </span>
+
+      <div class="inline-flex items-center gap-1.5">
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#6F8064]/12 text-[#6F8064] text-xs font-bold">
+          +150 XP Bonus
+        </span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cream border border-dark/10 text-dark text-xs font-semibold" title="Badge Reward: Explored all 3 verified culinary landmarks across Lowokwaru and Klojen.">
+          <span>🧭</span>
+          <span>Malang Scout</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <h3 class="text-lg font-bold text-dark leading-snug mb-1.5">Malang Culinary Scout</h3>
+    <p class="text-xs sm:text-sm text-dark/70 leading-relaxed mb-4">Inspect all 3 verified Malang culinary landmarks on the interactive map or restaurant detail pages.</p>
+
+    <!-- Progress Bar -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-xs font-semibold text-dark/75 mb-1.5">
+        <span>Objective Progress</span>
+        <span data-quest-progress-text="quest-malang-scout">0 / 3 completed</span>
+      </div>
+      <div class="w-full h-2.5 rounded-full bg-dark/8 overflow-hidden">
+        <div
+          class="h-full bg-terracotta transition-all duration-300 rounded-full"
+          style="width: 0%;"
+          data-quest-progress-bar="quest-malang-scout"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Objective Checklist -->
+    <ul class="flex flex-col gap-2 border-t border-dark/8 pt-3" role="list">
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="visit:okiru-ramen"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="visit:okiru-ramen"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen (Soekarno Hatta)</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <a
+                href="pages/restaurant.html?id=okiru-ramen"
+                class="px-2 py-0.5 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark hover:text-terracotta text-[10px] font-semibold no-underline transition-colors"
+              >Inspect &rarr;</a>
+                      </div>
+        </li>
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="visit:dialogi-signature-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="visit:dialogi-signature-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="visit:dialogi-signature-malang">Inspect Dialoogi Signature (Jl. Bandung)</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <a
+                href="pages/restaurant.html?id=dialogi-signature-malang"
+                class="px-2 py-0.5 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark hover:text-terracotta text-[10px] font-semibold no-underline transition-colors"
+              >Inspect &rarr;</a>
+                      </div>
+        </li>
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="visit:burger-king-ijen-besar-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="visit:burger-king-ijen-besar-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King (Ijen Boulevard)</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <a
+                href="pages/restaurant.html?id=burger-king-ijen-besar-malang"
+                class="px-2 py-0.5 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark hover:text-terracotta text-[10px] font-semibold no-underline transition-colors"
+              >Inspect &rarr;</a>
+                      </div>
+        </li>
+          </ul>
+  </div>
+
+  <!-- Footer: Verification Transparency Label -->
+  <div class="pt-2.5 border-t border-dark/8 flex items-center justify-between gap-2 text-[11px] text-dark/55">
+    <span>&#9432; Self-reported / demo exploration progress (browser localStorage)</span>
+  </div>
+</article>
+                      <article
+  class="quest-card bg-white rounded-2xl border border-dark/12 p-5 shadow-[0_6px_24px_rgba(36,33,29,0.05)] flex flex-col justify-between gap-4 transition-all duration-200 hover:border-terracotta/40"
+  data-quest-card="quest-noodle-connoisseur"
+  data-quest-min-xp="0"
+  data-quest-req-level="1"
+  data-quest-xp-reward="120"
+  data-quest-badge-id="badge-broth-master"
+>
+  <div>
+    <!-- Top Meta Row: State Badge & XP Reward -->
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <span
+        class="quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta/12 text-terracotta"
+        data-quest-state="quest-noodle-connoisseur"
+      >
+        &#9733; Available Quest      </span>
+
+      <div class="inline-flex items-center gap-1.5">
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#6F8064]/12 text-[#6F8064] text-xs font-bold">
+          +120 XP Bonus
+        </span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cream border border-dark/10 text-dark text-xs font-semibold" title="Badge Reward: Completed the Okiru Ramen Paitan &amp; Chintan menu exploration quest.">
+          <span>🍜</span>
+          <span>Broth Master</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <h3 class="text-lg font-bold text-dark leading-snug mb-1.5">Ramen &amp; Broth Connoisseur</h3>
+    <p class="text-xs sm:text-sm text-dark/70 leading-relaxed mb-4">Dive into Lowokwaru’s halal Japanese ramen bar by inspecting Okiru Ramen’s menu and logging a tasting check-in.</p>
+
+    <!-- Progress Bar -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-xs font-semibold text-dark/75 mb-1.5">
+        <span>Objective Progress</span>
+        <span data-quest-progress-text="quest-noodle-connoisseur">0 / 2 completed</span>
+      </div>
+      <div class="w-full h-2.5 rounded-full bg-dark/8 overflow-hidden">
+        <div
+          class="h-full bg-terracotta transition-all duration-300 rounded-full"
+          style="width: 0%;"
+          data-quest-progress-bar="quest-noodle-connoisseur"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Objective Checklist -->
+    <ul class="flex flex-col gap-2 border-t border-dark/8 pt-3" role="list">
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="visit:okiru-ramen"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="visit:okiru-ramen"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="visit:okiru-ramen">Inspect Okiru Ramen detail or map marker</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <a
+                href="pages/restaurant.html?id=okiru-ramen"
+                class="px-2 py-0.5 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark hover:text-terracotta text-[10px] font-semibold no-underline transition-colors"
+              >Inspect &rarr;</a>
+                      </div>
+        </li>
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="checkin:okiru-ramen"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="checkin:okiru-ramen"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="checkin:okiru-ramen">Log a self-reported tasting check-in at Okiru Ramen</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <button
+                type="button"
+                class="btn-quest-checkin px-2 py-0.5 rounded-full bg-terracotta text-white hover:bg-[#B25132] text-[10px] font-semibold cursor-pointer border-0 transition-colors"
+                data-checkin-restaurant="okiru-ramen"
+              >Check In</button>
+                      </div>
+        </li>
+          </ul>
+  </div>
+
+  <!-- Footer: Verification Transparency Label -->
+  <div class="pt-2.5 border-t border-dark/8 flex items-center justify-between gap-2 text-[11px] text-dark/55">
+    <span>&#9432; Self-reported / demo check-in progress (browser localStorage)</span>
+  </div>
+</article>
+                      <article
+  class="quest-card bg-white rounded-2xl border border-dark/12 p-5 shadow-[0_6px_24px_rgba(36,33,29,0.05)] flex flex-col justify-between gap-4 transition-all duration-200 hover:border-terracotta/40"
+  data-quest-card="quest-bandung-artisan"
+  data-quest-min-xp="0"
+  data-quest-req-level="1"
+  data-quest-xp-reward="130"
+  data-quest-badge-id="badge-artisan-explorer"
+>
+  <div>
+    <!-- Top Meta Row: State Badge & XP Reward -->
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <span
+        class="quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta/12 text-terracotta"
+        data-quest-state="quest-bandung-artisan"
+      >
+        &#9733; Available Quest      </span>
+
+      <div class="inline-flex items-center gap-1.5">
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#6F8064]/12 text-[#6F8064] text-xs font-bold">
+          +130 XP Bonus
+        </span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cream border border-dark/10 text-dark text-xs font-semibold" title="Badge Reward: Saved and checked in at Dialoogi Signature on Jl. Bandung.">
+          <span>☕</span>
+          <span>Artisan Explorer</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <h3 class="text-lg font-bold text-dark leading-snug mb-1.5">Bandung Street Artisan</h3>
+    <p class="text-xs sm:text-sm text-dark/70 leading-relaxed mb-4">Bookmark Dialoogi Signature on Jl. Bandung No. 40 to your Favorites and record a demo dining check-in.</p>
+
+    <!-- Progress Bar -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-xs font-semibold text-dark/75 mb-1.5">
+        <span>Objective Progress</span>
+        <span data-quest-progress-text="quest-bandung-artisan">0 / 2 completed</span>
+      </div>
+      <div class="w-full h-2.5 rounded-full bg-dark/8 overflow-hidden">
+        <div
+          class="h-full bg-terracotta transition-all duration-300 rounded-full"
+          style="width: 0%;"
+          data-quest-progress-bar="quest-bandung-artisan"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Objective Checklist -->
+    <ul class="flex flex-col gap-2 border-t border-dark/8 pt-3" role="list">
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="fav:dialogi-signature-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="fav:dialogi-signature-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="fav:dialogi-signature-malang">Save Dialoogi Signature to Favorites (♥)</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <button
+                type="button"
+                class="btn-quest-fav px-2 py-0.5 rounded-full bg-dark text-white hover:bg-terracotta text-[10px] font-semibold cursor-pointer border-0 transition-colors"
+                data-fav-restaurant="dialogi-signature-malang"
+              >Save &hearts;</button>
+                      </div>
+        </li>
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="checkin:dialogi-signature-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="checkin:dialogi-signature-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="checkin:dialogi-signature-malang">Log a self-reported check-in at Dialoogi Signature</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <button
+                type="button"
+                class="btn-quest-checkin px-2 py-0.5 rounded-full bg-terracotta text-white hover:bg-[#B25132] text-[10px] font-semibold cursor-pointer border-0 transition-colors"
+                data-checkin-restaurant="dialogi-signature-malang"
+              >Check In</button>
+                      </div>
+        </li>
+          </ul>
+  </div>
+
+  <!-- Footer: Verification Transparency Label -->
+  <div class="pt-2.5 border-t border-dark/8 flex items-center justify-between gap-2 text-[11px] text-dark/55">
+    <span>&#9432; Self-reported / demo favorite &amp; check-in progress (browser localStorage)</span>
+  </div>
+</article>
+                      <article
+  class="quest-card bg-white rounded-2xl border border-dark/12 p-5 shadow-[0_6px_24px_rgba(36,33,29,0.05)] flex flex-col justify-between gap-4 transition-all duration-200 hover:border-terracotta/40"
+  data-quest-card="quest-midnight-ijen"
+  data-quest-min-xp="150"
+  data-quest-req-level="2"
+  data-quest-xp-reward="200"
+  data-quest-badge-id="badge-night-owl"
+>
+  <div>
+    <!-- Top Meta Row: State Badge & XP Reward -->
+    <div class="flex items-center justify-between gap-2 flex-wrap mb-3">
+      <span
+        class="quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-dark/10 text-dark/60"
+        data-quest-state="quest-midnight-ijen"
+      >
+        &#128274; Locked (Req. Lv. 2)      </span>
+
+      <div class="inline-flex items-center gap-1.5">
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#6F8064]/12 text-[#6F8064] text-xs font-bold">
+          +200 XP Bonus
+        </span>
+        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-cream border border-dark/10 text-dark text-xs font-semibold" title="Badge Reward: Reached Level 2 and completed the 24-hour Ijen Boulevard quest.">
+          <span>🦉</span>
+          <span>Ijen Night Owl</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Title & Description -->
+    <h3 class="text-lg font-bold text-dark leading-snug mb-1.5">Ijen 24-Hour Night Owl</h3>
+    <p class="text-xs sm:text-sm text-dark/70 leading-relaxed mb-4">Reach Level 2 (150+ XP) to unlock this quest, then inspect and check in at Burger King Ijen Boulevard (Open 24 Hours).</p>
+
+    <!-- Progress Bar -->
+    <div class="mb-4">
+      <div class="flex items-center justify-between text-xs font-semibold text-dark/75 mb-1.5">
+        <span>Objective Progress</span>
+        <span data-quest-progress-text="quest-midnight-ijen">0 / 2 completed</span>
+      </div>
+      <div class="w-full h-2.5 rounded-full bg-dark/8 overflow-hidden">
+        <div
+          class="h-full bg-terracotta transition-all duration-300 rounded-full"
+          style="width: 0%;"
+          data-quest-progress-bar="quest-midnight-ijen"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Objective Checklist -->
+    <ul class="flex flex-col gap-2 border-t border-dark/8 pt-3" role="list">
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="visit:burger-king-ijen-besar-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="visit:burger-king-ijen-besar-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="visit:burger-king-ijen-besar-malang">Inspect Burger King Ijen (24-Hour Landmark)</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <a
+                href="pages/restaurant.html?id=burger-king-ijen-besar-malang"
+                class="px-2 py-0.5 rounded-full bg-white border border-dark/15 hover:border-terracotta text-dark hover:text-terracotta text-[10px] font-semibold no-underline transition-colors"
+              >Inspect &rarr;</a>
+                      </div>
+        </li>
+                      <li
+          class="quest-objective-item flex items-center justify-between gap-2 text-xs py-1.5 px-2.5 rounded-xl bg-cream/55 border border-dark/6"
+          data-objective-item="checkin:burger-king-ijen-besar-malang"
+        >
+          <div class="flex items-center gap-2 min-w-0">
+            <span
+              class="objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0"
+              data-objective-icon="checkin:burger-king-ijen-besar-malang"
+            >&#9675;</span>
+            <span class="text-dark font-medium truncate" data-objective-label="checkin:burger-king-ijen-besar-malang">Log a self-reported 24h check-in at Burger King Ijen</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <span class="text-[10px] font-bold text-[#6F8064]">+25 XP</span>
+                          <button
+                type="button"
+                class="btn-quest-checkin px-2 py-0.5 rounded-full bg-terracotta text-white hover:bg-[#B25132] text-[10px] font-semibold cursor-pointer border-0 transition-colors"
+                data-checkin-restaurant="burger-king-ijen-besar-malang"
+              >Check In</button>
+                      </div>
+        </li>
+          </ul>
+  </div>
+
+  <!-- Footer: Verification Transparency Label -->
+  <div class="pt-2.5 border-t border-dark/8 flex items-center justify-between gap-2 text-[11px] text-dark/55">
+    <span>&#9432; Unlocks at Level 2 (150 XP) • Self-reported / demo progress</span>
+  </div>
+</article>
+                  </div>
       </div>
     </section>
 
-    <!-- 5: ASIAN DINING & SPECIALTIES -->
-    <section class="section-rail py-6 md:py-8" aria-labelledby="cafe-heading">
-      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
-        <header class="section-header flex items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
+    <!-- 3: ACHIEVEMENT BADGES & LEVEL PROGRESSION SHOWCASE (Phase D) -->
+    <section id="badges-section" class="py-8 md:py-10 border-b border-dark/10" aria-labelledby="badges-heading">
+      <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
+        <header class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5">
           <div>
-            <h2 id="cafe-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Asian Dining &amp; Specialties</h2>
-            <p class="text-xs sm:text-sm text-dark/65">Ramen bars, Japanese grills, and modern Asian fusion in Malang.</p>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#6F8064]">&#127941; Explorer Achievements</span>
+            <h2 id="badges-heading" class="text-xl sm:text-2xl font-bold text-dark">Malang Culinary Badges</h2>
+            <p class="text-xs sm:text-sm text-dark/65">Unlock badges by completing the corresponding Culinary Quests above.</p>
           </div>
-          <a href="pages/explore.html?category=Asian%20Food" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150">Lihat semua &rarr;</a>
+          <p class="text-xs font-semibold text-dark/60">
+            Unlocked: <span class="text-terracotta font-bold" data-hud="badges-count">0/4</span> Badges
+          </p>
         </header>
-        <div class="content-rail flex gap-4 overflow-x-auto min-h-12 pb-2">
-          <!-- Cards injected by js/main.js renderHomepageRails() -->
-        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                  <div
+              class="badge-showcase-card bg-white rounded-2xl border border-dark/12 p-4 flex items-start gap-3.5 opacity-60 transition-all duration-200"
+              data-badge-card="badge-malang-scout"
+            >
+              <div class="w-12 h-12 rounded-2xl bg-cream border border-dark/10 flex items-center justify-center text-2xl shrink-0">
+                🧭              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                  <h3 class="text-sm font-bold text-dark truncate">Malang Scout</h3>
+                  <span
+                    class="px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase"
+                    data-badge-status="badge-malang-scout"
+                  >Locked</span>
+                </div>
+                <p class="text-xs text-dark/65 leading-snug mb-1">Explored all 3 verified culinary landmarks across Lowokwaru and Klojen.</p>
+                <p class="text-[10px] font-semibold text-terracotta">Quest: Malang Culinary Scout</p>
+              </div>
+            </div>
+                                  <div
+              class="badge-showcase-card bg-white rounded-2xl border border-dark/12 p-4 flex items-start gap-3.5 opacity-60 transition-all duration-200"
+              data-badge-card="badge-broth-master"
+            >
+              <div class="w-12 h-12 rounded-2xl bg-cream border border-dark/10 flex items-center justify-center text-2xl shrink-0">
+                🍜              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                  <h3 class="text-sm font-bold text-dark truncate">Broth Master</h3>
+                  <span
+                    class="px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase"
+                    data-badge-status="badge-broth-master"
+                  >Locked</span>
+                </div>
+                <p class="text-xs text-dark/65 leading-snug mb-1">Completed the Okiru Ramen Paitan &amp; Chintan menu exploration quest.</p>
+                <p class="text-[10px] font-semibold text-terracotta">Quest: Ramen &amp; Broth Connoisseur</p>
+              </div>
+            </div>
+                                  <div
+              class="badge-showcase-card bg-white rounded-2xl border border-dark/12 p-4 flex items-start gap-3.5 opacity-60 transition-all duration-200"
+              data-badge-card="badge-artisan-explorer"
+            >
+              <div class="w-12 h-12 rounded-2xl bg-cream border border-dark/10 flex items-center justify-center text-2xl shrink-0">
+                ☕              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                  <h3 class="text-sm font-bold text-dark truncate">Artisan Explorer</h3>
+                  <span
+                    class="px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase"
+                    data-badge-status="badge-artisan-explorer"
+                  >Locked</span>
+                </div>
+                <p class="text-xs text-dark/65 leading-snug mb-1">Saved and checked in at Dialoogi Signature on Jl. Bandung.</p>
+                <p class="text-[10px] font-semibold text-terracotta">Quest: Bandung Street Artisan</p>
+              </div>
+            </div>
+                                  <div
+              class="badge-showcase-card bg-white rounded-2xl border border-dark/12 p-4 flex items-start gap-3.5 opacity-60 transition-all duration-200"
+              data-badge-card="badge-night-owl"
+            >
+              <div class="w-12 h-12 rounded-2xl bg-cream border border-dark/10 flex items-center justify-center text-2xl shrink-0">
+                🦉              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap mb-0.5">
+                  <h3 class="text-sm font-bold text-dark truncate">Ijen Night Owl</h3>
+                  <span
+                    class="px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase"
+                    data-badge-status="badge-night-owl"
+                  >Locked</span>
+                </div>
+                <p class="text-xs text-dark/65 leading-snug mb-1">Reached Level 2 and completed the 24-hour Ijen Boulevard quest.</p>
+                <p class="text-[10px] font-semibold text-terracotta">Quest: Ijen 24-Hour Night Owl</p>
+              </div>
+            </div>
+                  </div>
       </div>
     </section>
 
-    <!-- 6: LATE NIGHT & QUICK CRAVINGS -->
-    <section class="section-rail py-6 md:py-8" aria-labelledby="curated-heading">
-      <div class="container max-w-[1200px] mx-auto px-4 md:px-6">
-        <header class="section-header flex items-end justify-between gap-2 sm:gap-4 mb-4 sm:mb-6">
+    <!-- 4: CONNECTED MALANG LANDMARKS RAILS -->
+    <section class="section-rail py-6 md:py-8" aria-labelledby="popular-heading">
+      <div class="container max-w-[1280px] mx-auto px-4 md:px-6">
+        <header class="section-header flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div>
-            <h2 id="curated-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Late Night &amp; Quick Cravings</h2>
-            <p class="text-xs sm:text-sm text-dark/65">Satisfy your midnight cravings &mdash; 24-hour dining and fast casual spots.</p>
+            <h2 id="popular-heading" class="text-xl sm:text-2xl font-semibold text-dark mb-0.5 sm:mb-1">Verified Malang Quest Landmarks</h2>
+            <p id="popular-subtitle" class="text-xs sm:text-sm text-dark/65">Click "Focus on Map" on any card to highlight its pin on the interactive map above, or click "Check In (+25 XP)" to advance your quests.</p>
           </div>
-          <a href="pages/explore.html?category=Fast%20Food" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity duration-150">Lihat semua &rarr;</a>
+          <a href="pages/explore.html" class="section-link text-sm font-medium text-terracotta whitespace-nowrap shrink-0 hover:opacity-75 transition-opacity">Open Map Explorer &rarr;</a>
         </header>
-        <div class="content-rail flex gap-4 overflow-x-auto min-h-12 pb-2">
-          <!-- Cards injected by js/main.js renderHomepageRails() -->
-        </div>
-      </div>
-    </section>
+        <div class="content-rail grid grid-cols-1 md:grid-cols-3 gap-5 pb-2">
+                      <article
+  class="restaurant-card group transition-all duration-200"
+  data-id="okiru-ramen"
+  data-restaurant-id="okiru-ramen"
+  data-name="Okiru Ramen"
+  data-category="Asian Food"
+  data-lat="-7.9617932"
+  data-lon="112.623681"
+>
+  <button type="button" class="btn-favorite" aria-label="Save Okiru Ramen to favorites" aria-pressed="false">
+    <span aria-hidden="true">&hearts;</span>
+  </button>
 
-    <!-- 7: DISCOVERY CTA -->
-    <section class="section-cta py-12 md:py-16 text-center bg-dark/3 border-y border-dark/5" aria-labelledby="cta-heading">
-      <div class="container cta-inner max-w-[1200px] mx-auto px-4 md:px-6 flex flex-col items-center gap-3 sm:gap-4">
-        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/10 text-terracotta text-xs font-semibold">
-          <span>&#127869;</span> Explore Malang Food Scene
-        </div>
-        <h2 id="cta-heading" class="text-2xl sm:text-3xl font-bold text-dark">Ready to find your next meal?</h2>
-        <p class="cta-text text-lead text-muted text-base sm:text-lg text-dark/70 max-w-[520px]">Discover authentic dishes, artisan coffee, and hidden gems across Malang with official menus and verified reviews.</p>
-        <a href="pages/explore.html" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-8 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] transition-colors duration-200 whitespace-nowrap cursor-pointer shadow-sm mt-2">Explore All Restaurants &rarr;</a>
+  <a href="pages/restaurant.html?id=okiru-ramen" class="card-link-wrapper" aria-label="View Okiru Ramen">
+    <div
+      class="restaurant-card-image relative"
+      aria-hidden="true"
+              style="background-image: url('assets/restaurants/okiru-ramen/source/Screenshot 2026-10-12 234732.png'); background-size: cover; background-position: center;"
+          >
+      <!-- Live Hours Badge (Verified Hours) -->
+      <span class="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold shadow-xs bg-dark/80 text-cream">
+        Closed      </span>
+
+              <span class="absolute bottom-2.5 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-dark text-[10px] font-bold shadow-xs border border-terracotta/25">
+          <span>🧭</span>
+          <span>Quest: Malang Culinary Scout</span>
+        </span>
+          </div>
+
+    <div class="restaurant-card-content">
+      <h3 class="text-lead">Okiru Ramen</h3>
+      <p class="text-small text-muted" style="margin-bottom: var(--space-1);">
+        Asian Food &bull; Japanese • Ramen Bar      </p>
+      <p class="text-meta text-muted" title="Illustrative rating & estimated distance from Malang City Center">
+                  <span class="rating-icon" aria-hidden="true">&#9733;</span> 4.8 <span class="text-[10px] opacity-75">(Demo)</span>
+                          &bull; 0.8 km <span class="text-[10px] opacity-75">(Est.)</span>
+              </p>
+    </div>
+  </a>
+
+  <!-- Map-First & Culinary Quest Action Bar -->
+  <div class="px-4 pb-3.5 pt-2 border-t border-dark/8 flex items-center justify-between gap-2 bg-cream/35">
+    <button
+      type="button"
+      class="btn-focus-map inline-flex items-center gap-1 text-xs font-semibold text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
+      data-focus-restaurant="okiru-ramen"
+      aria-label="Locate Okiru Ramen on map"
+    >
+      <span aria-hidden="true">&#128205;</span> Focus on Map
+    </button>
+
+    <button
+      type="button"
+      class="btn-quest-checkin inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terracotta/10 hover:bg-terracotta hover:text-white text-terracotta text-[11px] font-semibold transition-colors cursor-pointer border border-terracotta/20"
+      data-checkin-restaurant="okiru-ramen"
+      data-restaurant-name="Okiru Ramen"
+    >
+      <span>&#10003; Check In (+25 XP)</span>
+    </button>
+  </div>
+</article>
+                      <article
+  class="restaurant-card group transition-all duration-200"
+  data-id="burger-king-ijen-besar-malang"
+  data-restaurant-id="burger-king-ijen-besar-malang"
+  data-name="Burger King Ijen Besar Malang"
+  data-category="Fast Food"
+  data-lat="-7.96589"
+  data-lon="112.62495"
+>
+  <button type="button" class="btn-favorite" aria-label="Save Burger King Ijen Besar Malang to favorites" aria-pressed="false">
+    <span aria-hidden="true">&hearts;</span>
+  </button>
+
+  <a href="pages/restaurant.html?id=burger-king-ijen-besar-malang" class="card-link-wrapper" aria-label="View Burger King Ijen Besar Malang">
+    <div
+      class="restaurant-card-image relative"
+      aria-hidden="true"
+              style="background-image: url('assets/restaurants/burger-king-ijen-besar-malang/exterior/Screenshot_20261013_130205_Maps.jpg'); background-size: cover; background-position: center;"
+          >
+      <!-- Live Hours Badge (Verified Hours) -->
+      <span class="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold shadow-xs bg-[#6F8064] text-white">
+        Open 24 hours      </span>
+
+              <span class="absolute bottom-2.5 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-dark text-[10px] font-bold shadow-xs border border-terracotta/25">
+          <span>🧭</span>
+          <span>Quest: Malang Culinary Scout</span>
+        </span>
+          </div>
+
+    <div class="restaurant-card-content">
+      <h3 class="text-lead">Burger King Ijen Besar Malang</h3>
+      <p class="text-small text-muted" style="margin-bottom: var(--space-1);">
+        Fast Food &bull; American / Burger      </p>
+      <p class="text-meta text-muted" title="Illustrative rating & estimated distance from Malang City Center">
+                  <span class="rating-icon" aria-hidden="true">&#9733;</span> 4.5 <span class="text-[10px] opacity-75">(Demo)</span>
+                          &bull; 1.4 km <span class="text-[10px] opacity-75">(Est.)</span>
+              </p>
+    </div>
+  </a>
+
+  <!-- Map-First & Culinary Quest Action Bar -->
+  <div class="px-4 pb-3.5 pt-2 border-t border-dark/8 flex items-center justify-between gap-2 bg-cream/35">
+    <button
+      type="button"
+      class="btn-focus-map inline-flex items-center gap-1 text-xs font-semibold text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
+      data-focus-restaurant="burger-king-ijen-besar-malang"
+      aria-label="Locate Burger King Ijen Besar Malang on map"
+    >
+      <span aria-hidden="true">&#128205;</span> Focus on Map
+    </button>
+
+    <button
+      type="button"
+      class="btn-quest-checkin inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terracotta/10 hover:bg-terracotta hover:text-white text-terracotta text-[11px] font-semibold transition-colors cursor-pointer border border-terracotta/20"
+      data-checkin-restaurant="burger-king-ijen-besar-malang"
+      data-restaurant-name="Burger King Ijen Besar Malang"
+    >
+      <span>&#10003; Check In (+25 XP)</span>
+    </button>
+  </div>
+</article>
+                      <article
+  class="restaurant-card group transition-all duration-200"
+  data-id="dialogi-signature-malang"
+  data-restaurant-id="dialogi-signature-malang"
+  data-name="Dialoogi Signature Restaurant Malang"
+  data-category="Restaurant"
+  data-lat="-7.95985"
+  data-lon="112.62214"
+>
+  <button type="button" class="btn-favorite" aria-label="Save Dialoogi Signature Restaurant Malang to favorites" aria-pressed="false">
+    <span aria-hidden="true">&hearts;</span>
+  </button>
+
+  <a href="pages/restaurant.html?id=dialogi-signature-malang" class="card-link-wrapper" aria-label="View Dialoogi Signature Restaurant Malang">
+    <div
+      class="restaurant-card-image relative"
+      aria-hidden="true"
+              style="background-image: url('assets/restaurants/dialogi-signature-malang/gallery/Profile8.jpg'); background-size: cover; background-position: center;"
+          >
+      <!-- Live Hours Badge (Verified Hours) -->
+      <span class="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold shadow-xs bg-dark/80 text-cream">
+        Closed      </span>
+
+              <span class="absolute bottom-2.5 left-3 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/95 backdrop-blur-xs text-dark text-[10px] font-bold shadow-xs border border-terracotta/25">
+          <span>🧭</span>
+          <span>Quest: Malang Culinary Scout</span>
+        </span>
+          </div>
+
+    <div class="restaurant-card-content">
+      <h3 class="text-lead">Dialoogi Signature Restaurant Malang</h3>
+      <p class="text-small text-muted" style="margin-bottom: var(--space-1);">
+        Restaurant &bull; Asian Fusion      </p>
+      <p class="text-meta text-muted" title="Illustrative rating & estimated distance from Malang City Center">
+                  <span class="rating-icon" aria-hidden="true">&#9733;</span> 4.7 <span class="text-[10px] opacity-75">(Demo)</span>
+                          &bull; 1.1 km <span class="text-[10px] opacity-75">(Est.)</span>
+              </p>
+    </div>
+  </a>
+
+  <!-- Map-First & Culinary Quest Action Bar -->
+  <div class="px-4 pb-3.5 pt-2 border-t border-dark/8 flex items-center justify-between gap-2 bg-cream/35">
+    <button
+      type="button"
+      class="btn-focus-map inline-flex items-center gap-1 text-xs font-semibold text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0"
+      data-focus-restaurant="dialogi-signature-malang"
+      aria-label="Locate Dialoogi Signature Restaurant Malang on map"
+    >
+      <span aria-hidden="true">&#128205;</span> Focus on Map
+    </button>
+
+    <button
+      type="button"
+      class="btn-quest-checkin inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terracotta/10 hover:bg-terracotta hover:text-white text-terracotta text-[11px] font-semibold transition-colors cursor-pointer border border-terracotta/20"
+      data-checkin-restaurant="dialogi-signature-malang"
+      data-restaurant-name="Dialoogi Signature Restaurant Malang"
+    >
+      <span>&#10003; Check In (+25 XP)</span>
+    </button>
+  </div>
+</article>
+                  </div>
       </div>
     </section>
 
@@ -322,5 +1008,5 @@
   <!-- Local environment config (git-ignored, optional) -->
   <script src="js/config.local.js" onerror="this.remove()"></script>
   <script src="js/main.js" defer></script>
-</body>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script></body>
 </html>

@@ -52,16 +52,24 @@ $todayName = (string) ($todayStatus['day'] ?? 'Monday');
             </p>
             <p class="text-meta text-muted text-xs font-medium uppercase tracking-wider text-dark/65" data-detail="meta">
               <?php if ($ratingNumber !== null): ?>
-                <span class="rating-icon" aria-hidden="true">&#9733;</span> <?= e($ratingNumber) ?>
+                <span class="rating-icon" aria-hidden="true">&#9733;</span> <?= e($ratingNumber) ?> <span class="text-[10px] opacity-75">(Demo)</span>
               <?php else: ?>
                 <span>New &middot; No reviews yet</span>
               <?php endif; ?>
               <?php if ($distanceText !== null): ?>
-                &bull; <?= e($distanceText) ?>
+                &bull; <?= e($distanceText) ?> <span class="text-[10px] opacity-75">(Est.)</span>
               <?php endif; ?>
             </p>
           </div>
           <div class="restaurant-actions flex gap-3 flex-wrap w-full sm:w-auto">
+            <button
+              type="button"
+              class="btn-quest-checkin inline-flex items-center justify-center gap-2 py-3 px-5 border-2 border-[#6F8064] rounded-full text-sm font-semibold text-[#6F8064] bg-[#6F8064]/10 hover:bg-[#6F8064] hover:text-white transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial"
+              data-checkin-restaurant="<?= e($restaurant->getId()) ?>"
+              data-restaurant-name="<?= e($restaurant->getName()) ?>"
+            >
+              &#10003; Check In (+25 XP)
+            </button>
             <?php if ($restaurant->hasReservationCapability()): ?>
               <a href="reservation.html?id=<?= urlencode($restaurant->getId()) ?>" class="btn btn-primary inline-flex items-center justify-center gap-2 py-3 px-6 border-2 border-terracotta rounded-full text-sm font-semibold text-white bg-terracotta hover:bg-[#B25132] hover:border-[#B25132] focus-visible:bg-[#B25132] focus-visible:border-[#B25132] transition-colors duration-250 whitespace-nowrap cursor-pointer flex-1 sm:flex-initial" data-detail="reserve-btn">Reserve a Table</a>
             <?php else: ?>
@@ -72,6 +80,24 @@ $todayName = (string) ($todayStatus['day'] ?? 'Monday');
             </button>
           </div>
         </header>
+
+        <?php if (!empty($restaurantQuests)): ?>
+          <div class="mt-5 p-4 rounded-2xl bg-white border border-terracotta/25 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3" data-detail="quest-banner">
+            <div class="flex items-start sm:items-center gap-3">
+              <span class="w-9 h-9 rounded-xl bg-terracotta/12 text-terracotta flex items-center justify-center text-lg shrink-0">&#129517;</span>
+              <div>
+                <p class="text-xs font-bold uppercase tracking-wider text-terracotta">Active Culinary Quest Landmark</p>
+                <p class="text-xs sm:text-sm text-dark/80">
+                  Featured in:
+                  <?php foreach ($restaurantQuests as $qIdx => $rq): ?>
+                    <?= $qIdx > 0 ? ' &bull; ' : '' ?><strong><?= e($rq->getBadgeIcon() . ' ' . $rq->getTitle()) ?> (+<?= e((string) $rq->getXpReward()) ?> XP)</strong>
+                  <?php endforeach; ?>
+                </p>
+              </div>
+            </div>
+            <a href="../index.php#quests-section" class="text-xs font-semibold text-terracotta hover:underline whitespace-nowrap">View Quest Progress &rarr;</a>
+          </div>
+        <?php endif; ?>
 
         <!-- 4: SECTION NAVIGATION -->
         <nav class="restaurant-tabs mt-8 border-b border-dark/15" aria-label="Restaurant sections">

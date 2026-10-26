@@ -1251,6 +1251,9 @@ function toggleFavorite(restaurantId) {
         newState = true;
     }
     saveFavoritesToStorage();
+    if (newState && typeof recordQuestAction === 'function') {
+        recordQuestAction('fav:' + restaurantId, 'Saved restaurant to Favorites!');
+    }
     return newState;
 }
 
@@ -1421,15 +1424,15 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
     article.dataset.restaurantId = restaurant.id;
 
     const ratingHtml = typeof restaurant.rating === 'number'
-        ? `<span class="rating-icon" aria-hidden="true">&#9733;</span> ${restaurant.rating.toFixed(1)}`
-        : '<span>New &middot; No reviews yet</span>';
+        ? `<span class="rating-icon" aria-hidden="true">&#9733;</span> ${restaurant.rating.toFixed(1)} <span class="text-[10px] opacity-75">(Demo)</span>`
+        : '<span>Verified Menu</span>';
 
     let distanceText = null;
     if (customDistance != null) {
         distanceText = formatDistance(customDistance) || null;
     } else if (restaurant.distance != null) {
         distanceText = typeof restaurant.distance === 'number'
-            ? restaurant.distance.toFixed(1) + ' km'
+            ? restaurant.distance.toFixed(1) + ' km (Est.)'
             : (String(restaurant.distance).trim() || null);
     }
 
@@ -1446,16 +1449,28 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
 
     const cardImg = (restaurant.hero_image || restaurant.image) ? getAssetPath(restaurant.hero_image || restaurant.image) : '';
     const imgStyle = cardImg ? ` style="background-image: url('${cardImg}'); background-size: cover; background-position: center;"` : '';
+    if (typeof restaurant.latitude === 'number') article.dataset.lat = String(restaurant.latitude);
+    if (typeof restaurant.longitude === 'number') article.dataset.lon = String(restaurant.longitude);
+    article.dataset.name = restaurant.name || '';
+    article.dataset.category = restaurant.category || '';
 
     article.innerHTML = `<button type="button" class="${favClass}" aria-label="${favLabel}" aria-pressed="${favPressed}"><span aria-hidden="true">&hearts;</span></button>
       <a href="${href}" class="card-link-wrapper" aria-label="View ${restaurant.name}">
-        <div class="restaurant-card-image" aria-hidden="true"${imgStyle}></div>
+        <div class="restaurant-card-image relative" aria-hidden="true"${imgStyle}></div>
         <div class="restaurant-card-content">
           <h3 class="text-lead">${restaurant.name}</h3>
           <p class="text-small text-muted" style="margin-bottom: var(--space-1);">${restaurant.category}</p>
           <p class="text-meta text-muted">${metaHtml}</p>
         </div>
-      </a>`;
+      </a>
+      <div class="px-4 pb-3.5 pt-2 border-t border-dark/8 flex items-center justify-between gap-2 bg-cream/35">
+        <button type="button" class="btn-focus-map inline-flex items-center gap-1 text-xs font-semibold text-terracotta hover:underline cursor-pointer bg-transparent border-0 p-0" data-focus-restaurant="${restaurant.id}" aria-label="Locate ${restaurant.name} on map">
+          <span aria-hidden="true">&#128205;</span> Focus on Map
+        </button>
+        <button type="button" class="btn-quest-checkin inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-terracotta/10 hover:bg-terracotta hover:text-white text-terracotta text-[11px] font-semibold transition-colors cursor-pointer border border-terracotta/20" data-checkin-restaurant="${restaurant.id}" data-restaurant-name="${restaurant.name}">
+          <span>&#10003; Check In (+25 XP)</span>
+        </button>
+      </div>`;
 
     return article;
 }
@@ -3359,11 +3374,17 @@ function initExploreFilters() {
                 emptyState.style.display = 'flex';
                 emptyState.classList.remove('hidden');
                 emptyState.removeAttribute('aria-hidden');
+                if (restaurantGrid) restaurantGrid.style.display = 'none';
             } else {
                 emptyState.style.display = 'none';
                 emptyState.classList.add('hidden');
                 emptyState.setAttribute('aria-hidden', 'true');
+                if (restaurantGrid) restaurantGrid.style.display = '';
             }
+        }
+
+        if (typeof syncExploreMapMarkers === 'function') {
+            syncExploreMapMarkers(pagedResults);
         }
 
         // Load More handling: only visible when more results exist than currently displayed
@@ -6118,6 +6139,771 @@ function initAdmin() {
 }
 
 // ==========================================
+// Phase B, C & D: BiteMap — Culinary Quest, Map-First Discovery & XP Engine
+// ==========================================
+
+const QUEST_STORAGE_KEY = 'bitemap_quest_state';
+
+/**
+ * Canonical client-side quest definitions synchronized with data/quests.php & api/restaurants.php.
+ */
+const CULINARY_QUESTS = [
+    {
+        id: 'quest-malang-scout',
+        title: 'Malang Culinary Scout',
+        description: 'Inspect all 3 verified Malang culinary landmarks on the interactive map or restaurant detail pages.',
+        category: 'Exploration',
+        required_level: 1,
+        min_xp: 0,
+        xp_reward: 150,
+        badge: {
+            id: 'badge-malang-scout',
+            name: 'Malang Scout',
+            icon: '🧭',
+            description: 'Explored all 3 verified culinary landmarks across Lowokwaru and Klojen.'
+        },
+        objectives: [
+            { id: 'visit:okiru-ramen', label: 'Inspect Okiru Ramen (Soekarno Hatta)', restaurant_id: 'okiru-ramen', action_type: 'visit', step_xp: 25 },
+            { id: 'visit:dialogi-signature-malang', label: 'Inspect Dialoogi Signature (Jl. Bandung)', restaurant_id: 'dialogi-signature-malang', action_type: 'visit', step_xp: 25 },
+            { id: 'visit:burger-king-ijen-besar-malang', label: 'Inspect Burger King (Ijen Boulevard)', restaurant_id: 'burger-king-ijen-besar-malang', action_type: 'visit', step_xp: 25 }
+        ]
+    },
+    {
+        id: 'quest-noodle-connoisseur',
+        title: 'Ramen & Broth Connoisseur',
+        description: 'Dive into Lowokwaru’s halal Japanese ramen bar by inspecting Okiru Ramen’s menu and logging a tasting check-in.',
+        category: 'Asian Food',
+        required_level: 1,
+        min_xp: 0,
+        xp_reward: 120,
+        badge: {
+            id: 'badge-broth-master',
+            name: 'Broth Master',
+            icon: '🍜',
+            description: 'Completed the Okiru Ramen Paitan & Chintan menu exploration quest.'
+        },
+        objectives: [
+            { id: 'visit:okiru-ramen', label: 'Inspect Okiru Ramen detail or map marker', restaurant_id: 'okiru-ramen', action_type: 'visit', step_xp: 25 },
+            { id: 'checkin:okiru-ramen', label: 'Log a self-reported tasting check-in at Okiru Ramen', restaurant_id: 'okiru-ramen', action_type: 'checkin', step_xp: 25 }
+        ]
+    },
+    {
+        id: 'quest-bandung-artisan',
+        title: 'Bandung Street Artisan',
+        description: 'Bookmark Dialoogi Signature on Jl. Bandung No. 40 to your Favorites and record a demo dining check-in.',
+        category: 'Restaurant',
+        required_level: 1,
+        min_xp: 0,
+        xp_reward: 130,
+        badge: {
+            id: 'badge-artisan-explorer',
+            name: 'Artisan Explorer',
+            icon: '☕',
+            description: 'Saved and checked in at Dialoogi Signature on Jl. Bandung.'
+        },
+        objectives: [
+            { id: 'fav:dialogi-signature-malang', label: 'Save Dialoogi Signature to Favorites (♥)', restaurant_id: 'dialogi-signature-malang', action_type: 'favorite', step_xp: 25 },
+            { id: 'checkin:dialogi-signature-malang', label: 'Log a self-reported check-in at Dialoogi Signature', restaurant_id: 'dialogi-signature-malang', action_type: 'checkin', step_xp: 25 }
+        ]
+    },
+    {
+        id: 'quest-midnight-ijen',
+        title: 'Ijen 24-Hour Night Owl',
+        description: 'Reach Level 2 (150+ XP) to unlock this quest, then inspect and check in at Burger King Ijen Boulevard (Open 24 Hours).',
+        category: 'Fast Food',
+        required_level: 2,
+        min_xp: 150,
+        xp_reward: 200,
+        badge: {
+            id: 'badge-night-owl',
+            name: 'Ijen Night Owl',
+            icon: '🦉',
+            description: 'Reached Level 2 and completed the 24-hour Ijen Boulevard quest.'
+        },
+        objectives: [
+            { id: 'visit:burger-king-ijen-besar-malang', label: 'Inspect Burger King Ijen (24-Hour Landmark)', restaurant_id: 'burger-king-ijen-besar-malang', action_type: 'visit', step_xp: 25 },
+            { id: 'checkin:burger-king-ijen-besar-malang', label: 'Log a self-reported 24h check-in at Burger King Ijen', restaurant_id: 'burger-king-ijen-besar-malang', action_type: 'checkin', step_xp: 25 }
+        ]
+    }
+];
+
+const UNIQUE_STEP_ACTIONS = {
+    'visit:okiru-ramen': 25,
+    'visit:dialogi-signature-malang': 25,
+    'visit:burger-king-ijen-besar-malang': 25,
+    'checkin:okiru-ramen': 25,
+    'checkin:dialogi-signature-malang': 25,
+    'checkin:burger-king-ijen-besar-malang': 25,
+    'fav:okiru-ramen': 25,
+    'fav:dialogi-signature-malang': 25,
+    'fav:burger-king-ijen-besar-malang': 25
+};
+
+const LEVEL_RANKS = [
+    { level: 1, minXp: 0, title: 'Novice Taster' },
+    { level: 2, minXp: 150, title: 'Street Scout' },
+    { level: 3, minXp: 300, title: 'Malang Pathfinder' },
+    { level: 4, minXp: 450, title: 'Culinary Connoisseur' },
+    { level: 5, minXp: 600, title: 'Grand Master of Malang' }
+];
+
+function loadQuestState() {
+    const fallback = {
+        completedActions: {},
+        completedQuests: {},
+        unlockedBadges: {}
+    };
+    try {
+        if (typeof window === 'undefined' || !window.localStorage) return fallback;
+        const raw = window.localStorage.getItem(QUEST_STORAGE_KEY);
+        if (!raw) return fallback;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return fallback;
+        return {
+            completedActions: (parsed.completedActions && typeof parsed.completedActions === 'object') ? { ...parsed.completedActions } : {},
+            completedQuests: (parsed.completedQuests && typeof parsed.completedQuests === 'object') ? { ...parsed.completedQuests } : {},
+            unlockedBadges: (parsed.unlockedBadges && typeof parsed.unlockedBadges === 'object') ? { ...parsed.unlockedBadges } : {}
+        };
+    } catch (_) {
+        return fallback;
+    }
+}
+
+function saveQuestState(state) {
+    try {
+        if (typeof window === 'undefined' || !window.localStorage) return;
+        window.localStorage.setItem(QUEST_STORAGE_KEY, JSON.stringify(state));
+    } catch (_) {}
+}
+
+/**
+ * Deterministically computes XP, Level, Rank Title, Quest statuses, and Badges
+ * from the idempotent completedActions map.
+ */
+function calculatePlayerStats(state = null) {
+    const activeState = state || loadQuestState();
+
+    // Sync any currently saved favorites into completedActions
+    BITEMAP_FAVORITES.forEach(restId => {
+        const favKey = `fav:${restId}`;
+        if (UNIQUE_STEP_ACTIONS[favKey] && !activeState.completedActions[favKey]) {
+            activeState.completedActions[favKey] = new Date().toISOString();
+        }
+    });
+
+    // 1. Base XP from unique step actions
+    let xp = 0;
+    Object.keys(activeState.completedActions).forEach(actionId => {
+        if (UNIQUE_STEP_ACTIONS[actionId]) {
+            xp += UNIQUE_STEP_ACTIONS[actionId];
+        }
+    });
+
+    // 2. Evaluate quest completion in two passes so unlocking Level 2 can immediately evaluate Level 2 quests
+    const newlyCompletedQuests = [];
+    for (let pass = 0; pass < 2; pass++) {
+        CULINARY_QUESTS.forEach(quest => {
+            const isUnlocked = xp >= quest.min_xp;
+            const allObjectivesDone = quest.objectives.every(obj => Boolean(activeState.completedActions[obj.id]));
+            if (isUnlocked && allObjectivesDone) {
+                if (!activeState.completedQuests[quest.id]) {
+                    const nowIso = new Date().toISOString();
+                    activeState.completedQuests[quest.id] = nowIso;
+                    activeState.unlockedBadges[quest.badge.id] = nowIso;
+                    newlyCompletedQuests.push(quest);
+                }
+            }
+        });
+
+        // Recalculate total XP including completed quest rewards
+        xp = 0;
+        Object.keys(activeState.completedActions).forEach(actionId => {
+            if (UNIQUE_STEP_ACTIONS[actionId]) {
+                xp += UNIQUE_STEP_ACTIONS[actionId];
+            }
+        });
+        CULINARY_QUESTS.forEach(quest => {
+            if (activeState.completedQuests[quest.id]) {
+                xp += quest.xp_reward;
+            }
+        });
+    }
+
+    // 3. Determine current level and progress toward next level (150 XP per level)
+    const XP_PER_LEVEL = 150;
+    const level = Math.min(5, Math.floor(xp / XP_PER_LEVEL) + 1);
+    const rankObj = LEVEL_RANKS.find(r => r.level === level) || LEVEL_RANKS[0];
+    const currentLevelFloorXp = (level - 1) * XP_PER_LEVEL;
+    const nextLevelTargetXp = level * XP_PER_LEVEL;
+    const xpIntoLevel = xp - currentLevelFloorXp;
+    const progressPercent = level >= 5 ? 100 : Math.min(100, Math.round((xpIntoLevel / XP_PER_LEVEL) * 100));
+    const xpNeededForNext = level >= 5 ? 0 : Math.max(0, nextLevelTargetXp - xp);
+
+    saveQuestState(activeState);
+
+    return {
+        state: activeState,
+        xp,
+        level,
+        rankTitle: rankObj.title,
+        progressPercent,
+        xpNeededForNext,
+        completedQuestsCount: Object.keys(activeState.completedQuests).length,
+        unlockedBadgesCount: Object.keys(activeState.unlockedBadges).length,
+        totalQuests: CULINARY_QUESTS.length,
+        newlyCompletedQuests
+    };
+}
+
+function showQuestToast(message, variant = 'success') {
+    if (typeof document === 'undefined') return;
+    let container = document.getElementById('quest-toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'quest-toast-container';
+        container.className = 'fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-[340px] pointer-events-none';
+        container.setAttribute('aria-live', 'polite');
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    const bgClass = variant === 'quest-complete'
+        ? 'bg-terracotta text-white border-terracotta'
+        : (variant === 'info' ? 'bg-dark text-cream border-dark' : 'bg-white text-dark border-terracotta/40');
+    toast.className = `pointer-events-auto px-4 py-3 rounded-2xl border shadow-lg text-xs font-semibold flex items-start gap-2.5 transition-all duration-300 ${bgClass}`;
+    toast.innerHTML = `
+        <span class="text-base leading-none shrink-0">${variant === 'quest-complete' ? '🏆' : (variant === 'info' ? 'ℹ️' : '✨')}</span>
+        <div class="leading-snug">${message}</div>
+    `;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 3600);
+}
+
+/**
+ * Records a unique quest action (idempotent: prevents duplicate XP farming).
+ *
+ * @param {string} actionId e.g. "visit:okiru-ramen", "checkin:okiru-ramen", "fav:dialogi-signature-malang"
+ * @param {string} [label] Human-readable action description
+ * @param {boolean} [silentIfDuplicate=false]
+ * @returns {boolean} True if newly recorded, false if already completed
+ */
+function recordQuestAction(actionId, label = '', silentIfDuplicate = false) {
+    if (!actionId || !UNIQUE_STEP_ACTIONS[actionId]) return false;
+
+    const state = loadQuestState();
+    if (state.completedActions[actionId]) {
+        if (!silentIfDuplicate) {
+            showQuestToast('Objective already completed — XP is awarded once per unique step.', 'info');
+        }
+        renderQuestUI();
+        return false;
+    }
+
+    state.completedActions[actionId] = new Date().toISOString();
+    saveQuestState(state);
+
+    const stepXp = UNIQUE_STEP_ACTIONS[actionId] || 25;
+    const stats = calculatePlayerStats(state);
+    renderQuestUI(stats);
+
+    if (label) {
+        showQuestToast(`+${stepXp} XP — ${label} (Demo Progress)`);
+    }
+
+    if (stats.newlyCompletedQuests.length > 0) {
+        stats.newlyCompletedQuests.forEach(q => {
+            showQuestToast(
+                `Quest Completed: <strong>${q.title}</strong>! +${q.xp_reward} XP &amp; ${q.badge.icon} ${q.badge.name} Badge Unlocked!`,
+                'quest-complete'
+            );
+        });
+    }
+
+    return true;
+}
+
+function resetQuestProgress() {
+    const emptyState = {
+        completedActions: {},
+        completedQuests: {},
+        unlockedBadges: {}
+    };
+    saveQuestState(emptyState);
+    const stats = calculatePlayerStats(emptyState);
+    renderQuestUI(stats);
+    showQuestToast('Demo quest progress, XP, and badges have been reset to Level 1 (0 XP).', 'info');
+}
+
+/**
+ * Synchronizes all Player HUD elements, Quest Cards, Objective Checklists,
+ * Check-In Buttons, and Badge Showcases across the active page.
+ */
+function renderQuestUI(precomputedStats = null) {
+    if (typeof document === 'undefined') return;
+    const stats = precomputedStats || calculatePlayerStats();
+    const { state, xp, level, rankTitle, progressPercent, xpNeededForNext, completedQuestsCount, unlockedBadgesCount, totalQuests } = stats;
+
+    // 1. Update Header & Page HUD elements
+    $$('[data-hud="level-badge"]').forEach(el => { el.textContent = `Lv. ${level}`; });
+    $$('[data-hud="level-num"]').forEach(el => { el.textContent = String(level); });
+    $$('[data-hud="rank-title"]').forEach(el => { el.textContent = rankTitle; });
+    $$('[data-hud="xp-text"]').forEach(el => { el.textContent = `${xp} XP`; });
+    $$('[data-hud="badges-text"]').forEach(el => { el.innerHTML = `&#127941; ${unlockedBadgesCount}/${totalQuests}`; });
+    $$('[data-hud="quests-count"]').forEach(el => { el.textContent = `${completedQuestsCount}/${totalQuests}`; });
+    $$('[data-hud="badges-count"]').forEach(el => { el.textContent = `${unlockedBadgesCount}/${totalQuests}`; });
+    $$('[data-hud="xp-bar"]').forEach(el => { el.style.width = `${progressPercent}%`; });
+    $$('[data-hud="next-level-text"]').forEach(el => {
+        if (level >= 5) {
+            el.textContent = 'Max Level Reached (Grand Master of Malang)';
+        } else {
+            const nextRank = LEVEL_RANKS.find(r => r.level === level + 1);
+            el.textContent = `${xpNeededForNext} XP needed for Level ${level + 1}${nextRank ? ' (' + nextRank.title + ')' : ''}`;
+        }
+    });
+
+    // 2. Update Quest Cards & Objectives
+    CULINARY_QUESTS.forEach(quest => {
+        const card = document.querySelector(`[data-quest-card="${quest.id}"]`);
+        const isCompleted = Boolean(state.completedQuests[quest.id]);
+        const isLocked = !isCompleted && xp < quest.min_xp;
+        const doneCount = quest.objectives.filter(obj => Boolean(state.completedActions[obj.id])).length;
+        const totalObj = quest.objectives.length;
+        const pct = totalObj > 0 ? Math.round((doneCount / totalObj) * 100) : 0;
+
+        $$(`[data-quest-progress-text="${quest.id}"]`).forEach(el => {
+            el.textContent = `${doneCount} / ${totalObj} completed`;
+        });
+        $$(`[data-quest-progress-bar="${quest.id}"]`).forEach(el => {
+            el.style.width = `${pct}%`;
+            if (isCompleted) {
+                el.classList.remove('bg-terracotta');
+                el.classList.add('bg-[#6F8064]');
+            } else {
+                el.classList.add('bg-terracotta');
+                el.classList.remove('bg-[#6F8064]');
+            }
+        });
+
+        $$(`[data-quest-state="${quest.id}"]`).forEach(badgeEl => {
+            if (isCompleted) {
+                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#6F8064] text-white';
+                badgeEl.innerHTML = '&#10003; Completed';
+            } else if (isLocked) {
+                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-dark/10 text-dark/60';
+                badgeEl.innerHTML = `&#128274; Locked (Req. Lv. ${quest.required_level} / ${quest.min_xp} XP)`;
+            } else if (doneCount > 0) {
+                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta text-white';
+                badgeEl.innerHTML = '&#9889; In Progress';
+            } else {
+                badgeEl.className = 'quest-state-badge inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-terracotta/12 text-terracotta';
+                badgeEl.innerHTML = '&#9733; Available Quest';
+            }
+        });
+
+        if (card) {
+            if (isLocked) {
+                card.classList.add('opacity-75');
+            } else {
+                card.classList.remove('opacity-75');
+            }
+        }
+
+        // Update individual objective rows
+        quest.objectives.forEach(obj => {
+            const objDone = Boolean(state.completedActions[obj.id]);
+            $$(`[data-objective-icon="${obj.id}"]`).forEach(iconEl => {
+                if (objDone) {
+                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full bg-[#6F8064] text-white flex items-center justify-center text-[10px] font-bold shrink-0';
+                    iconEl.innerHTML = '&#10003;';
+                } else {
+                    iconEl.className = 'objective-status-icon w-4 h-4 rounded-full border border-dark/25 flex items-center justify-center text-[10px] font-bold text-dark/40 shrink-0';
+                    iconEl.innerHTML = '&#9675;';
+                }
+            });
+            $$(`[data-objective-label="${obj.id}"]`).forEach(lblEl => {
+                if (objDone) {
+                    lblEl.classList.add('line-through', 'text-dark/50');
+                } else {
+                    lblEl.classList.remove('line-through', 'text-dark/50');
+                }
+            });
+        });
+    });
+
+    // 3. Update Check-In Buttons across Cards, Map Inspectors, Quest Cards & Detail Page
+    $$('.btn-quest-checkin').forEach(btn => {
+        const restId = btn.getAttribute('data-checkin-restaurant');
+        if (!restId) return;
+        const isCheckedIn = Boolean(state.completedActions[`checkin:${restId}`]);
+        if (isCheckedIn) {
+            btn.innerHTML = '<span>&#10003; Checked In (Earned)</span>';
+            btn.classList.add('bg-[#6F8064]', 'text-white', 'border-[#6F8064]');
+            btn.classList.remove('bg-terracotta/10', 'bg-terracotta/12', 'text-terracotta', 'bg-[#6F8064]/10', 'text-[#6F8064]');
+            btn.setAttribute('aria-pressed', 'true');
+        } else {
+            btn.innerHTML = '<span>&#10003; Check In (+25 XP)</span>';
+            btn.classList.remove('bg-[#6F8064]', 'text-white', 'border-[#6F8064]');
+            btn.classList.add('bg-terracotta/10', 'text-terracotta');
+            btn.setAttribute('aria-pressed', 'false');
+        }
+    });
+
+    // 4. Update Achievement Badge Showcase Cards
+    CULINARY_QUESTS.forEach(quest => {
+        const badgeId = quest.badge.id;
+        const isUnlocked = Boolean(state.unlockedBadges[badgeId]);
+        $$(`[data-badge-card="${badgeId}"]`).forEach(cardEl => {
+            if (isUnlocked) {
+                cardEl.classList.remove('opacity-60');
+                cardEl.classList.add('border-[#6F8064]', 'shadow-sm');
+            } else {
+                cardEl.classList.add('opacity-60');
+                cardEl.classList.remove('border-[#6F8064]', 'shadow-sm');
+            }
+        });
+        $$(`[data-badge-status="${badgeId}"]`).forEach(statusEl => {
+            if (isUnlocked) {
+                statusEl.className = 'px-2 py-0.2 rounded-full bg-[#6F8064] text-white text-[10px] font-bold uppercase';
+                statusEl.textContent = 'Unlocked';
+            } else {
+                statusEl.className = 'px-2 py-0.2 rounded-full bg-dark/10 text-dark/60 text-[10px] font-bold uppercase';
+                statusEl.textContent = 'Locked';
+            }
+        });
+    });
+
+    // 5. Populate Dashboard Badges Grid if on dashboard.html
+    const dashboardBadgesGrid = document.getElementById('dashboard-badges-grid');
+    if (dashboardBadgesGrid) {
+        dashboardBadgesGrid.innerHTML = CULINARY_QUESTS.map(quest => {
+            const b = quest.badge;
+            const isUnlocked = Boolean(state.unlockedBadges[b.id]);
+            return `
+                <div class="p-3.5 rounded-2xl border ${isUnlocked ? 'bg-white border-[#6F8064]' : 'bg-cream/40 border-dark/10 opacity-65'} flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-dark/10 flex items-center justify-center text-xl shrink-0">${b.icon}</div>
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="text-xs font-bold text-dark truncate">${b.name}</h4>
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${isUnlocked ? 'bg-[#6F8064] text-white' : 'bg-dark/10 text-dark/60'}">${isUnlocked ? 'Unlocked' : 'Locked'}</span>
+                        </div>
+                        <p class="text-[11px] text-dark/65 truncate">${b.description}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// ==========================================
+// Phase B: Interactive Multi-Marker Discovery Maps (Explore & Home)
+// ==========================================
+
+let activeExploreDiscoveryMap = null;
+let activeHomeDiscoveryMap = null;
+
+function getCategoryEmoji(category) {
+    const c = (category || '').toLowerCase();
+    if (c.includes('asian')) return '🍜';
+    if (c.includes('fast')) return '🍔';
+    if (c.includes('cafe') || c.includes('coffee')) return '☕';
+    return '🍽️';
+}
+
+function getPrimaryQuestForRestaurant(restaurantId) {
+    return CULINARY_QUESTS.find(q => q.id !== 'quest-malang-scout' && q.objectives.some(o => o.restaurant_id === restaurantId))
+        || CULINARY_QUESTS[0];
+}
+
+function updateSelectedInspector(inspectorEl, restaurant, isHome = false) {
+    if (!inspectorEl || !restaurant) return;
+    const nameEl = inspectorEl.querySelector('[data-inspector="name"]');
+    const metaEl = inspectorEl.querySelector('[data-inspector="meta"]');
+    const questEl = inspectorEl.querySelector('[data-inspector="quest-tag"]');
+    const checkinBtn = inspectorEl.querySelector('[data-inspector="checkin-btn"]');
+    const detailLink = inspectorEl.querySelector('[data-inspector="detail-link"]');
+
+    if (nameEl) nameEl.textContent = restaurant.name;
+    if (metaEl) {
+        metaEl.textContent = `${restaurant.category}${restaurant.cuisine ? ' • ' + restaurant.cuisine : ''} • ${restaurant.location || 'Malang'}`;
+    }
+    const q = getPrimaryQuestForRestaurant(restaurant.id);
+    if (questEl && q) {
+        questEl.textContent = `${q.badge.icon} Quest: ${q.title} (+${q.xp_reward} XP)`;
+    }
+    if (checkinBtn) {
+        checkinBtn.setAttribute('data-checkin-restaurant', restaurant.id);
+        checkinBtn.setAttribute('data-restaurant-name', restaurant.name);
+    }
+    if (detailLink) {
+        const ext = getPageExtension();
+        const prefix = isHome ? 'pages/' : '';
+        detailLink.setAttribute('href', `${prefix}restaurant${ext}?id=${encodeURIComponent(restaurant.id)}`);
+    }
+    renderQuestUI();
+}
+
+function buildMultiMarkerMap(containerId, inspectorId, isHome = false) {
+    const container = document.getElementById(containerId);
+    if (!container) return null;
+
+    if (typeof window === 'undefined' || !window.L || typeof window.L.map !== 'function') {
+        container.innerHTML = '<div class="p-6 text-center text-xs text-dark/65">Interactive map requires Leaflet.js. Use the restaurant cards below to explore.</div>';
+        return null;
+    }
+
+    container.innerHTML = '';
+    const L = window.L;
+    const restaurants = getRestaurants().filter(r => isValidRestaurantCoordinate(r.latitude, r.longitude));
+    const defaultCenter = restaurants.length > 0 ? [restaurants[0].latitude, restaurants[0].longitude] : [-7.9580, 112.6215];
+
+    const map = L.map(container, {
+        center: defaultCenter,
+        zoom: 14,
+        scrollWheelZoom: false
+    });
+
+    const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) || GEOAPIFY_API_KEY;
+    const hasCustomGeoKey = Boolean(apiKey && typeof apiKey === 'string' && apiKey !== 'YOUR_API_KEY');
+    const tileUrl = hasCustomGeoKey
+        ? `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${encodeURIComponent(apiKey)}`
+        : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+    L.tileLayer(tileUrl, {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    const markersById = new Map();
+    const markerLayer = L.layerGroup().addTo(map);
+    const inspectorEl = document.getElementById(inspectorId);
+
+    function selectRestaurantOnMap(restaurant, shouldScrollCard = false, recordVisit = false) {
+        if (!restaurant) return;
+        updateSelectedInspector(inspectorEl, restaurant, isHome);
+
+        // Highlight matching card in DOM
+        $$('.restaurant-card').forEach(card => {
+            if (card.dataset.id === restaurant.id || card.dataset.restaurantId === restaurant.id) {
+                card.classList.add('ring-2', 'ring-terracotta');
+                if (shouldScrollCard && !isHome) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } else {
+                card.classList.remove('ring-2', 'ring-terracotta');
+            }
+        });
+
+        const marker = markersById.get(restaurant.id);
+        if (marker) {
+            map.flyTo([restaurant.latitude, restaurant.longitude], 15, { duration: 0.6 });
+            marker.openPopup();
+        }
+
+        if (recordVisit) {
+            recordQuestAction(`visit:${restaurant.id}`, `Inspected ${restaurant.name} on Quest Map`, true);
+        }
+    }
+
+    function renderMarkers(list) {
+        markerLayer.clearLayers();
+        markersById.clear();
+        const bounds = [];
+
+        list.forEach(r => {
+            if (!isValidRestaurantCoordinate(r.latitude, r.longitude)) return;
+            const emoji = getCategoryEmoji(r.category);
+            const q = getPrimaryQuestForRestaurant(r.id);
+            const ext = getPageExtension();
+            const detailHref = `${isHome ? 'pages/' : ''}restaurant${ext}?id=${encodeURIComponent(r.id)}`;
+
+            const icon = L.divIcon({
+                className: 'bitemap-quest-pin',
+                html: `<div style="display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:999px;background:#C85C3A;color:#fff;font-weight:700;font-size:11px;box-shadow:0 4px 12px rgba(36,33,29,0.28);border:2px solid #fff;white-space:nowrap;"><span>${emoji}</span><span>${r.name}</span></div>`,
+                iconSize: [130, 32],
+                iconAnchor: [65, 16],
+                popupAnchor: [0, -16]
+            });
+
+            const marker = L.marker([r.latitude, r.longitude], { icon, title: r.name });
+            marker.bindPopup(`
+                <div style="min-width:210px;font-family:'Poppins',sans-serif;">
+                    <div style="font-size:10px;font-weight:700;color:#C85C3A;text-transform:uppercase;margin-bottom:2px;">${emoji} ${r.category}</div>
+                    <div style="font-size:14px;font-weight:700;color:#24211D;margin-bottom:2px;">${r.name}</div>
+                    <div style="font-size:11px;color:#555;margin-bottom:6px;">${r.location || 'Malang'}</div>
+                    ${q ? `<div style="font-size:10px;font-weight:600;color:#6F8064;margin-bottom:8px;">${q.badge.icon} Quest: ${q.title}</div>` : ''}
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <a href="${detailHref}" style="display:inline-block;padding:4px 10px;border-radius:999px;background:#24211D;color:#fff;font-size:11px;font-weight:600;text-decoration:none;">Open Menu &rarr;</a>
+                    </div>
+                </div>
+            `);
+
+            marker.on('click', () => {
+                selectRestaurantOnMap(r, true, true);
+            });
+
+            marker.addTo(markerLayer);
+            markersById.set(r.id, marker);
+            bounds.push([r.latitude, r.longitude]);
+        });
+
+        if (bounds.length > 1) {
+            map.fitBounds(bounds, { padding: [45, 45], maxZoom: 15 });
+        } else if (bounds.length === 1) {
+            map.setView(bounds[0], 15);
+        }
+    }
+
+    renderMarkers(restaurants);
+    if (restaurants.length > 0) {
+        updateSelectedInspector(inspectorEl, restaurants[0], isHome);
+    }
+
+    setTimeout(() => {
+        try { map.invalidateSize(); } catch (_) {}
+    }, 200);
+
+    return {
+        map,
+        renderMarkers,
+        selectRestaurantOnMap,
+        fitAll: () => {
+            const pts = Array.from(markersById.values()).map(m => m.getLatLng());
+            if (pts.length > 1) {
+                map.fitBounds(L.latLngBounds(pts), { padding: [45, 45], maxZoom: 15 });
+            } else if (pts.length === 1) {
+                map.setView(pts[0], 15);
+            }
+        }
+    };
+}
+
+function syncExploreMapMarkers(filteredRestaurants) {
+    if (!activeExploreDiscoveryMap) return;
+    activeExploreDiscoveryMap.renderMarkers(filteredRestaurants || []);
+    if (Array.isArray(filteredRestaurants) && filteredRestaurants.length > 0) {
+        const inspectorEl = document.getElementById('selected-marker-inspector');
+        updateSelectedInspector(inspectorEl, filteredRestaurants[0], false);
+    }
+}
+
+function initDiscoveryMaps() {
+    if (document.getElementById('explore-discovery-map') && !activeExploreDiscoveryMap) {
+        activeExploreDiscoveryMap = buildMultiMarkerMap('explore-discovery-map', 'selected-marker-inspector', false);
+        const resetBtn = document.getElementById('btn-reset-map-bounds');
+        if (resetBtn && activeExploreDiscoveryMap) {
+            resetBtn.addEventListener('click', () => activeExploreDiscoveryMap.fitAll());
+        }
+    }
+
+    if (document.getElementById('home-discovery-map') && !activeHomeDiscoveryMap) {
+        activeHomeDiscoveryMap = buildMultiMarkerMap('home-discovery-map', 'home-selected-inspector', true);
+        const homeResetBtn = document.getElementById('btn-home-reset-map');
+        if (homeResetBtn && activeHomeDiscoveryMap) {
+            homeResetBtn.addEventListener('click', () => activeHomeDiscoveryMap.fitAll());
+        }
+
+        // Bind Homepage Map Category Filter Chips
+        $$('.btn-home-map-filter').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const cat = btn.getAttribute('data-map-category') || 'all';
+                $$('.btn-home-map-filter').forEach(b => {
+                    b.classList.remove('bg-terracotta', 'text-white', 'border-terracotta', 'is-active');
+                    b.classList.add('bg-white', 'text-dark/75', 'border-dark/12');
+                });
+                btn.classList.add('bg-terracotta', 'text-white', 'border-terracotta', 'is-active');
+                btn.classList.remove('bg-white', 'text-dark/75', 'border-dark/12');
+
+                const all = getRestaurants();
+                const subset = cat === 'all' ? all : all.filter(r => (r.category || '').toLowerCase() === cat.toLowerCase());
+                activeHomeDiscoveryMap.renderMarkers(subset);
+                if (subset.length > 0) {
+                    activeHomeDiscoveryMap.selectRestaurantOnMap(subset[0], false, false);
+                }
+            });
+        });
+    }
+}
+
+function initCulinaryQuestSystem() {
+    if (typeof document === 'undefined') return;
+
+    // 1. Automatically record visit:<id> when viewing a restaurant detail page
+    const params = new URLSearchParams(window.location.search);
+    const detailId = params.get('id');
+    if (detailId && document.getElementById('restaurant-name')) {
+        const rest = getRestaurantById(detailId);
+        if (rest) {
+            recordQuestAction(`visit:${rest.id}`, `Explored ${rest.name} detail page`, true);
+        }
+    }
+
+    // 2. Delegate clicks for "Focus on Map", "Check In (+25 XP)", "Save ♥" quest buttons, and "Reset Progress"
+    if (!document.body.dataset.questEventsBound) {
+        document.body.dataset.questEventsBound = 'true';
+
+        document.body.addEventListener('click', (e) => {
+            const focusBtn = e.target.closest('.btn-focus-map');
+            if (focusBtn) {
+                e.preventDefault();
+                const restId = focusBtn.getAttribute('data-focus-restaurant');
+                const rest = getRestaurantById(restId);
+                if (rest) {
+                    const targetMap = activeExploreDiscoveryMap || activeHomeDiscoveryMap;
+                    if (targetMap) {
+                        targetMap.selectRestaurantOnMap(rest, false, true);
+                        const mapEl = document.getElementById('explore-discovery-map') || document.getElementById('home-discovery-map');
+                        if (mapEl) mapEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+                return;
+            }
+
+            const checkinBtn = e.target.closest('.btn-quest-checkin');
+            if (checkinBtn) {
+                e.preventDefault();
+                const restId = checkinBtn.getAttribute('data-checkin-restaurant');
+                const rest = getRestaurantById(restId);
+                const restName = (rest && rest.name) || checkinBtn.getAttribute('data-restaurant-name') || 'Restaurant';
+                if (restId) {
+                    // Recording check-in also counts as having visited/inspected the spot
+                    recordQuestAction(`visit:${restId}`, '', true);
+                    recordQuestAction(`checkin:${restId}`, `Checked in at ${restName}`);
+                }
+                return;
+            }
+
+            const questFavBtn = e.target.closest('.btn-quest-fav');
+            if (questFavBtn) {
+                e.preventDefault();
+                const restId = questFavBtn.getAttribute('data-fav-restaurant');
+                const rest = getRestaurantById(restId);
+                if (restId) {
+                    if (!isFavorite(restId)) {
+                        toggleFavorite(restId);
+                        refreshAllFavoriteButtons();
+                    } else {
+                        recordQuestAction(`fav:${restId}`, `Saved ${rest ? rest.name : restId} to Favorites`);
+                    }
+                }
+                return;
+            }
+
+            const resetBtn = e.target.closest('.btn-reset-quest-progress');
+            if (resetBtn) {
+                e.preventDefault();
+                resetQuestProgress();
+            }
+        });
+    }
+
+    renderQuestUI();
+}
+
+// ==========================================
 // Shared Initialization
 // ==========================================
 
@@ -6130,6 +6916,8 @@ function initBiteMap() {
         renderRestaurantCards(getRestaurants(), exploreGrid);
     }
     renderHomepageRails();
+    initDiscoveryMaps();
+    initCulinaryQuestSystem();
     initNearbyDiscovery();
     initLocationAutocomplete();
     initRestaurantDetail();
