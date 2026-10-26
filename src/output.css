@@ -823,6 +823,9 @@
       background-color: color-mix(in oklab, var(--color-cream) 95%, transparent);
     }
   }
+  .bg-current {
+    background-color: currentcolor;
+  }
   .bg-dark {
     background-color: var(--color-dark);
   }
@@ -836,6 +839,12 @@
     background-color: color-mix(in srgb, #24211D 5%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-dark) 5%, transparent);
+    }
+  }
+  .bg-dark\/8 {
+    background-color: color-mix(in srgb, #24211D 8%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-dark) 8%, transparent);
     }
   }
   .bg-dark\/10 {
@@ -863,6 +872,12 @@
     background-color: color-mix(in srgb, #C85C3A 10%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-terracotta) 10%, transparent);
+    }
+  }
+  .bg-terracotta\/12 {
+    background-color: color-mix(in srgb, #C85C3A 12%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-terracotta) 12%, transparent);
     }
   }
   .bg-transparent {
@@ -947,6 +962,9 @@
   }
   .px-3 {
     padding-inline: calc(var(--spacing) * 3);
+  }
+  .px-3\.5 {
+    padding-inline: calc(var(--spacing) * 3.5);
   }
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
@@ -1247,6 +1265,12 @@
     color: color-mix(in srgb, #24211D 75%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
       color: color-mix(in oklab, var(--color-dark) 75%, transparent);
+    }
+  }
+  .text-dark\/80 {
+    color: color-mix(in srgb, #24211D 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-dark) 80%, transparent);
     }
   }
   .text-green {

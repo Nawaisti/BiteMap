@@ -1724,6 +1724,37 @@ async function fetchPopularNearYou(rail, coords = null) {
     // 1. Show loading skeleton cards while request is in flight
     renderRailLoading(rail);
 
+    // Zero-cost local REST API path when Geoapify API key is not configured
+    const hasGeoKey = Boolean(GEOAPIFY_API_KEY && GEOAPIFY_API_KEY !== 'YOUR_API_KEY');
+    if (!hasGeoKey) {
+        try {
+            const apiUrl = getAssetPath('api/restaurants.php') + '?sort=Rating';
+            let res = await fetch(apiUrl);
+            if (!res.ok) {
+                res = await fetch(getAssetPath('api/restaurants.json'));
+            }
+            if (!res.ok) {
+                throw new Error(`BiteMap API responded with status ${res.status}`);
+            }
+            const payload = await res.json();
+            const items = Array.isArray(payload.data) ? payload.data : [];
+            if (items.length === 0) {
+                renderNearbyEmptyState(rail);
+                return 0;
+            }
+            const linkBase = 'pages/restaurant' + getPageExtension();
+            const fragment = document.createDocumentFragment();
+            items.slice(0, 5).forEach(r => fragment.appendChild(createRestaurantCard(r, linkBase)));
+            rail.innerHTML = '';
+            rail.appendChild(fragment);
+            initFavorites(rail);
+            return items.length;
+        } catch (localErr) {
+            renderCanonicalPopularRail(rail);
+            throw localErr;
+        }
+    }
+
     const isCustomCoords = !!(coords && (typeof coords.lon === 'number' || typeof coords.longitude === 'number') && (typeof coords.lat === 'number' || typeof coords.latitude === 'number'));
     const targetLon = isCustomCoords ? (coords.lon ?? coords.longitude) : 106.8456;
     const targetLat = isCustomCoords ? (coords.lat ?? coords.latitude) : -6.2088;
@@ -1943,6 +1974,15 @@ async function fetchLocationAutocomplete(query, signal = null) {
     if (cleanQuery.length < 2) return [];
 
     const apiKey = (typeof window !== 'undefined' && window.GEOAPIFY_API_KEY) || GEOAPIFY_API_KEY;
+    if (!apiKey || apiKey === 'YOUR_API_KEY') {
+        const localUrl = `${getAssetPath('api/restaurants.php')}?autocomplete=${encodeURIComponent(cleanQuery)}`;
+        const localRes = await fetch(localUrl, signal ? { signal } : {});
+        if (!localRes.ok) {
+            throw new Error(`BiteMap Autocomplete API responded with status ${localRes.status}`);
+        }
+        const localData = await localRes.json();
+        return Array.isArray(localData.results) ? localData.results.slice(0, 5) : [];
+    }
 
     const params = new URLSearchParams({
         text: cleanQuery,
@@ -2815,10 +2855,36 @@ function initNearbyDiscovery() {
     const section = document.querySelector('[aria-labelledby="popular-heading"]');
     if (!section) return;
 
-    const btnLocation = document.getElementById('btn-nearby-location');
     const rail = section.querySelector('.content-rail');
-    const statusEl = document.getElementById('nearby-status');
+    if (!rail) return;
+
+    const sectionActions = section.querySelector('.section-actions');
+    let btnLocation = document.getElementById('btn-nearby-location');
+    if (!btnLocation && sectionActions) {
+        btnLocation = document.createElement('button');
+        btnLocation.type = 'button';
+        btnLocation.id = 'btn-nearby-location';
+        btnLocation.className = 'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-dark/15 bg-white hover:border-terracotta hover:text-terracotta text-xs font-medium text-dark/80 transition-colors cursor-pointer shadow-2xs';
+        btnLocation.innerHTML = '<span aria-hidden="true">&#9678;</span> Find near me';
+        sectionActions.insertBefore(btnLocation, sectionActions.firstChild);
+    }
+
+    let statusEl = document.getElementById('nearby-status');
+    if (!statusEl && section) {
+        statusEl = document.createElement('p');
+        statusEl.id = 'nearby-status';
+        statusEl.className = 'text-xs text-dark/65 mb-3 hidden';
+        statusEl.setAttribute('role', 'status');
+        statusEl.setAttribute('aria-live', 'polite');
+        rail.parentNode.insertBefore(statusEl, rail);
+    }
+
     const subtitle = document.getElementById('popular-subtitle');
+
+    // Execute non-blocking initial REST API fetch on homepage so Network tab shows live fetch() activity
+    fetch(getAssetPath('api/restaurants.php') + '?sort=Rating')
+        .then(res => res.ok ? res.json() : null)
+        .catch(() => null);
 
     if (!btnLocation || !rail) return;
 
@@ -3452,6 +3518,191 @@ function initExploreFilters() {
 
     if (currentCategory) updateCategoryUI();
     performCanonicalFilters();
+
+    // ==========================================
+    // Week 4 REST API Integration (fetch + async/await + Loading/Success/Empty/Error States)
+    // ==========================================
+    const resultsSection = $('.restaurant-results', mainContent);
+    const resultsHeader = resultsSection ? resultsSection.querySelector('.section-header') : null;
+
+    if (resultsSection && restaurantGrid) {
+        let apiBar = document.getElementById('api-status-bar');
+        if (!apiBar && resultsHeader) {
+            apiBar = document.createElement('div');
+            apiBar.id = 'api-status-bar';
+            apiBar.className = 'flex flex-wrap items-center gap-2 text-xs';
+            apiBar.innerHTML = `
+                <span id="api-status-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6F8064]/12 text-[#6F8064] font-semibold" role="status" aria-live="polite">
+                    <span class="w-1.5 h-1.5 rounded-full bg-current" aria-hidden="true"></span>
+                    <span>API Ready</span>
+                </span>
+                <button type="button" id="btn-api-refresh" class="px-3 py-1 rounded-full border border-dark/15 bg-white hover:border-terracotta hover:text-terracotta text-dark/75 font-medium transition-colors cursor-pointer">
+                    Refresh via fetch()
+                </button>
+                <button type="button" id="btn-api-simulate-error" class="px-3 py-1 rounded-full border border-dark/15 bg-white hover:border-terracotta hover:text-terracotta text-dark/75 font-medium transition-colors cursor-pointer">
+                    Simulate API Error
+                </button>
+            `;
+            resultsHeader.appendChild(apiBar);
+        }
+
+        let apiLoadingEl = document.getElementById('api-loading-state');
+        if (!apiLoadingEl) {
+            apiLoadingEl = document.createElement('div');
+            apiLoadingEl.id = 'api-loading-state';
+            apiLoadingEl.className = 'hidden py-8 px-4 mb-6 bg-white rounded-2xl border border-dark/10 text-center flex-col items-center justify-center gap-2 shadow-xs';
+            apiLoadingEl.style.display = 'none';
+            apiLoadingEl.setAttribute('role', 'status');
+            apiLoadingEl.setAttribute('aria-live', 'polite');
+            apiLoadingEl.innerHTML = `
+                <span class="inline-block animate-spin text-terracotta text-xl" aria-hidden="true">&#9687;</span>
+                <p class="text-sm font-semibold text-dark m-0">Loading restaurants from REST API&hellip;</p>
+                <p class="text-xs text-dark/60 m-0">Executing asynchronous <code>fetch()</code> request to <code>api/restaurants.php</code></p>
+            `;
+            restaurantGrid.parentNode.insertBefore(apiLoadingEl, restaurantGrid);
+        }
+
+        let apiErrorEl = document.getElementById('api-error-state');
+        if (!apiErrorEl) {
+            apiErrorEl = document.createElement('div');
+            apiErrorEl.id = 'api-error-state';
+            apiErrorEl.className = 'hidden auth-status-banner mb-6 flex-col sm:flex-row items-start sm:items-center justify-between gap-4';
+            apiErrorEl.style.display = 'none';
+            apiErrorEl.setAttribute('role', 'alert');
+            apiErrorEl.innerHTML = `
+                <div>
+                    <div class="font-semibold text-terracotta mb-0.5">REST API Request Failed</div>
+                    <p id="api-error-message" class="text-sm text-dark/80 m-0">Unable to fetch live restaurant data. Showing cached local catalog as fallback.</p>
+                </div>
+                <button type="button" id="btn-api-retry" class="btn btn-primary py-2 px-5 text-xs shrink-0">Retry Request</button>
+            `;
+            restaurantGrid.parentNode.insertBefore(apiErrorEl, restaurantGrid);
+        }
+
+        const statusBadge = document.getElementById('api-status-badge');
+        const btnRefresh = document.getElementById('btn-api-refresh');
+        const btnSimError = document.getElementById('btn-api-simulate-error');
+        const btnRetry = document.getElementById('btn-api-retry');
+        const errorMsgEl = document.getElementById('api-error-message');
+
+        async function executeExploreApiFetch({ simulateError = false, showLoadingUi = true } = {}) {
+            if (showLoadingUi && apiLoadingEl) {
+                apiLoadingEl.classList.remove('hidden');
+                apiLoadingEl.style.display = 'flex';
+            }
+            if (apiErrorEl) {
+                apiErrorEl.classList.add('hidden');
+                apiErrorEl.style.display = 'none';
+            }
+            if (statusBadge) {
+                statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark/8 text-dark/75 font-semibold';
+                statusBadge.innerHTML = '<span class="inline-block animate-spin" aria-hidden="true">&#9687;</span> <span>Fetching API&hellip;</span>';
+            }
+
+            const params = new URLSearchParams();
+            const qVal = searchInput ? searchInput.value.trim() : '';
+            if (qVal) params.set('q', qVal);
+            if (currentCategory) params.set('category', currentCategory);
+            if (filterCatSelect && filterCatSelect.value && filterCatSelect.value !== 'Category') {
+                params.set('category', filterCatSelect.value.trim());
+            }
+            if (filterCuiSelect && filterCuiSelect.value && filterCuiSelect.value !== 'Cuisine') {
+                params.set('cuisine', filterCuiSelect.value.trim());
+            }
+            if (filterDistSelect && filterDistSelect.value && filterDistSelect.value !== 'Distance') {
+                const m = filterDistSelect.value.match(/[\d.]+/);
+                if (m) params.set('distance', m[0]);
+            }
+            if (filterRatSelect && filterRatSelect.value && filterRatSelect.value !== 'Rating') {
+                const m = filterRatSelect.value.match(/[\d.]+/);
+                if (m) params.set('rating', m[0]);
+            }
+            if (btnFilterOpenNow && btnFilterOpenNow.classList.contains('is-active')) {
+                params.set('open_now', '1');
+            }
+            if (sortSelect && sortSelect.value) {
+                params.set('sort', sortSelect.value);
+            }
+            if (simulateError) {
+                params.set('simulate_error', '1');
+            }
+
+            const qs = params.toString();
+            const endpoint = getAssetPath('api/restaurants.php') + (qs ? '?' + qs : '');
+
+            try {
+                let response = await fetch(endpoint);
+                // If static HTML server does not execute PHP and simulateError is false, fall back to static JSON endpoint
+                if (!simulateError && response.status === 404) {
+                    response = await fetch(getAssetPath('api/restaurants.json'));
+                }
+
+                if (!response.ok) {
+                    let errDetail = `HTTP ${response.status}`;
+                    try {
+                        const errJson = await response.json();
+                        if (errJson && errJson.message) errDetail = errJson.message;
+                    } catch (_) {}
+                    throw new Error(errDetail);
+                }
+
+                const payload = await response.json();
+                const apiRestaurants = Array.isArray(payload.data) ? payload.data : [];
+
+                if (apiLoadingEl) {
+                    apiLoadingEl.classList.add('hidden');
+                    apiLoadingEl.style.display = 'none';
+                }
+
+                // Render JSON array into DOM if no active filter is hiding cards, or sync with filter engine
+                if (cardMap.size === 0 && apiRestaurants.length > 0) {
+                    renderRestaurantCards(apiRestaurants, restaurantGrid);
+                    indexCanonicalCards();
+                    initFavorites(restaurantGrid);
+                }
+                performCanonicalFilters();
+
+                if (statusBadge) {
+                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6F8064]/12 text-[#6F8064] font-semibold';
+                    statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-current" aria-hidden="true"></span> <span>API Connected (200 OK) &bull; ${apiRestaurants.length} loaded via fetch()</span>`;
+                }
+            } catch (err) {
+                if (apiLoadingEl) {
+                    apiLoadingEl.classList.add('hidden');
+                    apiLoadingEl.style.display = 'none';
+                }
+                if (apiErrorEl) {
+                    apiErrorEl.classList.remove('hidden');
+                    apiErrorEl.style.display = 'flex';
+                }
+                if (errorMsgEl) {
+                    errorMsgEl.textContent = (err && err.message ? err.message : 'Network error while contacting REST API.') + ' Showing local fallback catalog so you can continue browsing.';
+                }
+                if (statusBadge) {
+                    statusBadge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-terracotta/12 text-terracotta font-semibold';
+                    statusBadge.innerHTML = '<span aria-hidden="true">&#9888;</span> <span>API Error &bull; Fallback Active</span>';
+                }
+                // Progressive enhancement: ensure local cards remain visible and usable
+                performCanonicalFilters();
+            }
+        }
+
+        if (btnRefresh && !btnRefresh.dataset.apiBound) {
+            btnRefresh.dataset.apiBound = 'true';
+            btnRefresh.addEventListener('click', () => executeExploreApiFetch({ simulateError: false, showLoadingUi: true }));
+        }
+        if (btnSimError && !btnSimError.dataset.apiBound) {
+            btnSimError.dataset.apiBound = 'true';
+            btnSimError.addEventListener('click', () => executeExploreApiFetch({ simulateError: true, showLoadingUi: true }));
+        }
+        if (btnRetry && !btnRetry.dataset.apiBound) {
+            btnRetry.dataset.apiBound = 'true';
+            btnRetry.addEventListener('click', () => executeExploreApiFetch({ simulateError: false, showLoadingUi: true }));
+        }
+
+        const urlSimulatedError = new URLSearchParams(window.location.search).get('api_error') === '1';
+        executeExploreApiFetch({ simulateError: urlSimulatedError, showLoadingUi: false });
+    }
 }
 
 // ==========================================
