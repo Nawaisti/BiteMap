@@ -1,7 +1,7 @@
-﻿{
+{
     "status": "success",
-    "source": "BiteMap ÔÇö Culinary Quest REST API v1",
-    "timestamp": "2026-10-26T18:09:10+00:00",
+    "source": "BiteMap — Culinary Quest REST API v1",
+    "timestamp": "2026-10-27T06:59:05+00:00",
     "count": 3,
     "filters": {
         "q": "",
@@ -17,7 +17,7 @@
             "id": "okiru-ramen",
             "name": "Okiru Ramen",
             "category": "Asian Food",
-            "cuisine": "Japanese ÔÇó Ramen Bar",
+            "cuisine": "Japanese • Ramen Bar",
             "rating": 4.8,
             "distance": 0.8,
             "description": "Bar ramen bernuansa Jepang di Jl. Bandung No. 5 Malang yang menyajikan ramen kaldu Paitan, Shoyu, Tantan, aneka hidangan pembuka, sushi roll, dan hidangan penutup khas.",
@@ -29,15 +29,15 @@
             "external_menu_url": "https://drive.google.com/file/d/1PHc2pjUS3tifwjjVVb4AVqYKjzqEuJOD/view?usp=drivesdk",
             "hero_image": "assets/restaurants/okiru-ramen/source/Screenshot 2026-10-12 234732.png",
             "hours": {
-                "Monday": "10:00 ÔÇô 22:00",
-                "Tuesday": "10:00 ÔÇô 22:00",
-                "Wednesday": "10:00 ÔÇô 22:00",
-                "Thursday": "10:00 ÔÇô 22:00",
-                "Friday": "10:00 ÔÇô 22:00",
-                "Saturday": "10:00 ÔÇô 22:00",
-                "Sunday": "10:00 ÔÇô 22:00"
+                "Monday": "10:00 – 22:00",
+                "Tuesday": "10:00 – 22:00",
+                "Wednesday": "10:00 – 22:00",
+                "Thursday": "10:00 – 22:00",
+                "Friday": "10:00 – 22:00",
+                "Saturday": "10:00 – 22:00",
+                "Sunday": "10:00 – 22:00"
             },
-            "open_now": false,
+            "open_now": true,
             "reservation_enabled": true,
             "gallery": [
                 {
@@ -571,13 +571,13 @@
             "external_menu_url": null,
             "hero_image": "assets/restaurants/burger-king-ijen-besar-malang/exterior/Screenshot_20261013_130205_Maps.jpg",
             "hours": {
-                "Monday": "00:00 ÔÇô 24:00",
-                "Tuesday": "00:00 ÔÇô 24:00",
-                "Wednesday": "00:00 ÔÇô 24:00",
-                "Thursday": "00:00 ÔÇô 24:00",
-                "Friday": "00:00 ÔÇô 24:00",
-                "Saturday": "00:00 ÔÇô 24:00",
-                "Sunday": "00:00 ÔÇô 24:00"
+                "Monday": "00:00 – 24:00",
+                "Tuesday": "00:00 – 24:00",
+                "Wednesday": "00:00 – 24:00",
+                "Thursday": "00:00 – 24:00",
+                "Friday": "00:00 – 24:00",
+                "Saturday": "00:00 – 24:00",
+                "Sunday": "00:00 – 24:00"
             },
             "open_now": true,
             "reservation_enabled": false,
@@ -641,15 +641,15 @@
             "external_menu_url": null,
             "hero_image": "assets/restaurants/dialogi-signature-malang/gallery/Profile8.jpg",
             "hours": {
-                "Monday": "10:00 ÔÇô 22:00",
-                "Tuesday": "10:00 ÔÇô 22:00",
-                "Wednesday": "10:00 ÔÇô 22:00",
-                "Thursday": "10:00 ÔÇô 22:00",
-                "Friday": "10:00 ÔÇô 23:00",
-                "Saturday": "10:00 ÔÇô 23:00",
-                "Sunday": "10:00 ÔÇô 23:00"
+                "Monday": "10:00 – 22:00",
+                "Tuesday": "10:00 – 22:00",
+                "Wednesday": "10:00 – 22:00",
+                "Thursday": "10:00 – 22:00",
+                "Friday": "10:00 – 23:00",
+                "Saturday": "10:00 – 23:00",
+                "Sunday": "10:00 – 23:00"
             },
-            "open_now": false,
+            "open_now": true,
             "reservation_enabled": true,
             "gallery": [
                 {
@@ -1252,13 +1252,13 @@
             "badge": {
                 "id": "badge-malang-scout",
                 "name": "Malang Scout",
-                "icon": "­ƒº¡",
-                "description": "Explored all 3 verified culinary landmarks across Lowokwaru and Klojen."
+                "icon": "🧭",
+                "description": "Explored all 3 verified culinary landmarks in Klojen."
             },
             "objectives": [
                 {
                     "id": "visit:okiru-ramen",
-                    "label": "Inspect Okiru Ramen (Soekarno Hatta)",
+                    "label": "Inspect Okiru Ramen (Jl. Bandung)",
                     "restaurant_id": "okiru-ramen",
                     "action_type": "visit",
                     "step_xp": 25
@@ -1283,7 +1283,7 @@
         {
             "id": "quest-noodle-connoisseur",
             "title": "Ramen & Broth Connoisseur",
-            "description": "Dive into LowokwaruÔÇÖs halal Japanese ramen bar by inspecting Okiru RamenÔÇÖs menu and logging a tasting check-in.",
+            "description": "Dive into Klojen’s Japanese ramen bar on Jl. Bandung by inspecting Okiru Ramen’s menu and logging a tasting check-in.",
             "category": "Asian Food",
             "difficulty": "Easy",
             "required_level": 1,
@@ -1297,7 +1297,7 @@
             "badge": {
                 "id": "badge-broth-master",
                 "name": "Broth Master",
-                "icon": "­ƒì£",
+                "icon": "🍜",
                 "description": "Completed the Okiru Ramen Paitan & Chintan menu exploration quest."
             },
             "objectives": [
@@ -1335,13 +1335,13 @@
             "badge": {
                 "id": "badge-artisan-explorer",
                 "name": "Artisan Explorer",
-                "icon": "Ôÿò",
+                "icon": "☕",
                 "description": "Saved and checked in at Dialoogi Signature on Jl. Bandung."
             },
             "objectives": [
                 {
                     "id": "fav:dialogi-signature-malang",
-                    "label": "Save Dialoogi Signature to Favorites (ÔÖÑ)",
+                    "label": "Save Dialoogi Signature to Favorites (♥)",
                     "restaurant_id": "dialogi-signature-malang",
                     "action_type": "favorite",
                     "step_xp": 25
@@ -1366,14 +1366,14 @@
             "min_xp": 150,
             "xp_reward": 200,
             "total_possible_xp": 250,
-            "verification_note": "Unlocks at Level 2 (150 XP) ÔÇó Self-reported / demo progress",
+            "verification_note": "Unlocks at Level 2 (150 XP) • Self-reported / demo progress",
             "target_restaurants": [
                 "burger-king-ijen-besar-malang"
             ],
             "badge": {
                 "id": "badge-night-owl",
                 "name": "Ijen Night Owl",
-                "icon": "­ƒªë",
+                "icon": "🦉",
                 "description": "Reached Level 2 and completed the 24-hour Ijen Boulevard quest."
             },
             "objectives": [

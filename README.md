@@ -1,34 +1,34 @@
-# BiteMap — Culinary Quest
+# BiteMap — Culinary Adventure
 
-**Explore Malang on the map. Complete Culinary Quests. Level up your palate.**
+**Explore Malang, One Bite at a Time.**
 
-**BiteMap — Culinary Quest** is a map-first culinary discovery web application with lightweight gamification. Diners discover verified Malang restaurants on an interactive Leaflet/OpenStreetMap canvas, inspect official menus and live operating hours, complete exploration quests, earn deterministic XP, unlock Malang culinary achievement badges, and preview digital table reservations.
+**BiteMap — Culinary Adventure** is a map-first culinary discovery web application with lightweight gamification. Diners discover verified Malang restaurants on an interactive Leaflet/OpenStreetMap canvas, inspect official menus and live operating hours, follow curated culinary trails, earn deterministic XP, unlock Malang culinary achievement badges, and preview digital table reservations.
 
 ---
 
-## 1. Week 1–7 Curriculum & Product Redirection Status
+## 1. Week 1–7 Curriculum Compliance Status
 
-| Week / Phase | Course Topic / Milestone | BiteMap — Culinary Quest Implementation | Status |
+| Week / Phase | Course Topic / Milestone | BiteMap — Culinary Adventure Implementation | Status |
 | :--- | :--- | :--- | :--- |
-| **Week 1** | Product Canvas & Git Workflow | Map-first culinary quest framing, 3 verified Malang culinary profiles, canonical GitHub repository (`Nawaisti/BiteMap`) | **VERIFIED COMPLETE** |
-| **Week 2** | Semantic HTML5, CSS & Responsive Design | Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`), design tokens (`css/style.css`), mobile-first responsive rules (`css/responsive.css`) | **VERIFIED COMPLETE** |
-| **Week 3** | JavaScript DOM, Events & Tailwind CSS | Tailwind CSS v4 CLI build (`src/input.css` -> `src/output.css`), bidirectional Map Marker <-> Card selection, live search/filter/sort, mobile nav drawer, favorites (`localStorage`), and Quest/XP HUD updates | **VERIFIED COMPLETE** |
-| **Week 4** | REST API, JSON, `fetch()` & Async UI | JSON REST API endpoint (`api/restaurants.php`) returning restaurants & quests + static fallback (`api/restaurants.json`), `async`/`await` `fetch()`, Loading spinner, Empty state, and Error + Retry state | **VERIFIED COMPLETE** |
-| **Week 5** | Procedural Server-Side PHP | Server-rendered `.php` entry points, shared header/footer layouts, canonical array datasets (`data/restaurants.php`, `data/quests.php`), `foreach` loops, `if/else` status badges, XSS escaping (`e()`) | **VERIFIED COMPLETE** |
-| **Week 6** | Object-Oriented PHP (OOP) | Encapsulated `Restaurant`, `MenuItem`, and `Quest` classes (`app/Models/`) with `private` properties, `__construct()`, public getters/setters, object composition, and domain behavior methods | **VERIFIED COMPLETE** |
-| **Week 7** | Vanilla PHP MVC Architecture | Strict separation of **Models** (`app/Models/` — zero HTML markup), **Views** (`app/Views/` — layouts, partials, page templates), and **Controllers** (`app/Controllers/` — request handling & view orchestration) | **VERIFIED COMPLETE** |
+| **Week 1** | Product Canvas & Git Workflow | Culinary Adventure product framing, 3 verified Malang culinary profiles, canonical GitHub repository (`Nawaisti/BiteMap`) | **VERIFIED PASS** |
+| **Week 2** | Semantic HTML5, CSS & Responsive Design | Semantic landmarks (`<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`), design tokens (`css/style.css`), mobile-first responsive rules (`css/responsive.css`) | **VERIFIED PASS** |
+| **Week 3** | JavaScript DOM, Events & Tailwind CSS | Tailwind CSS v4 CLI build (`src/input.css` -> `src/output.css`), bidirectional Map Marker <-> Card selection, live search/filter/sort, mobile nav drawer, favorites (`localStorage`), and Quest/XP HUD updates | **VERIFIED PASS** |
+| **Week 4** | REST API, JSON, `fetch()` & Async UI | JSON REST API endpoint (`api/restaurants.php`) returning restaurants & quests + static fallback (`api/restaurants.json`), `async`/`await` `fetch()`, Loading spinner, Empty state, and Error + Retry state | **VERIFIED PASS** |
+| **Week 5** | Procedural Server-Side PHP | Server-rendered `.php` entry points, shared header/footer layouts, canonical array datasets (`data/restaurants.php`, `data/quests.php`), `foreach` loops, `if/else` status badges, XSS escaping (`e()`) | **VERIFIED PASS** |
+| **Week 6** | Object-Oriented PHP (OOP) | Encapsulated `Restaurant`, `MenuItem`, and `Quest` classes (`app/Models/`) with `private` properties, `__construct()`, public getters/setters, object composition, and domain behavior methods | **VERIFIED PASS** |
+| **Week 7** | Vanilla PHP MVC Architecture | Strict separation of **Models** (`app/Models/` — zero HTML markup), **Views** (`app/Views/` — layouts, partials, page templates), and **Controllers** (`app/Controllers/` — request handling & view orchestration) | **VERIFIED PASS** |
 
 ---
 
-## 2. Core Features of BiteMap — Culinary Quest
+## 2. Core Features of BiteMap — Culinary Adventure
 
-### A. Map-First Culinary Discovery (Phase B)
+### A. Map-First Culinary Discovery
 - **Split-Screen Map-First Explore (`pages/explore.php`) & Homepage Quest Map (`index.php`):**
   - Powered by **Leaflet.js 1.9.4** and free **OpenStreetMap** raster tiles (`© OpenStreetMap contributors`).
   - **Bidirectional Marker & Card Sync:** Clicking a map marker highlights the corresponding restaurant card, updates the **Selected Landmark Inspector**, and records the `visit:<id>` quest objective; clicking `"Focus on Map"` on any restaurant card smoothly flies to and opens its map marker.
   - **Real-Time Filter Sync:** Searching or filtering by category, cuisine, distance, rating, or `Open Now` dynamically updates both the card list and the map markers.
 
-### B. Culinary Quest MVP & Deterministic XP Engine (Phases C & D)
+### B. Culinary Quest MVP & Deterministic XP Engine
 - **4 Malang Culinary Quests (`data/quests.php` & `app/Models/Quest.php`):**
   1. **Malang Culinary Scout (`quest-malang-scout`)** — *Starter (Lv. 1)*: Inspect all 3 Malang landmarks (`+150 XP Bonus` + `🧭 Malang Scout` Badge).
   2. **Ramen & Broth Connoisseur (`quest-noodle-connoisseur`)** — *Easy (Lv. 1)*: Inspect Okiru Ramen & log a tasting check-in (`+120 XP Bonus` + `🍜 Broth Master` Badge).
@@ -40,9 +40,9 @@
   - Includes a 1-click **"Reset Demo Progress"** button so evaluators can reset XP/Quests to `0 XP (Lv. 1)` during live grading.
 
 ### C. Verified Malang Restaurant Dataset & Data Honesty (`data/restaurants.php`)
-- **Okiru Ramen (`okiru-ramen`)**: Verified address (Jl. Soekarno Hatta No.DR 17), coordinates, hours, and 10 authentic ramen/donburi menu categories.
+- **Okiru Ramen (`okiru-ramen`)**: Verified address (Jl. Bandung No. 5, Klojen), coordinates, hours, and 10 authentic ramen/donburi menu categories.
 - **Dialoogi Signature (`dialogi-signature-malang`)**: Verified address (Jl. Bandung No. 40), coordinates, hours, and 17 Asian fusion/coffee menu categories.
-- **Burger King Ijen (`burger-king-ijen-besar-malang`)**: Verified address (Jl. Besar Ijen No.84), coordinates, 24-hour operating schedule, and Whopper menu category.
+- **Burger King Ijen (`burger-king-ijen-besar-malang`)**: Verified address (Jl. Besar Ijen No. 84), coordinates, 24-hour operating schedule, and Whopper menu category.
 - **Transparency Labels:** Illustrative ratings (`(Demo)`) and estimated center distances (`(Est.)`) are explicitly labeled in the UI, and quest check-ins are clearly marked as **Self-Reported / Demo Progress**.
 
 ---
