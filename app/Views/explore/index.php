@@ -322,14 +322,6 @@ $categoryBadges = [
       </div>
     </section>
 
-    <!-- Quiet REST API & Architecture Status -->
-    <div class="py-3.5 border-t border-dark/10 bg-cream text-center text-xs text-dark/50">
-      <div class="container max-w-[1280px] mx-auto px-4 flex items-center justify-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#6F8064]" aria-hidden="true"></span>
-        <span>REST API active &middot; Pure vanilla PHP MVC &middot; Leaflet &amp; OpenStreetMap</span>
-      </div>
-    </div>
-
   </main>
 
 <?php

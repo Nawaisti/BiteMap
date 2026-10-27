@@ -621,8 +621,20 @@ button:focus-visible,
 
 /* --- FAVORITE BUTTON ---
    Favorite button (.btn-favorite, .btn-favorite.is-active, hover, focus)
-   migrated to Tailwind CSS v4 in Task 03 Step 03C (src/input.css).
+   Repositioned to the bottom-right corner of the restaurant card media area.
 */
+.restaurant-card-media {
+  position: relative;
+  width: 100%;
+}
+.restaurant-card-media .btn-favorite,
+.restaurant-card .btn-favorite {
+  position: absolute;
+  bottom: 0.75rem;
+  top: auto;
+  right: 0.75rem;
+  z-index: 10;
+}
 
 /* --- RESTAURANT CARD --- */
 .restaurant-card {

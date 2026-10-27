@@ -275,6 +275,9 @@
   .col-span-1 {
     grid-column: span 1 / span 1;
   }
+  .col-span-2 {
+    grid-column: span 2 / span 2;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -589,9 +592,6 @@
   }
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .grid-cols-\[100px_1fr\] {
     grid-template-columns: 100px 1fr;
@@ -908,18 +908,6 @@
   .bg-white {
     background-color: var(--color-white);
   }
-  .bg-white\/40 {
-    background-color: color-mix(in srgb, #FFFFFF 40%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 40%, transparent);
-    }
-  }
-  .bg-white\/50 {
-    background-color: color-mix(in srgb, #FFFFFF 50%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-white) 50%, transparent);
-    }
-  }
   .bg-white\/60 {
     background-color: color-mix(in srgb, #FFFFFF 60%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
@@ -1143,10 +1131,6 @@
   .text-\[11px\] {
     font-size: 11px;
   }
-  .leading-\[1\.2\] {
-    --tw-leading: 1.2;
-    line-height: 1.2;
-  }
   .leading-\[1\.15\] {
     --tw-leading: 1.15;
     line-height: 1.15;
@@ -1218,6 +1202,9 @@
   }
   .text-\[\#6F8064\] {
     color: #6F8064;
+  }
+  .text-\[\#506346\] {
+    color: #506346;
   }
   .text-cream {
     color: var(--color-cream);
@@ -1670,6 +1657,9 @@
     .sm\:left-auto {
       left: auto;
     }
+    .sm\:col-auto {
+      grid-column: auto;
+    }
     .sm\:mt-0 {
       margin-top: 0px;
     }
@@ -1931,9 +1921,6 @@
     .lg\:px-8 {
       padding-inline: calc(var(--spacing) * 8);
     }
-    .lg\:text-\[34px\] {
-      font-size: 34px;
-    }
     .lg\:text-\[40px\] {
       font-size: 40px;
     }
@@ -2064,7 +2051,7 @@
   }
   .btn-favorite {
     position: absolute;
-    top: 0.75rem;
+    bottom: 0.75rem;
     right: 0.75rem;
     width: 2.25rem;
     height: 2.25rem;
@@ -2074,7 +2061,7 @@
     background-color: var(--color-white);
     border: none;
     border-radius: 9999px;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px -1px rgba(0, 0, 0, 0.08);
     cursor: pointer;
     color: var(--color-text-muted);
     transition: transform 150ms ease, color 150ms ease, box-shadow 150ms ease;

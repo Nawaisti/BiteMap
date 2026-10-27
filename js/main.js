@@ -1458,10 +1458,18 @@ function createRestaurantCard(restaurant, linkBase = null, isActiveFavorite = nu
     article.dataset.category = restaurant.category || '';
 
     const catText = restaurant.cuisine ? `${restaurant.category} &middot; ${restaurant.cuisine}` : restaurant.category;
+    const stopCode = (typeof getAtlasStopCode === 'function') ? getAtlasStopCode(restaurant) : '';
+    const stopBadgeHtml = stopCode ? `<span class="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-dark/90 backdrop-blur-xs text-white uppercase shadow-2xs">${stopCode}</span>` : '';
 
-    article.innerHTML = `<button type="button" class="${favClass}" aria-label="${favLabel}" aria-pressed="${favPressed}"><span aria-hidden="true">&hearts;</span></button>
+    article.innerHTML = `<div class="restaurant-card-media relative">
+        <a href="${href}" class="block" aria-label="View ${restaurant.name}" tabindex="-1">
+          <div class="restaurant-card-image relative" aria-hidden="true"${imgStyle}>
+            ${stopBadgeHtml}
+          </div>
+        </a>
+        <button type="button" class="${favClass}" aria-label="${favLabel}" aria-pressed="${favPressed}"><span aria-hidden="true">&hearts;</span></button>
+      </div>
       <a href="${href}" class="card-link-wrapper" aria-label="View ${restaurant.name}">
-        <div class="restaurant-card-image relative" aria-hidden="true"${imgStyle}></div>
         <div class="restaurant-card-content">
           <h3 class="text-lead">${restaurant.name}</h3>
           <p class="text-xs text-dark/65 mb-1">${catText}</p>

@@ -39,27 +39,30 @@ $favPressed = $isFav ? 'true' : 'false';
   data-lat="<?= e((string) $restaurant->getLatitude()) ?>"
   data-lon="<?= e((string) $restaurant->getLongitude()) ?>"
 >
-  <button type="button" class="<?= e($favClass) ?>" aria-label="<?= e($favLabel) ?>" aria-pressed="<?= e($favPressed) ?>">
-    <span aria-hidden="true">&hearts;</span>
-  </button>
+  <div class="restaurant-card-media relative">
+    <a href="<?= e($cardHref) ?>" class="block" aria-label="View <?= e($cardName) ?>" tabindex="-1">
+      <div
+        class="restaurant-card-image relative"
+        aria-hidden="true"
+        <?php if ($cardHeroUrl !== ''): ?>
+          style="background-image: url('<?= e($cardHeroUrl) ?>'); background-size: cover; background-position: center;"
+        <?php endif; ?>
+      >
+        <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white/95 backdrop-blur-xs text-dark shadow-2xs">
+          <span class="w-1.5 h-1.5 rounded-full <?= $cardStatus['is_open'] ? 'bg-[#6F8064]' : 'bg-dark/40' ?>"></span>
+          <?= e($cardStatus['label']) ?>
+        </span>
+        <span class="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-dark/90 backdrop-blur-xs text-white uppercase shadow-2xs">
+          <?= e($restaurant->getAtlasStopCode()) ?>
+        </span>
+      </div>
+    </a>
+    <button type="button" class="<?= e($favClass) ?>" aria-label="<?= e($favLabel) ?>" aria-pressed="<?= e($favPressed) ?>">
+      <span aria-hidden="true">&hearts;</span>
+    </button>
+  </div>
 
   <a href="<?= e($cardHref) ?>" class="card-link-wrapper" aria-label="View <?= e($cardName) ?>">
-    <div
-      class="restaurant-card-image relative"
-      aria-hidden="true"
-      <?php if ($cardHeroUrl !== ''): ?>
-        style="background-image: url('<?= e($cardHeroUrl) ?>'); background-size: cover; background-position: center;"
-      <?php endif; ?>
-    >
-      <span class="absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-white/95 backdrop-blur-xs text-dark shadow-2xs">
-        <span class="w-1.5 h-1.5 rounded-full <?= $cardStatus['is_open'] ? 'bg-[#6F8064]' : 'bg-dark/40' ?>"></span>
-        <?= e($cardStatus['label']) ?>
-      </span>
-      <span class="absolute top-3 right-3 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider bg-dark/90 backdrop-blur-xs text-white uppercase shadow-2xs">
-        <?= e($restaurant->getAtlasStopCode()) ?>
-      </span>
-    </div>
-
     <div class="restaurant-card-content">
       <h3 class="text-lead"><?= e($cardName) ?></h3>
       <p class="text-xs text-dark/65 mb-1">
