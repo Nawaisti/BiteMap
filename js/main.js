@@ -6503,7 +6503,7 @@ function renderQuestUI(precomputedStats = null) {
 
         $$(`[data-quest-state="${quest.id}"]`).forEach(badgeEl => {
             if (isCompleted) {
-                badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#6F8064]/12 text-[#6F8064]';
+                badgeEl.className = 'quest-state-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#6F8064] text-white';
                 badgeEl.textContent = 'Completed';
             } else if (isLocked) {
                 badgeEl.className = 'quest-state-badge inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-dark/6 text-dark/55';
@@ -6519,14 +6519,14 @@ function renderQuestUI(precomputedStats = null) {
 
         if (card) {
             if (isCompleted) {
-                card.classList.remove('bg-white', 'opacity-75');
-                card.classList.add('bg-cream/40', 'opacity-80');
+                card.classList.add('bg-white', 'border-[#6F8064]/40');
+                card.classList.remove('opacity-80', 'opacity-75', 'bg-cream/40', 'border-dark/10');
             } else if (isLocked) {
-                card.classList.add('bg-white', 'opacity-75');
-                card.classList.remove('bg-cream/40', 'opacity-80');
+                card.classList.add('bg-white', 'opacity-75', 'border-dark/10');
+                card.classList.remove('bg-cream/40', 'opacity-80', 'border-[#6F8064]/40');
             } else {
-                card.classList.add('bg-white');
-                card.classList.remove('bg-cream/40', 'opacity-80', 'opacity-75');
+                card.classList.add('bg-white', 'border-dark/10');
+                card.classList.remove('bg-cream/40', 'opacity-80', 'opacity-75', 'border-[#6F8064]/40');
             }
         }
 
@@ -6563,6 +6563,9 @@ function renderQuestUI(precomputedStats = null) {
             if (!isTextLink) {
                 btn.classList.add('bg-[#6F8064]/12', 'text-[#6F8064]', 'border-[#6F8064]/25');
                 btn.classList.remove('bg-dark/[0.04]', 'text-dark/80', 'border-dark/12');
+            } else {
+                btn.classList.add('text-[#506346]', 'font-semibold');
+                btn.classList.remove('text-terracotta');
             }
             btn.setAttribute('aria-pressed', 'true');
         } else {
@@ -6570,6 +6573,9 @@ function renderQuestUI(precomputedStats = null) {
             if (!isTextLink) {
                 btn.classList.remove('bg-[#6F8064]/12', 'text-[#6F8064]', 'border-[#6F8064]/25');
                 btn.classList.add('bg-dark/[0.04]', 'text-dark/80', 'border-dark/12');
+            } else {
+                btn.classList.remove('text-[#506346]', 'font-semibold');
+                btn.classList.add('text-terracotta');
             }
             btn.setAttribute('aria-pressed', 'false');
         }
